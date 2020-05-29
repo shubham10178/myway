@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Seeway</string>
+    <string name="txt_header">"Lorem Ipsum is simply dummy text of the printing and typesetting industry"</string>
+    <string name="dummy_text">"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "</string>
+
+    <string-array name="lan_array">
+        <item>English</item>
+        <item>French</item>
+        <item>Spanish</item>
+        <item>Japanese</item>
+        <item>Chinese</item>
+        <item>Portuguese</item>
+        <item>Arabic</item>
+        <item>Russia</item>
+        <item>Hindi</item>
+        <item>Vietnamese</item>
+
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forgot_pass">We need to verify your account,your data will be secure and protect</string>
+    <string name="verification_txt">Enter 4 digit verification code(OTP) sent on your register Mobile Number</string>
+    <string name="reset_password">Enter the new password your password will be changed. Do not forgot again</string>
+    <string name="dummy_text2">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet comes from a line in section 1.10.32.</string>
+
+</resources>

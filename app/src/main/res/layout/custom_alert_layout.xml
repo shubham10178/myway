@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+    <TextView
+        android:id="@+id/txt_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Term Conditions"
+        android:fontFamily="@font/avenir_black"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"/>
+
+
+    <TextView
+        android:id="@+id/txt_terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dummy_text2"
+        android:fontFamily="@font/avenir_light"
+        android:layout_below="@+id/txt_header"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_terms"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/button_background_skip"
+            android:fontFamily="@font/avenir_black"/>
+
+        <Button
+            android:id="@+id/btn_cont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="@android:color/white"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button_background_next"
+            android:fontFamily="@font/avenir_black"/>
+
+    </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>
