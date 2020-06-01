@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.fluper.seeway.R
 
 
@@ -31,7 +28,6 @@ class ForgotPassword : Fragment() {
     lateinit var img_back :ImageView
     lateinit var btn_continue :Button
 
-    private val secondFragment = OtpVerificationFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +57,6 @@ class ForgotPassword : Fragment() {
 
 
 
-
         return view
     }
 
@@ -71,10 +66,10 @@ class ForgotPassword : Fragment() {
         super.onActivityCreated(savedInstanceState)
         btn_continue.setOnClickListener{
 
-
-            val fragmentTransaction = fragmentManager!!.beginTransaction()
-            fragmentTransaction.replace(R.id.frame_container, secondFragment)
-            fragmentTransaction.commit()
+            val otpVerificationFragment: Fragment = OtpVerificationFragment()
+            val transaction =
+                childFragmentManager.beginTransaction()
+            transaction.replace(R.id.frame_container, otpVerificationFragment).commit()
         }
 
     }

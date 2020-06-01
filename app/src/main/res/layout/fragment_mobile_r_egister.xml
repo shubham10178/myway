@@ -5,13 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/white"
+    android:clickable="true"
     tools:context=".fragment.ForgotPassword">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_patterns2x"
+        android:layout_marginBottom="50dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,20 +89,22 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_continue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/button_background_next"
-                android:text="Continue"
-                android:fontFamily="@font/avenir_black"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="20dp"
-                android:layout_margin="20dp"
-                android:textAllCaps="false"/>
+
         </LinearLayout>
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background_next"
+            android:text="Continue"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/avenir_black"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"
+            android:layout_margin="20dp"
+            android:textAllCaps="false"/>
+    </RelativeLayout>
 
 
 </LinearLayout>

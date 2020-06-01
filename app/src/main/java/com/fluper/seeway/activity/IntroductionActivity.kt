@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.PagerAdapter
 import com.fluper.seeway.R
 import com.fluper.seeway.adapter.SliderAdapter
+import com.viewpagerindicator.CirclePageIndicator
+import com.viewpagerindicator.PageIndicator
+import com.viewpagerindicator.TabPageIndicator
 import kotlinx.android.synthetic.main.activity_introduction.*
+import me.relex.circleindicator.CircleIndicator
+
 
 class IntroductionActivity : AppCompatActivity() {
 
@@ -21,8 +26,14 @@ class IntroductionActivity : AppCompatActivity() {
         var adapter : PagerAdapter = SliderAdapter(this, image,pager)
         pager.setAdapter(SliderAdapter(this, image,pager))
 
+
+        var indicator : CirclePageIndicator = findViewById(R.id.indicator)
+        indicator.setViewPager(pager);
         pager.adapter = adapter
+
+
+    }
     }
 
 
-}
+

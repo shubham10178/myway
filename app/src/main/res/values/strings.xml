@@ -14,7 +14,28 @@
         <item>Russia</item>
         <item>Hindi</item>
         <item>Vietnamese</item>
+    </string-array>
 
+
+    <string-array name="select_city">
+        <item>Dubai</item>
+        <item>Abu Dhabi</item>
+        <item>Sharjah</item>
+        <item>Al Ain</item>
+        <item>Ajman</item>
+        <item>RAK City</item>
+        <item>Fujairah</item>
+    </string-array>
+
+    <string-array name="vechiel_type">
+        <item>Auris (Toyota)</item>
+        <item>Avensis (Toyota)</item>
+        <item>E-Class (Mercedes)</item>
+        <item>Insignia (Vauxhall)</item>
+        <item>i40 (Hyundai)</item>
+        <item>Mondeo (Ford)</item>
+        <item>Prius</item>
+        <item>Superb (Skoda)</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

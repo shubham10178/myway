@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 
 import com.fluper.seeway.R
 
@@ -23,6 +24,8 @@ class OtpVerificationFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var btn_otp_con : Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,7 +39,18 @@ class OtpVerificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_otp_verification, container, false)
+        val view : View =inflater.inflate(R.layout.fragment_otp_verification, container, false)
+
+        btn_otp_con = view.findViewById(R.id.btn_otp_con)
+
+        btn_otp_con.setOnClickListener {
+
+            val childFragment: Fragment = ResetPassword()
+            val transaction = fragmentManager!!.beginTransaction()
+            transaction.replace(R.id.frame_container, childFragment).commit()
+        }
+
+        return  view
     }
 
 

@@ -13,7 +13,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.fluper.seeway.R
 import com.fluper.seeway.fragment.ForgotPassword
+import com.fluper.seeway.fragment.ProfileCreationPassengerFragment
 import com.fluper.seeway.fragment.ResetPassword
+import com.fluper.seeway.fragment.UserTypeFragment
 
 
 class LoginActivity : AppCompatActivity() {
@@ -27,13 +29,11 @@ class LoginActivity : AppCompatActivity() {
         forgotPassword_txt = findViewById(R.id.forgotPass_txt)
         btn_continue = findViewById(R.id.btn_continue)
 
-        val fragmentDemo: ForgotPassword? =
-            supportFragmentManager.findFragmentById(R.id.frame_container) as ForgotPassword?
 
 
        forgotPassword_txt.setOnClickListener {
 
-           setFragment(ForgotPassword())
+           setFragment(ProfileCreationPassengerFragment())
 
        }
 
@@ -50,7 +50,9 @@ class LoginActivity : AppCompatActivity() {
 
             val btn_cancel = dialog.findViewById<View>(R.id.btn_cancel) as Button
             btn_cancel.setOnClickListener { dialog.dismiss() }
-            btn_cont.setOnClickListener { dialog.dismiss() }
+            btn_cont.setOnClickListener {
+                setFragment(UserTypeFragment())
+                dialog.dismiss() }
 
             dialog.show()
         }
