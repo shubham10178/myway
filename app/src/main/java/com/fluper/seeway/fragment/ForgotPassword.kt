@@ -1,5 +1,6 @@
 package com.fluper.seeway.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.fluper.seeway.R
+import com.fluper.seeway.activity.LoginActivity
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -51,8 +53,9 @@ class ForgotPassword : Fragment() {
 
 
         img_back.setOnClickListener {
+            val i = Intent(activity, LoginActivity::class.java)
+            startActivity(i)
 
-            activity!!.onBackPressed()
         }
 
 
@@ -67,13 +70,14 @@ class ForgotPassword : Fragment() {
         btn_continue.setOnClickListener{
 
             val otpVerificationFragment: Fragment = OtpVerificationFragment()
-            val transaction =
-                childFragmentManager.beginTransaction()
+            val args = Bundle()
+            args.putString("type", "forgot")
+            otpVerificationFragment.setArguments(args)
+            val transaction = childFragmentManager.beginTransaction()
             transaction.replace(R.id.frame_container, otpVerificationFragment).commit()
         }
 
     }
-
 
 }
 

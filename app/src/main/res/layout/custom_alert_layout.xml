@@ -1,23 +1,25 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:layout_margin="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        >
 
     <TextView
         android:id="@+id/txt_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Term Conditions"
+        android:text="@string/terms"
         android:fontFamily="@font/avenir_black"
         android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
 
 
     <TextView
@@ -25,10 +27,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/dummy_text2"
-        android:fontFamily="@font/avenir_light"
+        android:fontFamily="@font/avenir_black"
         android:layout_below="@+id/txt_header"
         android:textColor="@android:color/black"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:layout_marginTop="20dp"/>
 
     <RelativeLayout
@@ -44,19 +46,29 @@
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="Disagree"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:textStyle="bold"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/button_background_skip"
+            android:background="@drawable/disagree_bg"
             android:fontFamily="@font/avenir_black"/>
 
         <Button
             android:id="@+id/btn_cont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:textColor="@android:color/white"
+            android:text="Agree"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:textStyle="bold"
             android:layout_alignParentRight="true"
-            android:background="@drawable/button_background_next"
+            android:textColor="@color/white"
+            android:background="@drawable/agree_bg"
             android:fontFamily="@font/avenir_black"/>
 
     </RelativeLayout>

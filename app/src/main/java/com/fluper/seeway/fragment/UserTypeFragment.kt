@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.fluper.seeway.Interface.ListAdapter
 import com.fluper.seeway.R
 import com.fluper.seeway.model.UserTypeModel
@@ -30,18 +29,6 @@ class UserTypeFragment : Fragment() {
     protected lateinit var rootView: View
     lateinit var recyclerView: RecyclerView
 
-    companion object {
-        var TAG = ListFragment::class.java.simpleName
-        const val ARG_POSITION: String = "positioin"
-
-        fun newInstance(): ListFragment {
-            var fragment = ListFragment();
-            val args = Bundle()
-            args.putInt(ARG_POSITION, 1)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,23 +56,31 @@ class UserTypeFragment : Fragment() {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(layoutManager);
+        val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+
+        }
+        smoothScroller.setTargetPosition(0);
+        layoutManager.startSmoothScroll(smoothScroller)
 
 
         val users = ArrayList<UserTypeModel>()
 
-        //adding some dummy data to the list
-        users.add(UserTypeModel("Passenger", R.drawable.walk_3))
+
+        users.add(UserTypeModel("Passenger", R.drawable.passenger))
         users.add(UserTypeModel("Driver", R.drawable.driver2x))
         users.add(UserTypeModel("Tenant", R.drawable.tenant2x))
-        users.add(UserTypeModel("Renter", R.drawable.walk_2))
-        users.add(UserTypeModel("Parcle send or Receive", R.drawable.parcel_send_receive3x))
+        users.add(UserTypeModel("Renter", R.drawable.renter))
+        users.add(UserTypeModel("Parcel Send or Receive", R.drawable.parcel_send_receive3x))
         users.add(UserTypeModel("Delivery Boy", R.drawable.deliveryboy2x))
         users.add(UserTypeModel("User/ Master User", R.drawable.user_master_user2x))
 
 
-        val adapter = ListAdapter(users)
+     //   var adapter = ListAdapter(users)
 
-
+      var  adapter = ListAdapter(users, activity)
         recyclerView.adapter = adapter
     }
 

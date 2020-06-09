@@ -1,14 +1,17 @@
 package com.fluper.seeway.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.fluper.seeway.R
+import com.fluper.seeway.activity.LoginActivity
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
 
 
@@ -26,7 +29,7 @@ class ResetPassword : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    lateinit var btn_submit : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -42,11 +45,15 @@ class ResetPassword : Fragment() {
         // Inflate the layout for this fragment
       val  view : View = inflater.inflate(R.layout.fragment_reset_password, container, false)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        btn_submit = view.findViewById(R.id.btn_submit)
 
 
-        val edt_new_passord = view.findViewById(R.id.edt_new_passord) as ShowHidePasswordEditText
-        val edt_confirm_passord = view.findViewById(R.id.edt_confirm_passord) as ShowHidePasswordEditText
 
+        btn_submit.setOnClickListener{
+
+            val i  = Intent(activity, LoginActivity::class.java)
+            startActivity(i)
+        }
 
         return view
     }

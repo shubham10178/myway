@@ -1,0 +1,68 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <TextView
+            android:id="@+id/txt_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alert_driver_profile1"
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:layout_below="@+id/txt_header"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="20dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_msg"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btn_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/no_bg"
+                android:fontFamily="@font/avenir_black"/>
+
+            <Button
+                android:id="@+id/btn_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/white"
+                android:background="@drawable/yes_bg"
+                android:fontFamily="@font/avenir_black"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

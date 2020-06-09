@@ -1,16 +1,19 @@
 package com.fluper.seeway.fragment
 
+import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 import com.fluper.seeway.R
+import com.fluper.seeway.activity.LoginActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -41,13 +44,25 @@ class OtpVerificationFragment : Fragment() {
         // Inflate the layout for this fragment
         val view : View =inflater.inflate(R.layout.fragment_otp_verification, container, false)
 
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         btn_otp_con = view.findViewById(R.id.btn_otp_con)
+
+        var type : String? = arguments?.getString("type")
+
 
         btn_otp_con.setOnClickListener {
 
-            val childFragment: Fragment = ResetPassword()
-            val transaction = fragmentManager!!.beginTransaction()
-            transaction.replace(R.id.frame_container, childFragment).commit()
+            if(type.equals("forgot")){
+                val userTypeFragment: Fragment = ResetPassword()
+                val transaction = childFragmentManager.beginTransaction()
+                transaction.add(R.id.frame_container, userTypeFragment).commit()
+            }else {
+
+                val userTypeFragment: Fragment = UserTypeFragment()
+                val transaction = childFragmentManager.beginTransaction()
+                transaction.add(R.id.frame_container, userTypeFragment).commit()
+            }
         }
 
         return  view

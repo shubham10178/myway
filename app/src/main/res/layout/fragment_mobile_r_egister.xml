@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_patterns2x"
-        android:layout_marginBottom="50dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,9 +21,9 @@
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/img_back"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/back"
+                android:src="@drawable/back3x"
                 android:fontFamily="@font/avenir_black"
                 android:padding="5dp"/>
 
@@ -34,18 +33,6 @@
                 android:layout_height="100dp"
                 android:src="@drawable/logo_splash"
                 android:layout_gravity="center"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Forgot Password"
-                android:fontFamily="@font/avenir_black"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_marginTop="10dp"/>
-
-
 
 
             <LinearLayout
@@ -59,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@drawable/edit_text_border_right"
-                    android:src="@drawable/mobile"/>
+                    android:src="@drawable/mobile1"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,16 +61,30 @@
                         android:textColor="@android:color/darker_gray"
                         android:textStyle="bold"
                         android:textSize="15sp"/>
-                    <EditText
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="9095989976"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        android:background="@null"
-                        android:inputType="number"
-                        android:fontFamily="@font/avenir_black"
-                        android:textSize="15sp"/>
+                        android:orientation="horizontal">
+
+                        <com.rilixtech.CountryCodePicker
+                            android:id="@+id/ccp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/phone_number_edt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint=""
+                            android:maxLength="10"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
+                            android:background="@null"
+                            android:fontFamily="@font/avenir_black"
+                            android:textSize="15sp"
+                            android:inputType="phone"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -105,6 +106,10 @@
             android:layout_margin="20dp"
             android:textAllCaps="false"/>
     </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"/>
 
-
-</LinearLayout>
+</RelativeLayout>

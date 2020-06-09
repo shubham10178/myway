@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent">
+
+
+<!--    <fragment-->
+<!--        android:id="@+id/map"-->
+<!--        android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        />-->
+    <RelativeLayout
+        android:id="@+id/linear_above"
+        android:layout_width="match_parent"
+        android:layout_height="370dp"
+        android:orientation="vertical">
+<ImageView
+    android:id="@+id/img_map"
+    android:layout_width="match_parent"
+    android:layout_height="370dp"
+    android:scaleType="fitXY"
+    android:visibility="visible"
+    android:src="@drawable/map"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/current_location2x"/>
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/linear_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_marginLeft="-2dp"
+        android:layout_marginRight="0dp"
+        android:background="@drawable/otp_background"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/black"
+            android:layout_gravity="center"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shap_rec_bg"
+    android:layout_marginTop="20dp"
+    android:padding="5dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginLeft="3dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Where to?"
+    android:textStyle="bold"
+    android:layout_weight="1"
+    android:padding="5dp"
+    android:textColor="@color/black"
+    android:fontFamily="@font/avenir_black"/>
+
+    <LinearLayout
+        android:id="@+id/linear_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
+        android:gravity="center"
+        android:background="@drawable/rec_white_bg"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/clock_file"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Now"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:fontFamily="@font/avenir_black"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/drop_down"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recycler"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linear_layout2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="50dp"-->
+<!--        android:visibility="gone"-->
+<!--        android:layout_alignBottom="@+id/linear_above"-->
+<!--        android:background="@drawable/otp_background"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:orientation="vertical">-->
+<!--        <View-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="5dp"-->
+<!--            android:background="@color/black"-->
+<!--            android:layout_gravity="center"/>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/white"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:padding="5dp"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Schedule a trip "-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_weight="1"-->
+<!--                android:padding="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:background="@drawable/edit_text_border_right"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:fontFamily="@font/avenir_black"/>-->
+
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Mon, 15 Apr "-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:background="@drawable/edit_text_border_right"-->
+<!--                android:padding="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:fontFamily="@font/avenir_black"/>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="9:41 pm- 9:51pm "-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_weight="1"-->
+<!--                android:padding="5dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:background="@drawable/edit_text_border_right"-->
+<!--                android:gravity="center"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:fontFamily="@font/avenir_black"/>-->
+
+<!--            <Button-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/button_background_next"-->
+<!--                android:text="Confirm Pickup Area"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:textSize="12sp"-->
+<!--                android:fontFamily="@font/avenir_black"/>-->
+<!--        </LinearLayout>-->
+
+<!--    </LinearLayout>-->
+
+</RelativeLayout>
+

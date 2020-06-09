@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".fragment.ProfileCreationPassengerFragment">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_patterns2x"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile Creation"
+                    android:fontFamily="@font/avenir_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:id="@+id/btn_skip_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skip"
+                    android:fontFamily="@font/avenir_black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:orientation="vertical">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/profile_placeholder2x"
+        app:civ_border_color="@color/transparent"
+        app:civ_border_width="2dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/profile_placeholder2x"
+        app:civ_border_color="@color/transparent"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+<ImageView
+    android:id="@+id/img_cam"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
+    android:src="@drawable/camera2x"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="-30dp"
+    android:layout_gravity="center"/>
+</LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/name_all"/>
+
+                </LinearLayout>
+                `
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Enter Name"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mail_all"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Enter E-mail"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:id="@+id/edt_User_Email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/mobile_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="horizontal">
+
+                    <com.rilixtech.CountryCodePicker
+                        android:id="@+id/ccp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ccp_hideNameCode="true"
+                        app:ccp_showFlag="false"
+                        app:ccp_textFont="avenir_black.ttf"
+                        app:ccp_textSize="12sp" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Enter Mobile Number"
+                        android:paddingLeft="8dp"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+                        <EditText
+                            android:id="@+id/edt_phone_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLength="10"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
+                            android:background="@null"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="8dp"
+                            android:translationY="5dp"
+                            android:fontFamily="@font/avenir_black"
+                            android:textSize="12sp"
+                            android:singleLine="true"
+                            android:inputType="phone"/>
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Gender"
+                android:fontFamily="@font/avenir_black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"/>
+
+            <RadioGroup
+                android:id="@+id/radioSex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioMale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/avenir_black"
+                    android:button="@drawable/radio_selector"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/radioFemale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/avenir_black"
+                    android:button="@drawable/radio_selector"
+                    android:layout_weight="1"
+                    android:text="Female" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Business Details"
+                    android:fontFamily="@font/avenir_black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(if you want make business)"
+                    android:fontFamily="@font/avenir_black"
+                    android:textSize="10sp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/grey"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/business_company_name_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Business or Company Name (Optional)"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/business_street_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Business Street Address 1(Optional)"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/business_street_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Business Street Address 2(Optional)"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/business_city_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Business City (Optional)"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/business_country_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Business Country (Optional)"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/vat_number_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="VAT Number (Optional)"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Card Details"
+                    android:fontFamily="@font/avenir_black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(Optional)"
+                    android:fontFamily="@font/avenir_black"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/grey"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/card_all" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Card Number"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linear_card_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/calendar_all"/>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/linear_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+<View
+    android:id="@+id/view_relative"
+    android:layout_width="match_parent"
+    android:layout_centerVertical="true"
+    android:layout_height="44dp" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_card_expire"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:clickable="false"
+                        android:hint="Card Expiry Date"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edt_card_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:focusableInTouchMode="false"
+                            android:editable="false"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+              android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/card_all"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="CVV Number"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GEXPAY Account"
+                android:fontFamily="@font/avenir_black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/black"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="-2dp"
+                    android:background="@drawable/edit_text_border_right">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/card_all"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        android:textColorHint="@color/grey"
+                        android:hint="Gexpay Account"
+                        app:hintTextColor="@android:color/darker_gray"
+                        android:layout_marginLeft="5dp"
+                        >
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_black"
+                            android:textColor="@color/black"
+                            android:background="@null"
+                            android:translationY="5dp"
+                            android:paddingBottom="5dp"
+                            android:inputType="text|textNoSuggestions"
+                            android:textSize="12sp"
+                            android:singleLine="true"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/underline_text"
+                android:fontFamily="@font/avenir_black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:linksClickable="true"
+                android:textColor="@color/alert_green"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/bankin"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:padding="10dp"
+                android:gravity="center"
+                android:orientation="vertical">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Benefits and Use of Bankin Account"
+    android:fontFamily="@font/avenir_black"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    android:gravity="center"
+    android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dummy_text"
+                android:fontFamily="@font/avenir_black"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:textColor="@color/grey"/>
+
+
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Save Profile"
+                    android:fontFamily="@font/avenir_black"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_background_next"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+</LinearLayout>

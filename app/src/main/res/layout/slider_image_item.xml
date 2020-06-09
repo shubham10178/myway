@@ -1,98 +1,22 @@
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_patterns2x">
 
         <ImageView
             android:id="@+id/slider"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/transprent_background"
             app:layout_constraintBottom_toTopOf="@+id/txt_header"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txt_header"
-            app:layout_constraintTop_toTopOf="parent"></ImageView>
-
-        <TextView
-            android:id="@+id/txt_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/avenir_black"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/txt_header"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/txt_des"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txt_des"
-            app:layout_constraintTop_toBottomOf="@+id/slider" />
-
-        <TextView
-            android:id="@+id/txt_des"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/avenir_light"
-            android:padding="10dp"
-            android:text="@string/dummy_text"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toTopOf="@+id/indicator"
-            app:layout_constraintEnd_toEndOf="@+id/indicator"
-            app:layout_constraintStart_toStartOf="@+id/indicator"
-            app:layout_constraintTop_toBottomOf="@+id/txt_header" />
-
-        <com.viewpagerindicator.CirclePageIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txt_des"
-            app:layout_constraintBottom_toTopOf="@+id/relative_bottom"
-            app:layout_constraintStart_toStartOf="@+id/relative_bottom"
-            app:layout_constraintTop_toBottomOf="@+id/txt_des" />
-
-        <RelativeLayout
-            android:id="@+id/relative_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:gravity="center"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/indicator">
-
-            <Button
-                android:id="@+id/btn_skip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/avenir_black"
-                android:text="Skip"
-                android:textAllCaps="false"
-                android:textColor="@android:color/black" />
-
-            <Button
-                android:id="@+id/btn_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/button_background_next"
-                android:fontFamily="@font/avenir_black"
-                android:text="Next"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
-
-        </RelativeLayout>
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

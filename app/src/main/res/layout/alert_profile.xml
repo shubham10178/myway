@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/txt_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/error"
+            />
+
+
+        <TextView
+            android:id="@+id/txt_terms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_alert"
+            android:fontFamily="@font/avenir_light"
+            android:layout_below="@+id/txt_header"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:layout_marginTop="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_terms"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/btn_skip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Skip"
+                android:textAllCaps="false"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/button_background_skip"
+                android:fontFamily="@font/avenir_black"/>
+
+            <Button
+                android:id="@+id/btn_create_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Create Profile"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/button_background_next"
+                android:fontFamily="@font/avenir_black"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

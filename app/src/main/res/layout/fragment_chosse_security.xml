@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
+    android:background="@android:color/white"
     tools:context=".fragment.ChosseSecurityFragment">
 
 
     <TextView
-        android:id="@+id/img_back"
+        android:id="@+id/txt_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Skip"
@@ -18,81 +19,86 @@
         android:fontFamily="@font/avenir_black"
         android:padding="5dp"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_patterns2x"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
+            android:layout_weight=".5"
             android:orientation="vertical">
-
-
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:src="@drawable/logo_splash"
+                android:src="@drawable/logo_login2x"
                 android:layout_gravity="center"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Choose Security Option"
+                android:text="Choose Security Options."
                 android:fontFamily="@font/avenir_black"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_marginTop="10dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/face_id2x"/>
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/finger_touch_id"/>
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/pin_lock2x"/>
-
-            </LinearLayout>
+                android:textSize="15sp"
+                android:layout_marginTop="20dp"/>
 
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_continue"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/center_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="50dp"
             android:layout_gravity="center"
-            android:background="@drawable/button_background_next"
-            android:text="Proceed"
-            android:fontFamily="@font/avenir_black"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="20dp"
-            android:layout_margin="20dp"
-            android:layout_alignParentBottom="true"
-            android:textAllCaps="false"/>
-    </RelativeLayout>
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/face_id2x"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/touch_id"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/pin_lock2x"/>
+
+        </LinearLayout>
+            <Button
+                android:id="@+id/btn_proceed"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background_next"
+                android:text="Proceed"
+                android:layout_below="@+id/center_layout"
+                android:fontFamily="@font/avenir_black"
+                android:textColor="@android:color/white"
+                android:layout_margin="20dp"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

@@ -1,0 +1,22 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+
+        <layer-list>
+
+            <item>
+                <color
+                    android:color="@android:color/transparent"/>
+            </item>
+
+            <item>
+                <bitmap
+                    android:gravity="center_vertical|right"
+                    android:src="@drawable/drop_down"/>
+            </item>
+
+        </layer-list>
+
+    </item>
+
+</selector>

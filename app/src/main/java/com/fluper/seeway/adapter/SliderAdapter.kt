@@ -34,33 +34,11 @@ class SliderAdapter : PagerAdapter{
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
        var imageView : ImageView
-        var btn_next : Button
-        var btn_skip : Button
+
 
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         var view : View= layoutInflater.inflate(R.layout.slider_image_item,container,false)
         imageView=view.findViewById(R.id.slider)
-        btn_next= view.findViewById(R.id.btn_next)
-        btn_skip= view.findViewById(R.id.btn_skip)
-
-        if(position == 2){
-            btn_next.setText("Get Started")
-        }
-        btn_next.setOnClickListener {
-            if(btn_next.text.equals("Get Started")){
-                val i = Intent(context, LoginActivity::class.java)
-                context.startActivity(i)
-            }else{
-                pager.setCurrentItem(position+1, true);
-
-            }
-            }
-
-        btn_skip.setOnClickListener {
-
-            val i = Intent(context,LoginActivity::class.java)
-            context.startActivity(i)
-        }
 
 
         imageView.setBackgroundResource(image[position])
