@@ -2,7 +2,6 @@ package com.fluper.seeway.activity
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
@@ -13,7 +12,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.Window
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -23,12 +21,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.fluper.seeway.R
 import com.fluper.seeway.fragment.ChosseSecurityFragment
-import com.google.android.material.textfield.TextInputLayout
 import com.rilixtech.CountryCodePicker
 import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class ProfileCreationPassengerActivity : AppCompatActivity() {
     private var yeaR: Int = 0
@@ -40,13 +36,6 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
     private val IMAGE_CAPTURE_CODE = 1001
     var image_uri: Uri? = null
     private val PERMISSION_CODE = 1001;
-    lateinit var btn_skip_profile: TextView
-    lateinit var btn_save: Button
-    lateinit var profile_image: ImageView
-    lateinit var profile_image1: ImageView
-    lateinit var img_cam: ImageView
-    lateinit var linear_card_date: LinearLayout
-    var ccp: CountryCodePicker? = null
     var dateSelected: Calendar = Calendar.getInstance()
     private var datePickerDialog: DatePickerDialog? = null
 
@@ -55,21 +44,12 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation_passenger)
-//click kh
-        edt_card_date.isEnabled = false
-        edt_card_date.isClickable = false
-        edt_card_date.isFocusable = false
-        btn_skip_profile = findViewById(R.id.btn_skip_profile)
-        linear_card_date = findViewById(R.id.linear_card_date)
-        btn_save = findViewById(R.id.btn_save)
-        profile_image = findViewById(R.id.profile_image)
-        profile_image1 = findViewById(R.id.profile_image1)
-        img_cam = findViewById(R.id.img_cam)
-        ccp  = findViewById(R.id.ccp)
+
+        etCardDate.isEnabled = false
+
         val type = Typeface.createFromAsset(getAssets(),"font/avenir_black.ttf");
         (ccp as CountryCodePicker).setTypeFace(type)
 
-        txt_card_expire
         //yha kro ok
         btn_skip_profile.setOnClickListener {
 
@@ -99,9 +79,8 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
             startActivity(i)
 
         }
-        //Ye hi h na
 
-        view_relative.setOnClickListener {
+        rlCard.setOnClickListener {
 
 
             val calendar = Calendar.getInstance()
@@ -115,7 +94,8 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
                     val simpleDateFormat =
                         SimpleDateFormat("dd-MM-yyyy")
                     val date = simpleDateFormat.format(newDate.time)
-                    edt_card_date.setText(date)
+                    etCardDate.visibility = View.VISIBLE
+                    etCardDate.setText(date)
                 },
                 calendar[Calendar.YEAR],
                 calendar[Calendar.MONTH],
@@ -123,7 +103,6 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
             )
 
             datePickerDialog.show()
-
         }
 
         img_cam.setOnClickListener {    val dialog = this?.let { it1 -> Dialog(it1) }
@@ -240,10 +219,7 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
             }
             dialog.show()
         }
-
     }
-
-
 
     protected fun setFragment(fragment: Fragment?) {
         val fragmentManager: FragmentManager = supportFragmentManager
@@ -258,23 +234,24 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
             .addToBackStack(null).commit()
     }
 
-
     private fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
-private fun openCamera() {
-    val values = ContentValues()
-    values.put(MediaStore.Images.Media.TITLE, "New Picture")
-    values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-    image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+    private fun openCamera() {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "New Picture")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     //camera intent
-    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
-    startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
-}
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
+        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
+    }
+
     companion object {
         //image pick code
         private val IMAGE_PICK_CODE = 1000;
@@ -306,11 +283,9 @@ private fun openCamera() {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
@@ -322,35 +297,6 @@ private fun openCamera() {
             profile_image.setImageURI(image_uri)
         }
     }
-
-//    override fun onClick(v: View) {
-//        if (v === edt_card_date) {
-//
-//            edt_card_date.setFocusableInTouchMode(false)
-//            edt_card_date.setFocusable(false)
-//            edt_card_date.setTextIsSelectable(true)
-//            val calendar = Calendar.getInstance()
-//
-//            val datePickerDialog = DatePickerDialog(
-//                this,
-//                R.style.DatePickerDialogTheme,
-//                DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-//                    val newDate = Calendar.getInstance()
-//                    newDate[year, monthOfYear] = dayOfMonth
-//                    val simpleDateFormat =
-//                        SimpleDateFormat("dd-MM-yyyy")
-//                    val date = simpleDateFormat.format(newDate.time)
-//                    edt_card_date.setText(date)
-//                },
-//                calendar[Calendar.YEAR],
-//                calendar[Calendar.MONTH],
-//                calendar[Calendar.DAY_OF_MONTH]
-//            )
-//
-//            datePickerDialog.show()
-//        }
-//    }
-
 }
 
 

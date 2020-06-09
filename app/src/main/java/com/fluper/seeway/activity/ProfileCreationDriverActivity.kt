@@ -31,36 +31,22 @@ import com.fluper.seeway.R
 import com.fluper.seeway.adapter.UploadImagesAdapter
 import com.fluper.seeway.fragment.ChosseSecurityFragment
 import com.fluper.seeway.model.ImageUploadModel
-import com.google.android.material.textfield.TextInputLayout
-import com.rilixtech.CountryCodePicker
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class ProfileCreationDriverActivity : AppCompatActivity() {
-    private val IMAGE_PICK_CODE = 1000;
-    private val PERMISSION_CODE1 = 1000;
+    private val IMAGE_PICK_CODE = 1000
+    private val PERMISSION_CODE1 = 1000
     private val IMAGE_CAPTURE_CODE = 1001
     private val IMAGE_CAPTURE_PROFILE = 1002
     var image_uri: Uri? = null
-    private val PERMISSION_CODE = 1001;
-    lateinit var img_upload : ImageView
-    lateinit var vehicle_img_upload : ImageView
-    lateinit var car_doc_img_upload : ImageView
-    lateinit var btn_save : Button
+    private val PERMISSION_CODE = 1001
     var myBitmap: Bitmap? = null
     var picUri: Uri? = null
-    lateinit var driving_license_rec : RecyclerView
-    lateinit var vehicle_img_rec : RecyclerView
-    lateinit var car_doc_rec : RecyclerView
-    var ccp: CountryCodePicker? = null
     val users = ArrayList<ImageUploadModel>()
-    lateinit var txt_card_expire: TextInputLayout
-    lateinit var edt_card_date: EditText
-    lateinit var profile_image: ImageView
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,37 +54,18 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile_creation_driver)
 
         upload_recyclerview()
-
-
-
     }
 
-
     @RequiresApi(Build.VERSION_CODES.M)
-    fun upload_recyclerview(){
-         driving_license_rec = findViewById(R.id.driving_license_rec) as RecyclerView
-        vehicle_img_rec = findViewById(R.id.vehicle_img_rec) as RecyclerView
-        car_doc_rec = findViewById(R.id.car_doc_rec) as RecyclerView
-        img_upload = findViewById(R.id.img_upload) as ImageView
-        vehicle_img_upload = findViewById(R.id.vehicle_img_upload) as ImageView
-        car_doc_img_upload = findViewById(R.id.car_doc_img_upload) as ImageView
-        btn_save = findViewById(R.id.btn_save) as Button
-        txt_card_expire = findViewById(R.id.txt_card_expire)
-        edt_card_date = findViewById(R.id.edt_card_date_driver)
-        profile_image = findViewById(R.id.profile_image)
-        ccp  = findViewById(R.id.ccp)
-        val type = Typeface.createFromAsset(getAssets(),"font/avenir_black.ttf");
-        (ccp as CountryCodePicker).setTypeFace(type)
+    fun upload_recyclerview() {
+        val type = Typeface.createFromAsset(assets, "font/avenir_black.ttf")
 
         driving_license_rec.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        val layoutManager : GridLayoutManager = GridLayoutManager(this, 2)
-        driving_license_rec.setHasFixedSize(true);
+        val layoutManager: GridLayoutManager = GridLayoutManager(this, 2)
+        driving_license_rec.setHasFixedSize(true)
 
-        driving_license_rec.setLayoutManager(layoutManager);
-
-
-
+        driving_license_rec.layoutManager = layoutManager
 
         img_upload.setOnClickListener {
             upload_img()
@@ -135,18 +102,15 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
                     val simpleDateFormat =
                         SimpleDateFormat("dd-MM-yyyy")
                     val date = simpleDateFormat.format(newDate.time)
-                    edt_card_date.setText(date)
+                    etCardExpiryDate.setText(date)
                 },
                 calendar[Calendar.YEAR],
                 calendar[Calendar.MONTH],
                 calendar[Calendar.DAY_OF_MONTH]
             )
-
             datePickerDialog.show()
         })
-
     }
-
 
     private fun pickImageFromGallery() {
         //Intent to pick image
@@ -154,6 +118,7 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_CAPTURE_PROFILE)
     }
+
     private fun openCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "New Picture")
@@ -164,33 +129,39 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
+
     companion object {
         //image pick code
-        private val IMAGE_PICK_CODE = 1000;
+        private val IMAGE_PICK_CODE = 1000
+
         //Permission code
-        private val PERMISSION_CODE = 1001;
+        private val PERMISSION_CODE = 1001
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode){
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
             PERMISSION_CODE -> {
-                if (grantResults.size >0 && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
+                if (grantResults.size > 0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     //permission from popup granted
                     pickImageFromGallery()
-                }
-                else{
+                } else {
                     //permission from popup denied
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
             PERMISSION_CODE1 -> {
-                if (grantResults.size >0 && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
+                if (grantResults.size > 0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     //permission from popup granted
                     openCamera()
-                }
-                else{
+                } else {
                     //permission from popup denied
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -201,18 +172,17 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
 
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_PROFILE){
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_PROFILE) {
             profile_image.setImageURI(data?.data)
         }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_CODE){
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
             profile_image.setImageURI(data?.data)
         }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             val pickedImage = data!!.data
 
             val filePath =
@@ -220,7 +190,8 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
             val cursor: Cursor? =
                 contentResolver.query(pickedImage!!, filePath, null, null, null)
             cursor?.moveToFirst()
-            val imagePath: String? = cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+            val imagePath: String? =
+                cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
 
             val options: BitmapFactory.Options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
@@ -232,7 +203,7 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
             cursor?.close()
 
 
-            var  adapter = UploadImagesAdapter(users, this)
+            var adapter = UploadImagesAdapter(users, this)
             driving_license_rec.adapter = adapter
 
         }
@@ -250,9 +221,6 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
             else -> img
         }
     }
-
-
-
 
     fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap? {
         var width = image.width
@@ -277,15 +245,14 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
         return rotatedImg
     }
 
-
     @RequiresApi(Build.VERSION_CODES.M)
-    fun upload_img(){
-        val dialog = this?.let { it1 -> Dialog(it1) }
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.setCancelable(true)
-        dialog?.setContentView(R.layout.open_cemera)
+    fun upload_img() {
+        val dialog = this.let { it1 -> Dialog(it1) }
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.open_cemera)
 
-        val btn_cemera = dialog?.findViewById<Button>(R.id.btn_cemera) as TextView
+        val btn_cemera = dialog.findViewById<Button>(R.id.btn_cemera) as TextView
 
         val btn_gellery = dialog.findViewById<View>(R.id.btn_gellery) as Button
         btn_gellery.setOnClickListener {
@@ -293,17 +260,17 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_DENIED
             ) {
                 //permission denied
-                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 //show popup to request runtime permission
                 requestPermissions(permissions, PERMISSION_CODE)
-                dialog?.dismiss()
+                dialog.dismiss()
             } else {
                 //permission already granted
-                pickImageFromGallery();
-                dialog?.dismiss()
+                pickImageFromGallery()
+                dialog.dismiss()
             }
 
-            dialog?.dismiss()
+            dialog.dismiss()
         }
 
         btn_cemera.setOnClickListener {
@@ -320,49 +287,49 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
                     )
                     //show popup to request permission
                     requestPermissions(permission, PERMISSION_CODE)
-                    dialog?.dismiss()
+                    dialog.dismiss()
                 } else {
                     //permission already granted
                     openCamera()
-                    dialog?.dismiss()
+                    dialog.dismiss()
                 }
             } else {
                 //system os is < marshmallow
                 openCamera()
-                dialog?.dismiss()
+                dialog.dismiss()
             }
-            dialog?.dismiss()
+            dialog.dismiss()
 
         }
         dialog.show()
     }
 
-    fun show_alert_submit(){
-        val dialog = this?.let { it1 -> Dialog(it1) }
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.setCancelable(false)
-        dialog?.setContentView(R.layout.driver_profile_alert)
-
+    fun show_alert_submit() {
+        val dialog = this.let { it1 -> Dialog(it1) }
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.driver_profile_alert)
 
 
         val txt_msg = dialog.findViewById<View>(R.id.txt_msg) as TextView
         txt_msg.setOnClickListener {
-           setFragment(ChosseSecurityFragment())
-            dialog.dismiss() }
+            setFragment(ChosseSecurityFragment())
+            dialog.dismiss()
+        }
 
 
-        dialog?.dismiss()
+        dialog.dismiss()
         dialog.show()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun profile_image_pick(){
-        val dialog = this?.let { it1 -> Dialog(it1) }
-        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog?.setCancelable(true)
-        dialog?.setContentView(R.layout.open_cemera)
+    fun profile_image_pick() {
+        val dialog = this.let { it1 -> Dialog(it1) }
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.open_cemera)
 
-        val btn_cemera = dialog?.findViewById<Button>(R.id.btn_cemera) as TextView
+        val btn_cemera = dialog.findViewById<Button>(R.id.btn_cemera) as TextView
 
         val btn_gellery = dialog.findViewById<View>(R.id.btn_gellery) as Button
         btn_gellery.setOnClickListener {
@@ -370,17 +337,17 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_DENIED
             ) {
                 //permission denied
-                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                val permissions = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 //show popup to request runtime permission
                 requestPermissions(permissions, PERMISSION_CODE)
-                dialog?.dismiss()
+                dialog.dismiss()
             } else {
                 //permission already granted
-                pickImageFromGallery();
-                dialog?.dismiss()
+                pickImageFromGallery()
+                dialog.dismiss()
             }
 
-            dialog?.dismiss()
+            dialog.dismiss()
         }
 
         btn_cemera.setOnClickListener {
@@ -397,18 +364,18 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
                     )
                     //show popup to request permission
                     requestPermissions(permission, PERMISSION_CODE)
-                    dialog?.dismiss()
+                    dialog.dismiss()
                 } else {
                     //permission already granted
                     openCamera()
-                    dialog?.dismiss()
+                    dialog.dismiss()
                 }
             } else {
                 //system os is < marshmallow
                 openCamera()
-                dialog?.dismiss()
+                dialog.dismiss()
             }
-            dialog?.dismiss()
+            dialog.dismiss()
 
         }
         dialog.show()
@@ -420,11 +387,10 @@ class ProfileCreationDriverActivity : AppCompatActivity() {
         if (fragment != null) {
             val args = Bundle()
             args.putString("profile", "driver")
-            fragment.setArguments(args)
+            fragment.arguments = args
             fragmentTransaction.add(android.R.id.content, fragment)
         }
         fragmentTransaction
             .addToBackStack(null).commit()
     }
-
 }

@@ -670,8 +670,7 @@
                             android:textColorHint="@color/grey"
                             android:hint="Enter Vehicle color"
                             app:hintTextColor="@android:color/darker_gray"
-                            android:layout_marginLeft="5dp"
-                            >
+                            android:layout_marginLeft="5dp">
 
                             <EditText
                                 android:layout_width="match_parent"
@@ -722,8 +721,7 @@
                             android:textColorHint="@color/grey"
                             android:hint="Vehicle Registration Certification Date"
                             app:hintTextColor="@android:color/darker_gray"
-                            android:layout_marginLeft="5dp"
-                            >
+                            android:layout_marginLeft="5dp">
 
                             <EditText
                                 android:layout_width="match_parent"
@@ -1747,7 +1745,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/linear_card_date"
+                        android:id="@+id/llCardDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border_left"
@@ -1761,11 +1759,12 @@
                             android:textColorHint="@color/grey"
                             android:hint="Card Expiry Date"
                             app:hintTextColor="@android:color/darker_gray"
-                            android:layout_marginLeft="5dp"
-                            >
+                            android:layout_marginLeft="5dp">
 
-                            <EditText
-                                android:id="@+id/edt_card_date_driver"
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:focusable="false"
+                                android:clickable="false"
+                                android:id="@+id/etCardExpiryDate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/avenir_black"
