@@ -13,8 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 
 import com.fluper.seeway.R
-import com.fluper.seeway.activity.HomeScreenNavPassengerActivity
-import com.fluper.seeway.activity.LoginActivity
+import com.fluper.seeway.activity.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,17 +50,21 @@ class ChosseSecurityFragment : Fragment() {
         btn_proceed = view.findViewById(R.id.btn_proceed)
 
         var profile : String? = arguments?.getString("profile")
-        show_alert_submit()
 
 
+        if(profile.equals("driver")){
+            show_alert_submit()
+        }else {
+
+        }
 
         txt_skip.setOnClickListener {
 
             if(profile.equals("driver")){
-                val i  = Intent(activity, HomeScreenDriverFragment::class.java)
+                val i  = Intent(activity, HomeScreenNavDriverActivity::class.java)
                 startActivity(i)
             }else {
-                val i  = Intent(activity, HomeScreenNavPassengerActivity::class.java)
+                val i  = Intent(activity, NewPassengerNavActivity::class.java)
                 startActivity(i)
             }
 
@@ -71,10 +74,10 @@ class ChosseSecurityFragment : Fragment() {
         btn_proceed.setOnClickListener {
 
             if(profile.equals("driver")){
-                val i  = Intent(activity, HomeScreenDriverFragment::class.java)
+                val i  = Intent(activity, HomeScreenNavDriverActivity::class.java)
                 startActivity(i)
             }else {
-                val i  = Intent(activity, HomeScreenNavPassengerActivity::class.java)
+                val i  = Intent(activity, NewPassengerNavActivity::class.java)
                 startActivity(i)
             }
 
@@ -93,7 +96,7 @@ class ChosseSecurityFragment : Fragment() {
         val btn_yes = dialog?.findViewById<View>(R.id.btn_yes) as Button
         txt_msg.setText(R.string.alert_driver_profile1)
         btn_no.setOnClickListener {
-            val i  = Intent(activity,ProfileCreationDriverFragment::class.java)
+            val i  = Intent(activity,ProfileCreationDriverActivity::class.java)
             startActivity(i)
 
             dialog?.dismiss() }

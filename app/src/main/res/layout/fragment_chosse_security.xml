@@ -6,7 +6,10 @@
     android:clickable="true"
     android:background="@android:color/white"
     tools:context=".fragment.ChosseSecurityFragment">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_patterns2x">
 
     <TextView
         android:id="@+id/txt_skip"
@@ -22,7 +25,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_patterns2x"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
         <LinearLayout
@@ -55,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
         <LinearLayout
             android:id="@+id/center_layout"
@@ -86,19 +88,24 @@
                 android:src="@drawable/pin_lock2x"/>
 
         </LinearLayout>
-            <Button
-                android:id="@+id/btn_proceed"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/button_background_next"
-                android:text="Proceed"
-                android:layout_below="@+id/center_layout"
-                android:fontFamily="@font/avenir_black"
-                android:textColor="@android:color/white"
-                android:layout_margin="20dp"
-                android:textAllCaps="false"/>
+
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_proceed"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background_next"
+            android:text="Proceed"
+            android:layout_below="@+id/center_layout"
+            android:fontFamily="@font/avenir_black"
+            android:textColor="@android:color/white"
+            android:layout_margin="20dp"
+            android:layout_marginTop="30dp"
+            android:textAllCaps="false"/>
     </LinearLayout>
+
+</RelativeLayout>
 </RelativeLayout>

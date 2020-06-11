@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vehicle Model Name"
+                android:layout_weight="1"
+                android:fontFamily="@font/avenir_black"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:textColor="@color/grey"
+                android:textSize="13sp"
+                android:padding="5dp"
+                />
+            <TextView
+                android:id="@+id/txt_name_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hyundai Verna"
+                android:layout_weight="1"
+                android:fontFamily="@font/avenir_black"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="end"
+                android:padding="5dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vehicle Model Number"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:fontFamily="@font/avenir_black"
+                android:textStyle="bold"
+                android:textColor="@color/grey"
+                android:textSize="13sp"
+                android:padding="5dp"
+                />
+            <TextView
+                android:id="@+id/txt_number_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_weight="1"
+                android:fontFamily="@font/avenir_black"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="end"
+                android:padding="5dp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

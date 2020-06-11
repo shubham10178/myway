@@ -23,7 +23,7 @@
             android:id="@+id/img_cross"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icons_cross"
+            android:src="@drawable/close3x"
             app:layout_constraintBottom_toBottomOf="@+id/img_upload"
             app:layout_constraintEnd_toEndOf="@+id/img_upload"
             app:layout_constraintHorizontal_bias="1.0"

@@ -4,10 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_patterns2x">
 
         <ImageView
             android:id="@+id/slider"
@@ -19,6 +15,5 @@
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

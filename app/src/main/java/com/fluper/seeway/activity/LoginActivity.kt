@@ -2,6 +2,7 @@ package com.fluper.seeway.activity
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputType
@@ -27,19 +28,19 @@ import com.rilixtech.CountryCodePicker
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var forgotPassword_txt : TextView
-    lateinit var btn_continue : Button
-    lateinit var edt_User_Email : EditText
-    lateinit var edt_password : TextInputEditText
-    lateinit var edt_phone_number : AppCompatEditText
-    lateinit var password_textInputLayout : TextInputLayout
+    lateinit var forgotPassword_txt: TextView
+    lateinit var btn_continue: Button
+    lateinit var edt_User_Email: EditText
+    lateinit var edt_password: TextInputEditText
+    lateinit var edt_phone_number: AppCompatEditText
+    lateinit var password_textInputLayout: TextInputLayout
     var ccp: CountryCodePicker? = null
     var edtPhoneNumber: AppCompatEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         forgotPassword_txt = findViewById(R.id.forgotPass_txt)
         btn_continue = findViewById(R.id.btn_continue)
         edt_User_Email = findViewById(R.id.edt_User_Email)
@@ -47,17 +48,17 @@ class LoginActivity : AppCompatActivity() {
         edt_phone_number = findViewById(R.id.edt_phone_number)
         password_textInputLayout = findViewById(R.id.password_textInputLayout)
 
-        ccp  = findViewById(R.id.ccp)
+        ccp = findViewById(R.id.ccp)
         edtPhoneNumber = findViewById(R.id.phone_number_edt)
-        val type = Typeface.createFromAsset(getAssets(),"font/avenir_black.ttf");
+        val type = Typeface.createFromAsset(getAssets(), "font/avenir_black.ttf");
         (ccp as CountryCodePicker).setTypeFace(type)
 
 
         forgotPassword_txt.setOnClickListener {
 
-           setFragment(ForgotPassword())
+            setFragment(ForgotPassword())
 
-       }
+        }
 
         edt_password.setOnFocusChangeListener(OnFocusChangeListener { view, isFocused ->
             if (isFocused) {
@@ -91,7 +92,7 @@ class LoginActivity : AppCompatActivity() {
 
             btn_cont.setOnClickListener {
 
-              setFragment(OtpVerificationFragment())
+                setFragment(OtpVerificationFragment())
                 dialog?.dismiss()
             }
 

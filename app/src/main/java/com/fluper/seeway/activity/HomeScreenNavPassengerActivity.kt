@@ -3,8 +3,10 @@ package com.fluper.seeway.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -30,11 +32,12 @@ import com.fluper.seeway.fragment.NotificationPassengerFragment
 import com.google.android.material.navigation.NavigationView
 
 
-class HomeScreenNavPassengerActivity : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedListener {
+class HomeScreenNavPassengerActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener {
 
 
-    lateinit var navView : NavigationView
-    lateinit var drawerLayout : DrawerLayout
+    lateinit var navView: NavigationView
+    lateinit var drawerLayout: DrawerLayout
     private val STORAGE_PERMISSION_CODE = 23
     val MULTIPLE_PERMISSIONS = 10 // code you want.
 
@@ -57,35 +60,15 @@ class HomeScreenNavPassengerActivity : AppCompatActivity() ,NavigationView.OnNav
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_screen_nav_passenger)
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.menu)
-        window.setNavigationBarColor(R.color.gray_col)
-
+  //      toolbar.setNavigationIcon(R.drawable.menu)
         getSupportActionBar()?.setDisplayShowTitleEnabled(false)
 
-        val window: Window = this.getWindow()
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
-// finally change the color
-
-// finally change the color
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.black))
-    //    window.navigationBarColor(ContextCompat.getColor(this,R.color.grey))
-
-        window.setNavigationBarColor(ContextCompat.getColor(this,R.color.white))
-         drawerLayout = findViewById(R.id.drawer_layout)
-         navView = findViewById(R.id.nav_view)
-
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navView = findViewById(R.id.nav_view)
 
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, 0, 0
@@ -94,17 +77,14 @@ class HomeScreenNavPassengerActivity : AppCompatActivity() ,NavigationView.OnNav
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
 
-
-
-        if(isReadStorageAllowed()){
+        if (isReadStorageAllowed()) {
 
             return;
-        }else{
+        } else {
             requestStoragePermission();
         }
 
         navView.setNavigationItemSelectedListener(this)
-
 
 
     }
@@ -112,7 +92,7 @@ class HomeScreenNavPassengerActivity : AppCompatActivity() ,NavigationView.OnNav
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_logout -> {
-                val i = Intent(this,LoginActivity::class.java)
+                val i = Intent(this, LoginActivity::class.java)
                 startActivity(i)
             }
 
@@ -137,9 +117,9 @@ class HomeScreenNavPassengerActivity : AppCompatActivity() ,NavigationView.OnNav
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-         when (item.itemId) {
+        when (item.itemId) {
             R.id.action_settings -> {
-               setFragment(NotificationPassengerFragment())
+                setFragment(NotificationPassengerFragment())
                 super.onOptionsItemSelected(item)
 
             }
@@ -183,13 +163,32 @@ class HomeScreenNavPassengerActivity : AppCompatActivity() ,NavigationView.OnNav
 
     //Requesting permission
     private fun requestStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.SEND_SMS)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_NOTIFICATION_POLICY)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_CONTACTS)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.RECORD_AUDIO)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.SEND_SMS
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_NOTIFICATION_POLICY
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.READ_CONTACTS
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            )
+        ) {
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
@@ -227,8 +226,6 @@ class HomeScreenNavPassengerActivity : AppCompatActivity() ,NavigationView.OnNav
             }
         }
     }
-
-
 
 
 }

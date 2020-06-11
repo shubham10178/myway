@@ -752,7 +752,7 @@
                 <RelativeLayout
                     android:id="@+id/rlCard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@drawable/edit_text_border_left"
                     android:orientation="vertical">
 
@@ -763,6 +763,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:text="Card Expiry Date"
+                        android:fontFamily="@font/avenir_black"
                         android:paddingBottom="0dp"
                         android:textStyle="bold"
                         android:textColor="@color/grey"

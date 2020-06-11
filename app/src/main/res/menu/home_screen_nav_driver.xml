@@ -2,16 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_driver_settings"
-        android:orderInCategory="100"
-        android:icon="@drawable/notification"
-        app:showAsAction="always"
-        android:title="" />
-
-    <item
         android:id="@+id/action_driver_chosse_vehicle"
         android:orderInCategory="100"
         android:icon="@drawable/vehicle_type_all"
         app:showAsAction="always"
         android:title="" />
+
+    <item
+        android:id="@+id/action_driver_notification"
+        android:orderInCategory="100"
+        android:icon="@drawable/notification"
+        app:showAsAction="always"
+        android:title="" />
+
+
 </menu>

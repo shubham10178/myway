@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.net.Uri
@@ -20,9 +21,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.fluper.seeway.R
+import com.fluper.seeway.fragment.AddVehicleFragment
 import com.fluper.seeway.fragment.ChosseSecurityFragment
 import com.rilixtech.CountryCodePicker
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
 import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
+import kotlinx.android.synthetic.main.activity_profile_creation_passenger.btn_save
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,7 +48,7 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation_passenger)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         etCardDate.isEnabled = false
 
         val type = Typeface.createFromAsset(getAssets(),"font/avenir_black.ttf");
@@ -75,7 +79,7 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
         }
 
         btn_save.setOnClickListener {
-            val i = Intent(this, HomeScreenNavPassengerActivity::class.java)
+            val i = Intent(this, NewPassengerNavActivity::class.java)
             startActivity(i)
 
         }
@@ -219,6 +223,8 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
             }
             dialog.show()
         }
+
+
     }
 
     protected fun setFragment(fragment: Fragment?) {

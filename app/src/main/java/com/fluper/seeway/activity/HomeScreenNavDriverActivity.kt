@@ -2,6 +2,7 @@ package com.fluper.seeway.activity
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -28,10 +29,11 @@ import com.fluper.seeway.fragment.ChooseVehicleTypeFragment
 import com.fluper.seeway.fragment.NotificationPassengerFragment
 import com.google.android.material.navigation.NavigationView
 
-class HomeScreenNavDriverActivity : AppCompatActivity() , NavigationView.OnNavigationItemSelectedListener{
+class HomeScreenNavDriverActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var navView : NavigationView
-    lateinit var drawerLayout : DrawerLayout
+    lateinit var navView: NavigationView
+    lateinit var drawerLayout: DrawerLayout
     private val STORAGE_PERMISSION_CODE = 23
     val MULTIPLE_PERMISSIONS = 10 // code you want.
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -50,17 +52,15 @@ class HomeScreenNavDriverActivity : AppCompatActivity() , NavigationView.OnNavig
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_screen_driver)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        val toolbar_seekbar: SeekBar = findViewById(R.id.toolbar_seekbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationIcon(R.drawable.menu)
         getSupportActionBar()?.setDisplayShowTitleEnabled(false)
-
-
-        window.setNavigationBarColor(Color.TRANSPARENT)
+//        window.setNavigationBarColor(Color.TRANSPARENT)
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
-
 
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, 0, 0
@@ -71,10 +71,10 @@ class HomeScreenNavDriverActivity : AppCompatActivity() , NavigationView.OnNavig
 
 
 
-        if(isReadStorageAllowed()){
+        if (isReadStorageAllowed()) {
 
             return;
-        }else{
+        } else {
             requestStoragePermission();
         }
 
@@ -85,7 +85,7 @@ class HomeScreenNavDriverActivity : AppCompatActivity() , NavigationView.OnNavig
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_logout -> {
-                val i = Intent(this,LoginActivity::class.java)
+                val i = Intent(this, LoginActivity::class.java)
                 startActivity(i)
             }
 
@@ -110,15 +110,16 @@ class HomeScreenNavDriverActivity : AppCompatActivity() , NavigationView.OnNavig
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.action_driver_settings -> {
+            R.id.action_driver_notification -> {
                 setFragment(NotificationPassengerFragment())
                 super.onOptionsItemSelected(item)
 
-            } R.id.action_driver_chosse_vehicle -> {
-            setFragment(ChooseVehicleTypeFragment())
-            super.onOptionsItemSelected(item)
+            }
+            R.id.action_driver_chosse_vehicle -> {
+                setFragment(ChooseVehicleTypeFragment())
+                super.onOptionsItemSelected(item)
 
-        }
+            }
             else -> super.onOptionsItemSelected(item)
         }
 
@@ -159,13 +160,32 @@ class HomeScreenNavDriverActivity : AppCompatActivity() , NavigationView.OnNavig
 
     //Requesting permission
     private fun requestStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.SEND_SMS)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_NOTIFICATION_POLICY)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_CONTACTS)&&
-            ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.RECORD_AUDIO)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.SEND_SMS
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_NOTIFICATION_POLICY
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.READ_CONTACTS
+            ) &&
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            )
+        ) {
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
