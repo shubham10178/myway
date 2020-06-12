@@ -20,7 +20,7 @@
 
         <item
             android:id="@+id/nav_account"
-            android:icon="@drawable/my_account"
+            android:icon="@drawable/my_earnings3x"
             android:title="@string/menu_earning" />
         <item
             android:id="@+id/nav_acct"

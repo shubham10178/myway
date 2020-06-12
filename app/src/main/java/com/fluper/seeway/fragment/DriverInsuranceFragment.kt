@@ -1,7 +1,6 @@
 package com.fluper.seeway.fragment
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
@@ -18,26 +17,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
-import com.fluper.seeway.activity.NewPassengerNavActivity
-import com.fluper.seeway.activity.ProfileCreationDriverActivity
-import com.fluper.seeway.adapter.DriverVehicleInfoAdapter
-import com.fluper.seeway.adapter.NotificationAdapter
+import com.fluper.seeway.activity.NewDriverNavActivity
 import com.fluper.seeway.adapter.UploadImagesAdapter
 import com.fluper.seeway.model.ImageUploadModel
-import com.fluper.seeway.model.NotificationModel
-import com.fluper.seeway.model.VehicleInfoModel
-import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
-import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
-import kotlinx.android.synthetic.main.fragment_add_vehicle.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,30 +36,24 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AddVehicleFragment.newInstance] factory method to
+ * Use the [DriverInsuranceFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddVehicleFragment : Fragment(), View.OnClickListener {
+class DriverInsuranceFragment : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var img_back_addv : ImageView
-    lateinit var vehicle_img_upload : ImageView
-    lateinit var car_doc_img_upload : ImageView
-    lateinit var dummy_vehicle_img : ImageView
-    lateinit var dummy_car_img : ImageView
-    lateinit var vehicle_img_rec : RecyclerView
-    lateinit var car_doc_rec : RecyclerView
-    lateinit var btn_save_addv : Button
-    lateinit var ll_vehicle_registration : LinearLayout
-    lateinit var etCardDate_driver : AppCompatEditText
-    private var IMAGE_PICK_CODE = 100
-    private var IMAGE_CAPTURE_CODE = 200
-    private val PERMISSION_CODE = 300
-    private val PERMISSION_CODE1 = 400
+    lateinit var img_upload_passport : ImageView
+    lateinit var dummy_img_pass : ImageView
+    lateinit var btn_save_insur : Button
+    lateinit var passport_rec : RecyclerView
+    private var IMAGE_PICK_CODE = 300
+    private var IMAGE_CAPTURE_CODE = 400
+    private val PERMISSION_CODE = 1
+    private val PERMISSION_CODE1 = 2
     var image_uri: Uri? = null
-    val uvi_arrayList = ArrayList<ImageUploadModel>()
-    val ucd_arrayList = ArrayList<ImageUploadModel>()
+    val idOrpassport_arrayList = ArrayList<ImageUploadModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -83,88 +67,23 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val  view : View =inflater.inflate(R.layout.fragment_add_vehicle, container, false)
-        img_back_addv =view.findViewById(R.id.img_back_addv)
-        btn_save_addv =view.findViewById(R.id.btn_save_addv)
-        ll_vehicle_registration =view.findViewById(R.id.ll_vehicle_registration)
-        etCardDate_driver =view.findViewById(R.id.etCardDate_driver)
-
-        img_back_addv.setOnClickListener {
-
-            requireActivity().onBackPressed()
-        }
-
-
-        btn_save_addv.setOnClickListener {
-
-           val vn_name : String = edt_vn_driver.text.toString().trim()
-           val vmn_model_number : String = edt_vmn_driver.text.toString().trim()
-            if(!vn_name.isBlank() && !vmn_model_number.isBlank())
-            initView(vn_name,vmn_model_number)
-
-            val i  = Intent(activity, ProfileCreationDriverActivity::class.java)
-            i.putExtra("vn_name", vn_name)
-            i.putExtra("vmn_model_number", vmn_model_number)
-            startActivity(i)
-
-        }
-
-
-        ll_vehicle_registration.setOnClickListener {
-            val calendar = Calendar.getInstance()
-
-            val datePickerDialog = activity?.let { it1 ->
-                DatePickerDialog(
-                    it1,
-                    R.style.DatePickerDialogTheme,
-                    DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                        val newDate = Calendar.getInstance()
-                        newDate[year, monthOfYear] = dayOfMonth
-                        val simpleDateFormat =
-                            SimpleDateFormat("dd-MM-yyyy")
-                        val date = simpleDateFormat.format(newDate.time)
-                        etCardDate_driver.visibility = View.VISIBLE
-                        etCardDate_driver.setText(date)
-                    },
-                    calendar[Calendar.YEAR],
-                    calendar[Calendar.MONTH],
-                    calendar[Calendar.DAY_OF_MONTH]
-                )
-            }
-
-            datePickerDialog?.show()
-
-        }
+        var  view : View = inflater.inflate(R.layout.fragment_driver_insurance, container, false)
 
         img_upload_rec(view)
 
-        return  view
+        return view
     }
-
-
-    private fun initView(vn_name : String,  vmn_model_number : String){
-
-
-        val vehicleInfoList = ArrayList<VehicleInfoModel>()
-
-
-        vehicleInfoList.add(VehicleInfoModel(vn_name, vmn_model_number))
-
-        var  adapter = DriverVehicleInfoAdapter(vehicleInfoList, activity)
-
-    }
-
-
     fun img_upload_rec(view: View){
 
-        vehicle_img_rec = view.findViewById(R.id.vehicle_img_rec)
-        car_doc_rec = view.findViewById(R.id.car_doc_rec)
-        vehicle_img_upload = view.findViewById(R.id.vehicle_img_upload)
-        car_doc_img_upload = view.findViewById(R.id.car_doc_img_upload)
-        dummy_vehicle_img = view.findViewById(R.id.dummy_vehicle_img)
-        dummy_car_img = view.findViewById(R.id.dummy_car_img)
+        passport_rec = view.findViewById(R.id.passport_rec)
 
-        vehicle_img_rec.setLayoutManager(
+        img_upload_passport = view.findViewById(R.id.img_upload_passport)
+
+        dummy_img_pass = view.findViewById(R.id.dummy_img_pass)
+        btn_save_insur = view.findViewById(R.id.btn_save_insur)
+
+
+        passport_rec.setLayoutManager(
             LinearLayoutManager(
                 activity,
                 LinearLayoutManager.HORIZONTAL,
@@ -172,43 +91,32 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
             )
         )
 
-        car_doc_rec.setLayoutManager(
-            LinearLayoutManager(
-                activity,
-                LinearLayoutManager.HORIZONTAL,
-                true
-            )
-        )
 
-        vehicle_img_upload.setOnClickListener(this)
+        img_upload_passport.setOnClickListener(this)
 
-        car_doc_img_upload.setOnClickListener(this)
+        btn_save_insur.setOnClickListener {
+            val i  = Intent(activity,NewDriverNavActivity::class.java)
+            startActivity(i) }
+
+
 
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.vehicle_img_upload -> {
+            R.id.img_upload_passport -> {
                 upload_img()
                 IMAGE_PICK_CODE = 100
                 IMAGE_CAPTURE_CODE = 200
-                dummy_vehicle_img.visibility = View.GONE
-                vehicle_img_rec.visibility = View.VISIBLE
+                dummy_img_pass.visibility = View.GONE
+                passport_rec.visibility = View.VISIBLE
             }
 
-            R.id.car_doc_img_upload -> {
-                upload_img()
-                IMAGE_PICK_CODE = 101
-                IMAGE_CAPTURE_CODE = 201
-                dummy_car_img.visibility = View.GONE
-                car_doc_rec.visibility = View.VISIBLE
-            }
 
         }
+
     }
-
-
     private fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
@@ -263,7 +171,7 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    //   super.onActivityResult(requestCode, resultCode, data)
+        //   super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             val pickedImage = data!!.data
@@ -279,14 +187,12 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
             val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
 
-
-
-            uvi_arrayList.add(ImageUploadModel(bitmap))
+            idOrpassport_arrayList.add(ImageUploadModel(bitmap))
 
             cursor?.close()
 
-            val uploadImageAdapter  = UploadImagesAdapter(uvi_arrayList, activity)
-            vehicle_img_rec.adapter = uploadImageAdapter
+            val uploadImageAdapter  = UploadImagesAdapter(idOrpassport_arrayList, activity)
+            passport_rec.adapter = uploadImageAdapter
 
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 200){
@@ -294,47 +200,15 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
 
             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, image_uri)
 
-            uvi_arrayList.add(ImageUploadModel(bitmap))
+            idOrpassport_arrayList.add(ImageUploadModel(bitmap))
 
 
 
-            val uploadImageAdapter = UploadImagesAdapter(uvi_arrayList, activity)
-            vehicle_img_rec.adapter = uploadImageAdapter
+            val uploadImageAdapter = UploadImagesAdapter(idOrpassport_arrayList, activity)
+            passport_rec.adapter = uploadImageAdapter
         }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == 101) {
-            val pickedImage = data!!.data
 
-            val filePath =
-                arrayOf(MediaStore.Images.Media.DATA)
-            val cursor: Cursor? =
-                activity?.contentResolver?.query(pickedImage!!, filePath, null, null, null)
-            cursor?.moveToFirst()
-            val imagePath: String? =
-                cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-            val options: BitmapFactory.Options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-            ucd_arrayList.clear()
-            ucd_arrayList.add(ImageUploadModel(bitmap))
-
-            cursor?.close()
-
-
-            val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, activity)
-            car_doc_rec.adapter = uploadImageAdapter
-
-        }
-        if(resultCode == Activity.RESULT_OK && requestCode == 201){
-            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, image_uri)
-            uvi_arrayList.clear()
-            ucd_arrayList.add(ImageUploadModel(bitmap))
-
-
-            val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, activity)
-            car_doc_rec.adapter = uploadImageAdapter
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -395,5 +269,4 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
         }
         dialog.show()
     }
-
 }

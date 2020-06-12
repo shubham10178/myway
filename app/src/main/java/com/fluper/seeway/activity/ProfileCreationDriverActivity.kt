@@ -19,11 +19,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -34,6 +33,7 @@ import com.fluper.seeway.adapter.DriverVehicleInfoAdapter
 import com.fluper.seeway.adapter.UploadImagesAdapter
 import com.fluper.seeway.fragment.AddVehicleFragment
 import com.fluper.seeway.fragment.ChosseSecurityFragment
+import com.fluper.seeway.fragment.DriverInsuranceFragment
 import com.fluper.seeway.model.ImageUploadModel
 import com.fluper.seeway.model.VehicleInfoModel
 import com.rilixtech.CountryCodePicker
@@ -43,7 +43,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener {
+class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
+    RadioGroup.OnCheckedChangeListener {
     private var vn_name: String? = null
     private var vmn_model_number: String? = null
 
@@ -57,6 +58,7 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
     var picUri: Uri? = null
     val users = ArrayList<ImageUploadModel>()
     val udli_arrayList = ArrayList<ImageUploadModel>()
+    val vehicleList = ArrayList<VehicleInfoModel>()
 
     val up_arrayList = ArrayList<ImageUploadModel>()
 
@@ -65,6 +67,7 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation_driver)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
         if(!intent.getStringExtra("vn_name").isNullOrEmpty() && !intent.getStringExtra("vmn_model_number").isNullOrEmpty()){
              vn_name = intent.getStringExtra("vn_name")
              vmn_model_number = intent.getStringExtra("vmn_model_number")
@@ -72,6 +75,16 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
         }
 
 
+
+        rg_type_per.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+                when (checkedId) {
+                    R.id.radio_want_tobe_emp -> txt_beEmployee.visibility = View.VISIBLE
+                    R.id.radio_nopermission ->  txt_beEmployee.visibility = View.GONE
+                    R.id.radio_havepermission ->  txt_beEmployee.visibility = View.GONE
+                }
+            }
+        })
 
         upload_recyclerview()
     }
@@ -107,7 +120,15 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
 
         btn_save.setOnClickListener {
 
-            setFragment(ChosseSecurityFragment())
+            if(vehicleList.isEmpty()){
+                alert_vehicle_not_selected()
+            }else {
+                if (txt_beEmployee.isVisible) {
+                    setFragment(DriverInsuranceFragment())
+                } else {
+                    alert_submit()
+                }
+            }
 
         }
 
@@ -135,6 +156,7 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
                     val simpleDateFormat =
                         SimpleDateFormat("dd-MM-yyyy")
                     val date = simpleDateFormat.format(newDate.time)
+                    etCardDate_driver.visibility = View.VISIBLE
                     etCardDate_driver.setText(date)
 
                 },
@@ -147,8 +169,8 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
 
 
         ll_add_vechicle.setOnClickListener {
-            setFragment(AddVehicleFragment())
 
+            setFragment(AddVehicleFragment())
         }
 
 
@@ -215,19 +237,17 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
     }
 
 
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         for (fragment in supportFragmentManager.fragments) {
             fragment.onActivityResult(requestCode, resultCode, data)
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_PROFILE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             profile_driver_img.setImageURI(data?.data)
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
-            profile_driver_img.setImageURI(data?.data)
+            profile_driver_img.setImageURI(image_uri)
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1001) {
@@ -517,13 +537,80 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener 
         vehicle_info_rec.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
 
-        val users = ArrayList<VehicleInfoModel>()
-
-        users.add(VehicleInfoModel("fdkhkjhf", "768976"))
-        users.add(VehicleInfoModel(vn_name!!, vmn_model_number!!))
 
 
-        var  adapter = DriverVehicleInfoAdapter(users, this)
+//        users.add(VehicleInfoModel("fdkhkjhf", "768976"))
+        vehicleList.add(VehicleInfoModel(vn_name!!, vmn_model_number!!))
+
+
+        var  adapter = DriverVehicleInfoAdapter(vehicleList, this)
         vehicle_info_rec.adapter = adapter
     }
+
+    fun alert_vehicle_not_selected(){
+        val dialog = this?.let { it1 -> Dialog(it1) }
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCancelable(false)
+        dialog?.setContentView(R.layout.driver_profile_alert)
+        val txt_msg = dialog?.findViewById<View>(R.id.txt_msg_alert) as TextView
+        val btn_ok = dialog?.findViewById<View>(R.id.btn_ok) as Button
+        txt_msg.setText(R.string.vehicle_not_selected)
+        btn_ok.setOnClickListener { dialog?.dismiss() }
+        dialog?.dismiss()
+        dialog?.show()
+    }
+
+    fun alert_submit(){
+        val dialog = this?.let { it1 -> Dialog(it1) }
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCancelable(false)
+        dialog?.setContentView(R.layout.driver_profile_approval_alert1)
+        val txt_msg = dialog?.findViewById<View>(R.id.txt_msg) as TextView
+        val btn_no = dialog?.findViewById<View>(R.id.btn_no) as Button
+        val btn_yes = dialog?.findViewById<View>(R.id.btn_yes) as Button
+        txt_msg.setText(R.string.alert_driver_profile1)
+        btn_no.setOnClickListener {
+
+            dialog?.dismiss() }
+
+        btn_yes.setOnClickListener {
+
+            show_alert_Yes()
+            dialog?.dismiss() }
+        dialog?.dismiss()
+        dialog?.show()
+    }
+    fun show_alert_Yes(){
+        val dialog = this?.let { it1 -> Dialog(it1) }
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCancelable(false)
+        dialog?.setContentView(R.layout.driver_profile_approval_alert1)
+
+        val txt_msg = dialog?.findViewById<View>(R.id.txt_msg) as TextView
+        val btn_no = dialog?.findViewById<View>(R.id.btn_no) as Button
+        val btn_yes = dialog?.findViewById<View>(R.id.btn_yes) as Button
+        txt_msg.setText(R.string.alert_driver_profile2)
+
+        btn_no.setOnClickListener {
+
+            dialog?.dismiss() }
+
+        btn_yes.setOnClickListener {
+            val i  = Intent(this,NewDriverNavActivity::class.java)
+            startActivity(i)
+            dialog?.dismiss() }
+        dialog?.dismiss()
+        dialog?.show()
+    }
+
+
+    override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+        if (group is RadioButton) {
+            // Is the button now checked?
+            val checked = group.isChecked
+
+
+        }
+    }
+
 }

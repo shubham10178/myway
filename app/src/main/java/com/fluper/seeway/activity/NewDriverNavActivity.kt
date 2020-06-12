@@ -4,12 +4,16 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,10 +26,14 @@ import com.fluper.seeway.fragment.ChooseVehicleTypeFragment
 import com.fluper.seeway.fragment.NotificationPassengerFragment
 import com.google.android.material.navigation.NavigationView
 
+
 class NewDriverNavActivity : AppCompatActivity() {
     private var nv: NavigationView? = null
     private var dl_driver: DrawerLayout? = null
+      lateinit var img_seekbar: ImageView
+    lateinit var img_seekbar_sec: ImageView
     private var t: ActionBarDrawerToggle? = null
+    lateinit var txt_active_status :TextView
     val MULTIPLE_PERMISSIONS = 10 // code you want.
     private val STORAGE_PERMISSION_CODE = 23
     var permissions = arrayOf(
@@ -47,6 +55,29 @@ class NewDriverNavActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         nv = findViewById<View>(R.id.nv_driver) as NavigationView
         dl_driver = findViewById<View>(R.id.dl_driver) as DrawerLayout
+        txt_active_status = findViewById<View>(R.id.txt_active_status) as TextView
+
+
+
+         img_seekbar = toolbar.findViewById<View>(R.id.img_seekbar) as ImageView
+        img_seekbar.setOnClickListener {
+
+            if (img_seekbar.getDrawable().getConstantState() == getResources().getDrawable( R.drawable.toggle_off_all).getConstantState())
+            {
+                img_seekbar.setImageResource(R.drawable.toggle_on3x)
+                txt_active_status.setTextColor(Color.GREEN)
+                txt_active_status.setText("You are Online")
+            }
+            else
+            {
+                img_seekbar.setImageResource(R.drawable.toggle_off_all)
+                txt_active_status.setTextColor(Color.RED)
+                txt_active_status.setText("You are Offline")
+            }
+
+
+        }
+
 
         t = ActionBarDrawerToggle(this,dl_driver,toolbar,0,0)
 
@@ -58,16 +89,14 @@ class NewDriverNavActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
 
-
-
-
         nv!!.setNavigationItemSelectedListener(object :
             NavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 val id: Int = item.getItemId()
                 when (id) {
                     R.id.nav_logout -> {
-
+                        val i = Intent(this@NewDriverNavActivity,LoginActivity::class.java)
+                        startActivity(i)
                     }
 
                     else -> return true
@@ -83,6 +112,8 @@ class NewDriverNavActivity : AppCompatActivity() {
         } else {
             requestStoragePermission();
         }
+
+
 
     }
 

@@ -30,7 +30,7 @@
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="stateHidden|adjustResize"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.NewDriverNavActivity"></activity>
+        <activity android:name=".activity.NewDriverNavActivity" />
         <activity android:name=".activity.SliderActivity" />
         <activity android:name=".activity.NewPassengerNavActivity" />
         <activity

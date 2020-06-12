@@ -120,7 +120,7 @@ class ChosseSecurityFragment : Fragment() {
         txt_msg.setText(R.string.alert_driver_profile2)
 
         btn_no.setOnClickListener {
-            val i  = Intent(activity,ProfileCreationDriverFragment::class.java)
+            val i  = Intent(activity,ProfileCreationDriverActivity::class.java)
             startActivity(i)
             dialog?.dismiss() }
 

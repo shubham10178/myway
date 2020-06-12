@@ -293,33 +293,86 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_border_left"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <RelativeLayout
+                            android:id="@+id/rlCard"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:hintTextAppearance="@style/TextInputLayoutHintText"
-                            android:textColorHint="@color/grey"
-                            android:hint="Vehicle Registration Certification Date"
-                            app:hintTextColor="@android:color/darker_gray"
-                            android:layout_marginLeft="5dp">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                            <EditText
-                                android:id="@+id/et_vehicle_reg_cer"
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvCard"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:text="Vehicle Registration Certification Date"
+                                android:fontFamily="@font/avenir_black"
+                                android:paddingBottom="0dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/grey"
+                                android:textSize="12sp" />
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/etCardDate_driver"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenir_black"
-                                android:textColor="@color/black"
+                                android:layout_below="@+id/tvCard"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginStart="4dp"
+                                android:paddingTop="0dp"
                                 android:background="@null"
-                                android:translationY="5dp"
-                                android:paddingBottom="5dp"
                                 android:editable="false"
+                                android:focusableInTouchMode="false"
+                                android:fontFamily="@font/avenir_black"
+                                android:paddingBottom="5dp"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
                                 android:textSize="12sp"
-                                android:drawablePadding="10dp"
-                                android:drawableRight="@drawable/calender_right_all"
-                                android:singleLine="true"/>
+                                android:translationY="5dp"
+                                android:visibility="gone" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                            <!--<View
+                                android:id="@+id/view_relative"
+                                android:layout_width="match_parent"
+                                android:layout_centerVertical="true"
+                                android:layout_height="44dp" />-->
+
+                            <!--<com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:hintTextAppearance="@style/TextInputLayoutHintText"
+                                android:textColorHint="@color/grey"
+                                android:hint="Card Expiry Date"
+                                app:hintTextColor="@android:color/darker_gray"
+                                android:layout_marginLeft="5dp">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/etCardDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/avenir_black"
+                                    android:textColor="@color/black"
+                                    android:background="@null"
+                                    android:translationY="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:focusableInTouchMode="false"
+                                    android:editable="false"
+                                    android:textSize="12sp"
+                                    android:singleLine="true"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>&ndash;&gt;-->
+
+
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/calender_right_all"/>
 
                     </LinearLayout>
 

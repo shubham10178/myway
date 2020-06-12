@@ -6,35 +6,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="10dp"
         >
 
-        <TextView
-            android:id="@+id/txt_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Approval From Admin"
-            android:fontFamily="@font/avenir_black"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"/>
-
 
         <TextView
-            android:id="@+id/txt_msg"
+            android:id="@+id/txt_msg_alert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/approval_text"
+            android:text=""
             android:fontFamily="@font/avenir_light"
             android:layout_below="@+id/txt_header"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:gravity="center"
             android:layout_marginTop="20dp"/>
+<Button
+    android:id="@+id/btn_ok"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Ok"
+    android:layout_marginTop="20dp"
+    android:fontFamily="@font/avenir_black"
+    android:textColor="@color/black"
+    android:background="@drawable/disagree_bg"/>
 
-
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>
