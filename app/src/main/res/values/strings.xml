@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Seeway</string>
     <string name="txt_header">"Lorem Ipsum is simply dummy text "</string>
-    <string name="dummy_text">"Lorem Ipsum is simply dummy text of the printing and typesetting industry's text ever since the 1500s."</string>
+    <string name="dummy_text">"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."</string>
 
     <string-array name="lan_array">
         <item>English</item>
@@ -10,7 +10,7 @@
 
 
     <string-array name="select_city">
-        <item>Dubai</item>
+        <item></item>
         <item>Abu Dhabi</item>
         <item>Sharjah</item>
         <item>Al Ain</item>
@@ -52,7 +52,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="vehicle_not_selected">Please add atleast one vehicle</string>
     <string name="action_settings">Settings</string>
-    <string name="alert_driver_profile1">you will receive a legal contract of this company from the admin on your registerd e-mail id.</string>
+    <string name="alert_driver_profile1">You will receive a legal contract of this company from the admin on your registerd e-mail id.</string>
     <string name="alert_driver_profile2">Have you received an e-mail from the admin regarding the company permission. If yes then select otherwise select no.Once you confirm admin will also come to know about the same</string>
 
     <string name="menu_home">Home</string>

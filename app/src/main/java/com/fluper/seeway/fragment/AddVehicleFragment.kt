@@ -3,8 +3,10 @@ package com.fluper.seeway.fragment
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ClipData
 import android.content.ContentValues
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -12,8 +14,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,19 +23,16 @@ import android.view.Window
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
-import com.fluper.seeway.activity.NewPassengerNavActivity
 import com.fluper.seeway.activity.ProfileCreationDriverActivity
 import com.fluper.seeway.adapter.DriverVehicleInfoAdapter
-import com.fluper.seeway.adapter.NotificationAdapter
 import com.fluper.seeway.adapter.UploadImagesAdapter
 import com.fluper.seeway.model.ImageUploadModel
-import com.fluper.seeway.model.NotificationModel
 import com.fluper.seeway.model.VehicleInfoModel
 import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
-import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
 import kotlinx.android.synthetic.main.fragment_add_vehicle.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,6 +60,7 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
     lateinit var vehicle_img_rec : RecyclerView
     lateinit var car_doc_rec : RecyclerView
     lateinit var btn_save_addv : Button
+    lateinit var rg_relation_vehicle : RadioGroup
     lateinit var ll_vehicle_registration : LinearLayout
     lateinit var etCardDate_driver : AppCompatEditText
     private var IMAGE_PICK_CODE = 100
@@ -136,6 +136,9 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
 
         }
 
+
+
+
         img_upload_rec(view)
 
         return  view
@@ -147,8 +150,7 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
 
         val vehicleInfoList = ArrayList<VehicleInfoModel>()
 
-
-        vehicleInfoList.add(VehicleInfoModel(vn_name, vmn_model_number))
+        vehicleInfoList.add(VehicleInfoModel(vn_name,vmn_model_number))
 
         var  adapter = DriverVehicleInfoAdapter(vehicleInfoList, activity)
 
@@ -163,6 +165,7 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
         car_doc_img_upload = view.findViewById(R.id.car_doc_img_upload)
         dummy_vehicle_img = view.findViewById(R.id.dummy_vehicle_img)
         dummy_car_img = view.findViewById(R.id.dummy_car_img)
+        rg_relation_vehicle = view.findViewById(R.id.rg_relation_vehicle)
 
         vehicle_img_rec.setLayoutManager(
             LinearLayoutManager(
@@ -179,6 +182,18 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
                 true
             )
         )
+
+
+        rg_relation_vehicle.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+                when (checkedId) {
+                    R.id.radioOwner -> edt_describ.visibility = View.GONE
+                    R.id.radioTenant ->  edt_describ.visibility = View.GONE
+                    R.id.radioLease ->  edt_describ.visibility = View.GONE
+                    R.id.radioOther ->  edt_describ.visibility = View.VISIBLE
+                }
+            }
+        })
 
         vehicle_img_upload.setOnClickListener(this)
 
@@ -210,11 +225,11 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
 
 
     private fun pickImageFromGallery() {
-        //Intent to pick image
-        val intent = Intent(Intent.ACTION_PICK)
+        val intent = Intent()
         intent.type = "image/*"
-
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE)
     }
 
     private fun openCamera() {
@@ -266,27 +281,57 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
     //   super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
-            val pickedImage = data!!.data
+            val clipData: ClipData? = data!!.clipData
+            if (clipData != null) {
+                for (i in 0 until clipData.getItemCount()) {
+                    val imageUri: Uri = clipData.getItemAt(i).getUri()
+                    //val pickedImage = data!!.data
 
-            val filePath = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor: Cursor? =
-                activity?.contentResolver?.query(pickedImage!!, filePath, null, null, null)
-            cursor?.moveToFirst()
-            val imagePath: String? =
-                cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor: Cursor? =
+                        activity?.contentResolver?.query(imageUri!!, filePath, null, null, null)
+                    cursor?.moveToFirst()
+                    val imagePath: String? =
+                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
 
-            val options: BitmapFactory.Options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+                    val options: BitmapFactory.Options = BitmapFactory.Options()
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
 
 
 
-            uvi_arrayList.add(ImageUploadModel(bitmap))
+                    uvi_arrayList.add(ImageUploadModel(bitmap))
 
-            cursor?.close()
+                    cursor?.close()
 
-            val uploadImageAdapter  = UploadImagesAdapter(uvi_arrayList, activity)
-            vehicle_img_rec.adapter = uploadImageAdapter
+                    val uploadImageAdapter  = UploadImagesAdapter(uvi_arrayList, activity)
+                    vehicle_img_rec.adapter = uploadImageAdapter
+                }
+            } else {
+                val uri = data.data
+                //val pickedImage = data!!.data
+
+                val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor: Cursor? =
+                    activity?.contentResolver?.query(uri!!, filePath, null, null, null)
+                cursor?.moveToFirst()
+                val imagePath: String? =
+                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+
+                val options: BitmapFactory.Options = BitmapFactory.Options()
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+
+
+
+                uvi_arrayList.add(ImageUploadModel(bitmap))
+
+                cursor?.close()
+
+                val uploadImageAdapter  = UploadImagesAdapter(uvi_arrayList, activity)
+                vehicle_img_rec.adapter = uploadImageAdapter
+            }
+
 
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 200){
@@ -303,27 +348,57 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == 101) {
-            val pickedImage = data!!.data
 
-            val filePath =
-                arrayOf(MediaStore.Images.Media.DATA)
-            val cursor: Cursor? =
-                activity?.contentResolver?.query(pickedImage!!, filePath, null, null, null)
-            cursor?.moveToFirst()
-            val imagePath: String? =
-                cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+            val clipData: ClipData? = data!!.clipData
+            if (clipData != null) {
+                for (i in 0 until clipData.getItemCount()) {
+                    val imageUri: Uri = clipData.getItemAt(i).getUri()
+                    //val pickedImage = data!!.data
 
-            val options: BitmapFactory.Options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-            ucd_arrayList.clear()
-            ucd_arrayList.add(ImageUploadModel(bitmap))
+                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor: Cursor? =
+                        activity?.contentResolver?.query(imageUri!!, filePath, null, null, null)
+                    cursor?.moveToFirst()
+                    val imagePath: String? =
+                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
 
-            cursor?.close()
+                    val options: BitmapFactory.Options = BitmapFactory.Options()
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
 
 
-            val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, activity)
-            car_doc_rec.adapter = uploadImageAdapter
+
+                    ucd_arrayList.add(ImageUploadModel(bitmap))
+
+                    cursor?.close()
+
+                    val uploadImageAdapter  = UploadImagesAdapter(ucd_arrayList, activity)
+                    car_doc_rec.adapter = uploadImageAdapter
+                }
+            } else {
+                val uri = data.data
+                //val pickedImage = data!!.data
+
+                val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor: Cursor? =
+                    activity?.contentResolver?.query(uri!!, filePath, null, null, null)
+                cursor?.moveToFirst()
+                val imagePath: String? =
+                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+
+                val options: BitmapFactory.Options = BitmapFactory.Options()
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+
+
+
+                ucd_arrayList.add(ImageUploadModel(bitmap))
+
+                cursor?.close()
+
+                val uploadImageAdapter  = UploadImagesAdapter(ucd_arrayList, activity)
+                car_doc_rec.adapter = uploadImageAdapter
+            }
 
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 201){
@@ -341,7 +416,7 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
     fun upload_img() {
         val dialog = activity.let { it1 -> Dialog(it1!!) }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         dialog.setContentView(R.layout.open_cemera)
 
         val btn_cemera = dialog.findViewById<Button>(R.id.btn_cemera) as TextView

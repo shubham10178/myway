@@ -2,19 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".fragment.ChooseVehicleTypeFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_patterns2x">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_patterns2x"
+            android:orientation="vertical"
             android:padding="10dp">
             <LinearLayout
                 android:id="@+id/linear_header"
@@ -188,7 +191,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/edit_text_border_right"
                         android:orientation="horizontal">
@@ -202,8 +206,8 @@
                         </androidx.recyclerview.widget.RecyclerView>
                         <ImageView
                             android:id="@+id/dummy_vehicle_img"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
                             android:layout_alignParentLeft="true"
                             android:src="@drawable/upload_images3x"
                             android:visibility="visible"
@@ -213,8 +217,8 @@
                     </RelativeLayout>
                     <ImageView
                         android:id="@+id/vehicle_img_upload"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginTop="10dp"
                         android:src="@drawable/upload_all"/>
                 </LinearLayout>
@@ -450,7 +454,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/edit_text_border_right"
                         android:orientation="horizontal">
@@ -464,8 +469,8 @@
                         </androidx.recyclerview.widget.RecyclerView>
                         <ImageView
                             android:id="@+id/dummy_car_img"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
                             android:layout_alignParentLeft="true"
                             android:src="@drawable/upload_images3x"
                             android:visibility="visible"
@@ -475,19 +480,16 @@
                     </RelativeLayout>
                     <ImageView
                         android:id="@+id/car_doc_img_upload"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginTop="10dp"
                         android:src="@drawable/upload_all"/>
                 </LinearLayout>
 
-
-
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Who vehicle and Relationship with Vehicle"
+                    android:text="Who's Vehicle and Relationship with Vehicle"
                     android:fontFamily="@font/avenir_black"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -495,7 +497,7 @@
                     android:textColor="@android:color/black"/>
 
                 <RadioGroup
-                    android:id="@+id/radioRelation_vehicle"
+                    android:id="@+id/rg_relation_vehicle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -512,7 +514,7 @@
                         android:text="Owner"
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/holo_green_light"
-                        android:checked="true" />
+                         />
 
                     <RadioButton
                         android:id="@+id/radioTenant"
@@ -525,7 +527,7 @@
                         android:textSize="12sp"
                         android:fontFamily="@font/avenir_black"
                         android:button="@drawable/radio_selector"
-                        android:checked="true"/>
+                        />
 
                     <RadioButton
                         android:id="@+id/radioLease"
@@ -538,7 +540,7 @@
                         android:textSize="12sp"
                         android:fontFamily="@font/avenir_black"
                         android:button="@drawable/radio_selector"
-                        android:checked="true"/>
+                        />
 
                     <RadioButton
                         android:id="@+id/radioOther"
@@ -550,8 +552,7 @@
                         android:layout_marginTop="10dp"
                         android:textSize="12sp"
                         android:fontFamily="@font/avenir_black"
-                        android:button="@drawable/radio_selector"
-                        android:checked="true"/>
+                        android:button="@drawable/radio_selector" />
 
                 </RadioGroup>
 
@@ -571,27 +572,29 @@
                         android:textSize="12sp"
                         android:padding="10dp"
                         android:gravity="top|left"
+                        android:visibility="gone"
                         android:background="@drawable/shap_rec_bg"
                         android:textColor="@color/black"/>
 
 
                 </RelativeLayout>
 
-
+                <Button
+                    android:id="@+id/btn_save_addv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="Save"
+                   android:layout_marginTop="30dp"
+                    android:fontFamily="@font/avenir_black"
+                    android:textAllCaps="false"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button_background_next"/>
 
             </LinearLayout>
-            <Button
-                android:id="@+id/btn_save_addv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:text="Save"
-                android:layout_below="@+id/ll_detail"
-                android:fontFamily="@font/avenir_black"
-                android:textAllCaps="false"
-                android:layout_alignParentBottom="true"
-                android:textColor="@android:color/white"
-                android:background="@drawable/button_background_next"/>
-        </RelativeLayout>
-    </ScrollView>
+
+        </LinearLayout>
+</ScrollView>
+</RelativeLayout>
 </RelativeLayout>

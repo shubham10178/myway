@@ -3,8 +3,10 @@ package com.fluper.seeway.activity
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ClipData
 import android.content.ContentValues
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -39,12 +41,14 @@ import com.fluper.seeway.model.VehicleInfoModel
 import com.rilixtech.CountryCodePicker
 import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
 import java.io.IOException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
     RadioGroup.OnCheckedChangeListener {
+
     private var vn_name: String? = null
     private var vmn_model_number: String? = null
 
@@ -68,9 +72,23 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
         setContentView(R.layout.activity_profile_creation_driver)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
+        try {
+            var pref: SharedPreferences = getBaseContext().getSharedPreferences("User_info", 0)
+            val nameStr: String = pref.getString("NAME", "").toString()
+            val emailStr: String = pref.getString("EMAIL", "").toString()
+            val phoneStr: String = pref.getString("PHONE", "").toString()
+            edt_driver_name.setText(nameStr)
+            edt_driver_email.setText(emailStr)
+            edt_driver_phone_num.setText(phoneStr)
+
+        }catch (e: Exception){
+           e.printStackTrace()
+        }
+
         if(!intent.getStringExtra("vn_name").isNullOrEmpty() && !intent.getStringExtra("vmn_model_number").isNullOrEmpty()){
              vn_name = intent.getStringExtra("vn_name")
              vmn_model_number = intent.getStringExtra("vmn_model_number")
+
             vehicle_info(vn_name,vmn_model_number)
         }
 
@@ -79,9 +97,9 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
         rg_type_per.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                 when (checkedId) {
-                    R.id.radio_want_tobe_emp -> txt_beEmployee.visibility = View.VISIBLE
-                    R.id.radio_nopermission ->  txt_beEmployee.visibility = View.GONE
-                    R.id.radio_havepermission ->  txt_beEmployee.visibility = View.GONE
+                    R.id.radio_want_tobe_emp -> img_driver_tobeEmp.visibility = View.VISIBLE
+                    R.id.radio_nopermission ->  img_driver_tobeEmp.visibility = View.INVISIBLE
+                    R.id.radio_havepermission ->  img_driver_tobeEmp.visibility = View.INVISIBLE
                 }
             }
         })
@@ -123,7 +141,7 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
             if(vehicleList.isEmpty()){
                 alert_vehicle_not_selected()
             }else {
-                if (txt_beEmployee.isVisible) {
+                if (img_driver_tobeEmp.isVisible) {
                     setFragment(DriverInsuranceFragment())
                 } else {
                     alert_submit()
@@ -170,6 +188,16 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
 
         ll_add_vechicle.setOnClickListener {
 
+            var edt_driver_name :String = edt_driver_name.getText().toString()
+            var edt_driver_email :String = edt_driver_email.getText().toString()
+            var edt_driver_phone_num :String = edt_driver_phone_num.getText().toString()
+           var pref : SharedPreferences = getBaseContext().getSharedPreferences("User_info", 0)
+            var editor :SharedPreferences.Editor = pref.edit()
+            editor.putString("NAME", edt_driver_name)
+            editor.putString("EMAIL", edt_driver_email)
+            editor.putString("PHONE", edt_driver_phone_num)
+            editor.commit();
+
             setFragment(AddVehicleFragment())
         }
 
@@ -177,10 +205,14 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun pickImageFromGallery() {
+
         //Intent to pick image
-        val intent = Intent(Intent.ACTION_PICK)
+        val intent = Intent()
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE)
+
     }
 
     private fun openCamera() {
@@ -237,43 +269,81 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         for (fragment in supportFragmentManager.fragments) {
             fragment.onActivityResult(requestCode, resultCode, data)
         }
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            profile_driver_img.setImageURI(data?.data)
+        if (resultCode == Activity.RESULT_OK && requestCode == 1009) {
+            if(data !=(null)) {
+                profile_driver_img.setImageURI(data?.data)
+            }
         }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURE_CODE) {
-            profile_driver_img.setImageURI(image_uri)
+        if (resultCode == Activity.RESULT_OK && requestCode == 2009) {
+            if(image_uri !=(null)) {
+                profile_driver_img.setImageURI(image_uri)
+            }
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1001) {
-            val pickedImage = data!!.data
+            try {
+                val clipData: ClipData? = data!!.clipData
+                if (clipData != null) {
+                    for (i in 0 until clipData.getItemCount()) {
+                        val imageUri: Uri = clipData.getItemAt(i).getUri()
+                        //val pickedImage = data!!.data
 
-            val filePath = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor: Cursor? =
-                contentResolver.query(pickedImage!!, filePath, null, null, null)
-            cursor?.moveToFirst()
-            val imagePath: String? =
-                cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+                        val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                        val cursor: Cursor? =
+                            contentResolver.query(imageUri!!, filePath, null, null, null)
+                        cursor?.moveToFirst()
+                        val imagePath: String? =
+                            cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
 
-            val options: BitmapFactory.Options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+                        val options: BitmapFactory.Options = BitmapFactory.Options()
+                        options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                        val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
 
 
 
-            udli_arrayList.add(ImageUploadModel(bitmap))
+                        udli_arrayList.add(ImageUploadModel(bitmap))
 
-            cursor?.close()
+                        cursor?.close()
 
-            val uploadImageAdapter  = UploadImagesAdapter(udli_arrayList, this)
-            driving_license_rec.adapter = uploadImageAdapter
+                        val uploadImageAdapter = UploadImagesAdapter(udli_arrayList, this)
+                        driving_license_rec.adapter = uploadImageAdapter
+                    }
+                } else {
+                    val uri = data.data
+                    //val pickedImage = data!!.data
 
+                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor: Cursor? =
+                        contentResolver.query(uri!!, filePath, null, null, null)
+                    cursor?.moveToFirst()
+                    val imagePath: String? =
+                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+
+                    val options: BitmapFactory.Options = BitmapFactory.Options()
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+
+
+
+                    udli_arrayList.add(ImageUploadModel(bitmap))
+
+                    cursor?.close()
+
+                    val uploadImageAdapter = UploadImagesAdapter(udli_arrayList, this)
+                    driving_license_rec.adapter = uploadImageAdapter
+                }
+            } catch (e: Exception) {
+
+            }
         }
+
         if(resultCode == Activity.RESULT_OK && requestCode == 2001){
 
 
@@ -288,27 +358,57 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1004) {
-            val pickedImage = data!!.data
 
-            val filePath =
-                arrayOf(MediaStore.Images.Media.DATA)
-            val cursor: Cursor? =
-                contentResolver.query(pickedImage!!, filePath, null, null, null)
-            cursor?.moveToFirst()
-            val imagePath: String? =
-                cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+            val clipData: ClipData? = data!!.clipData
+            if (clipData != null) {
+                for (i in 0 until clipData.getItemCount()) {
+                    val imageUri: Uri = clipData.getItemAt(i).getUri()
+                    //val pickedImage = data!!.data
 
-            val options: BitmapFactory.Options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor: Cursor? =
+                        contentResolver.query(imageUri!!, filePath, null, null, null)
+                    cursor?.moveToFirst()
+                    val imagePath: String? =
+                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
 
-            up_arrayList.add(ImageUploadModel(bitmap))
+                    val options: BitmapFactory.Options = BitmapFactory.Options()
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
 
-            cursor?.close()
 
 
-            val uploadImageAdapter = UploadImagesAdapter(up_arrayList, this)
-            upload_permission_rec.adapter = uploadImageAdapter
+                    up_arrayList.add(ImageUploadModel(bitmap))
+
+                    cursor?.close()
+
+                    val uploadImageAdapter  = UploadImagesAdapter(up_arrayList, this)
+                    upload_permission_rec.adapter = uploadImageAdapter
+                }
+            } else {
+                val uri = data.data
+                //val pickedImage = data!!.data
+
+                val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor: Cursor? =
+                    contentResolver.query(uri!!, filePath, null, null, null)
+                cursor?.moveToFirst()
+                val imagePath: String? =
+                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+
+                val options: BitmapFactory.Options = BitmapFactory.Options()
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+
+
+
+                up_arrayList.add(ImageUploadModel(bitmap))
+
+                cursor?.close()
+
+                val uploadImageAdapter  = UploadImagesAdapter(up_arrayList, this)
+                upload_permission_rec.adapter = uploadImageAdapter
+            }
 
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 2004){
@@ -362,7 +462,7 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
     fun upload_img(driving_license_rec : RecyclerView) {
         val dialog = this.let { it1 -> Dialog(it1) }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         dialog.setContentView(R.layout.open_cemera)
 
         val btn_cemera = dialog.findViewById<Button>(R.id.btn_cemera) as TextView
@@ -421,12 +521,13 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
         val dialog = this.let { it1 -> Dialog(it1) }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
-        dialog.setContentView(R.layout.driver_profile_alert)
-
+        dialog.setContentView(R.layout.alert_marble32)
 
         val txt_msg = dialog.findViewById<View>(R.id.txt_msg) as TextView
+
         txt_msg.setOnClickListener {
-            setFragment(ChosseSecurityFragment())
+            val i  = Intent(this,NewDriverNavActivity::class.java)
+            startActivity(i)
             dialog.dismiss()
         }
 
@@ -455,8 +556,8 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
                 requestPermissions(permissions, PERMISSION_CODE)
                 dialog.dismiss()
             } else {
-                //permission already granted
-                pickImageFromGallery()
+                IMAGE_PICK_CODE = 1009
+                pickImage()
                 dialog.dismiss()
             }
 
@@ -479,7 +580,7 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
                     requestPermissions(permission, PERMISSION_CODE)
                     dialog.dismiss()
                 } else {
-                    //permission already granted
+                    IMAGE_CAPTURE_CODE = 2009
                     openCamera()
                     dialog.dismiss()
                 }
@@ -527,6 +628,7 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
                 upload_permission_rec.visibility = View.VISIBLE
             }
 
+
         }
     }
 
@@ -536,15 +638,11 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
 
         vehicle_info_rec.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-
-
-
-//        users.add(VehicleInfoModel("fdkhkjhf", "768976"))
         vehicleList.add(VehicleInfoModel(vn_name!!, vmn_model_number!!))
-
 
         var  adapter = DriverVehicleInfoAdapter(vehicleList, this)
         vehicle_info_rec.adapter = adapter
+
     }
 
     fun alert_vehicle_not_selected(){
@@ -596,8 +694,8 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
             dialog?.dismiss() }
 
         btn_yes.setOnClickListener {
-            val i  = Intent(this,NewDriverNavActivity::class.java)
-            startActivity(i)
+            show_alert_submit()
+
             dialog?.dismiss() }
         dialog?.dismiss()
         dialog?.show()
@@ -609,8 +707,12 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
             // Is the button now checked?
             val checked = group.isChecked
 
-
         }
     }
-
+    private fun pickImage() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
 }

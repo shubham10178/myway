@@ -16,8 +16,11 @@
         android:layout_marginTop="-5dp">
         <ImageView
             android:id="@+id/img_upload"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
+            android:layout_width="150dp"
+            android:layout_height="120dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            />
 
         <ImageView
             android:id="@+id/img_cross"

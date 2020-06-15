@@ -2,6 +2,7 @@ package com.fluper.seeway.fragment
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ClipData
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -45,6 +46,7 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
     private var param2: String? = null
     lateinit var img_upload_passport : ImageView
     lateinit var dummy_img_pass : ImageView
+    lateinit var img_back_insurence : ImageView
     lateinit var btn_save_insur : Button
     lateinit var passport_rec : RecyclerView
     private var IMAGE_PICK_CODE = 300
@@ -71,6 +73,8 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
 
         img_upload_rec(view)
 
+
+
         return view
     }
     fun img_upload_rec(view: View){
@@ -81,6 +85,7 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
 
         dummy_img_pass = view.findViewById(R.id.dummy_img_pass)
         btn_save_insur = view.findViewById(R.id.btn_save_insur)
+        img_back_insurence = view.findViewById(R.id.img_back_insurence)
 
 
         passport_rec.setLayoutManager(
@@ -95,10 +100,12 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
         img_upload_passport.setOnClickListener(this)
 
         btn_save_insur.setOnClickListener {
-            val i  = Intent(activity,NewDriverNavActivity::class.java)
-            startActivity(i) }
+            alert_submit()
+          }
 
-
+        img_back_insurence.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
     }
 
@@ -106,6 +113,7 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.img_upload_passport -> {
+
                 upload_img()
                 IMAGE_PICK_CODE = 100
                 IMAGE_CAPTURE_CODE = 200
@@ -118,11 +126,11 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
 
     }
     private fun pickImageFromGallery() {
-        //Intent to pick image
-        val intent = Intent(Intent.ACTION_PICK)
+        val intent = Intent()
         intent.type = "image/*"
-
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE)
     }
 
     private fun openCamera() {
@@ -174,25 +182,59 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
         //   super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
-            val pickedImage = data!!.data
 
-            val filePath = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor: Cursor? =
-                activity?.contentResolver?.query(pickedImage!!, filePath, null, null, null)
-            cursor?.moveToFirst()
-            val imagePath: String? =
-                cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
 
-            val options: BitmapFactory.Options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888
-            val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+            val clipData: ClipData? = data!!.clipData
+            if (clipData != null) {
+                for (i in 0 until clipData.getItemCount()) {
+                    val imageUri: Uri = clipData.getItemAt(i).getUri()
+                    //val pickedImage = data!!.data
 
-            idOrpassport_arrayList.add(ImageUploadModel(bitmap))
+                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor: Cursor? =
+                        activity?.contentResolver?.query(imageUri!!, filePath, null, null, null)
+                    cursor?.moveToFirst()
+                    val imagePath: String? =
+                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
 
-            cursor?.close()
+                    val options: BitmapFactory.Options = BitmapFactory.Options()
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
 
-            val uploadImageAdapter  = UploadImagesAdapter(idOrpassport_arrayList, activity)
-            passport_rec.adapter = uploadImageAdapter
+
+
+                    idOrpassport_arrayList.add(ImageUploadModel(bitmap))
+
+                    cursor?.close()
+
+                    val uploadImageAdapter  = UploadImagesAdapter(idOrpassport_arrayList, activity)
+                    passport_rec.adapter = uploadImageAdapter
+                }
+            } else {
+                val uri = data.data
+                //val pickedImage = data!!.data
+
+                val filePath = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor: Cursor? =
+                    activity?.contentResolver?.query(uri!!, filePath, null, null, null)
+                cursor?.moveToFirst()
+                val imagePath: String? =
+                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
+
+                val options: BitmapFactory.Options = BitmapFactory.Options()
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888
+                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
+
+
+
+                idOrpassport_arrayList.add(ImageUploadModel(bitmap))
+
+                cursor?.close()
+
+                val uploadImageAdapter  = UploadImagesAdapter(idOrpassport_arrayList, activity)
+                passport_rec.adapter = uploadImageAdapter
+            }
+
 
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 200){
@@ -215,7 +257,7 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
     fun upload_img() {
         val dialog = activity.let { it1 -> Dialog(it1!!) }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
+        dialog.setCancelable(false)
         dialog.setContentView(R.layout.open_cemera)
 
         val btn_cemera = dialog.findViewById<Button>(R.id.btn_cemera) as TextView
@@ -269,4 +311,51 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
         }
         dialog.show()
     }
+
+
+    fun alert_submit(){
+        val dialog = activity?.let { it1 -> Dialog(it1) }
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCancelable(false)
+        dialog?.setContentView(R.layout.driver_profile_approval_alert1)
+        val txt_msg = dialog?.findViewById<View>(R.id.txt_msg) as TextView
+        val btn_no = dialog?.findViewById<View>(R.id.btn_no) as Button
+        val btn_yes = dialog?.findViewById<View>(R.id.btn_yes) as Button
+        txt_msg.setText(R.string.alert_driver_profile1)
+        btn_no.setOnClickListener {
+
+            dialog?.dismiss() }
+
+        btn_yes.setOnClickListener {
+
+            show_alert_Yes()
+            dialog?.dismiss() }
+        dialog?.dismiss()
+        dialog?.show()
+    }
+
+
+    fun show_alert_Yes(){
+        val dialog = activity?.let { it1 -> Dialog(it1) }
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCancelable(false)
+        dialog?.setContentView(R.layout.driver_profile_approval_alert1)
+
+        val txt_msg = dialog?.findViewById<View>(R.id.txt_msg) as TextView
+        val btn_no = dialog?.findViewById<View>(R.id.btn_no) as Button
+        val btn_yes = dialog?.findViewById<View>(R.id.btn_yes) as Button
+        txt_msg.setText(R.string.alert_driver_profile2)
+
+        btn_no.setOnClickListener {
+
+            dialog?.dismiss() }
+
+        btn_yes.setOnClickListener {
+            val i  = Intent(activity,NewDriverNavActivity::class.java)
+            startActivity(i)
+            dialog?.dismiss() }
+        dialog?.dismiss()
+        dialog?.show()
+    }
+
 }

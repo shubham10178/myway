@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.fluper.seeway.R
 import com.fluper.seeway.model.ImageUploadModel
-import com.fluper.seeway.model.NotificationModel
 
 class UploadImagesAdapter constructor (val userList: ArrayList<ImageUploadModel>, val mCtx: Context?) : RecyclerView.Adapter<UploadImagesAdapter.ViewHolder>() {
 
@@ -27,9 +26,31 @@ class UploadImagesAdapter constructor (val userList: ArrayList<ImageUploadModel>
 
         if(userList.size.equals(0)){
             val largeIcon = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.dummy_dl)
-            holder.img_upload.setImageBitmap(largeIcon)
+            if (mCtx != null) {
+                Glide
+                    .with(mCtx)
+                    .load(largeIcon)
+                    .override(300, 200)
+                    .into(holder.img_upload)
+            }
+
         }else{
-            holder.img_upload.setImageBitmap(userList[position].img)
+            if (mCtx != null) {
+                Glide
+                    .with(mCtx)
+                    .load(userList[position].img)
+                    .override(300, 200)
+                    .into(holder.img_upload)
+            }
+
+        }
+
+        holder.img_cross.setOnClickListener {
+            val newPosition = holder.adapterPosition
+            userList.removeAt(newPosition)
+            notifyItemRemoved(newPosition)
+            notifyItemRangeChanged(newPosition, userList.size)
+
         }
 
     }
@@ -43,11 +64,12 @@ class UploadImagesAdapter constructor (val userList: ArrayList<ImageUploadModel>
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         lateinit var img_upload : ImageView
+        lateinit var img_cross : ImageView
 
         fun bindItems(user: ImageUploadModel) {
 
              img_upload  = itemView.findViewById(R.id.img_upload) as ImageView
-            val img_cross  = itemView.findViewById(R.id.img_cross) as ImageView
+             img_cross  = itemView.findViewById(R.id.img_cross) as ImageView
 
 
         }

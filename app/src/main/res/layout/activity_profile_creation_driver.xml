@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="10dp"
     android:background="@drawable/bg_patterns2x"
-    tools:context=".fragment.ProfileCreationDriverFragment">
+    >
 
 
 
@@ -118,6 +118,7 @@
                             >
 
                             <EditText
+                                android:id="@+id/edt_driver_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/avenir_black"
@@ -169,6 +170,7 @@
                             >
 
                             <EditText
+                                android:id="@+id/edt_driver_email"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/avenir_black"
@@ -228,7 +230,7 @@
                             android:layout_marginLeft="5dp"
                             >
                             <EditText
-                                android:id="@+id/edt_phone_number"
+                                android:id="@+id/edt_driver_phone_num"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:maxLength="10"
@@ -476,8 +478,8 @@
                     </androidx.recyclerview.widget.RecyclerView>
                     <ImageView
                         android:id="@+id/dummy_img_dl"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_alignParentLeft="true"
                         android:src="@drawable/upload_images3x"
                         android:visibility="visible"
@@ -487,8 +489,8 @@
                 </RelativeLayout>
                     <ImageView
                         android:id="@+id/img_upload"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginTop="10dp"
                         android:src="@drawable/upload_all"/>
                 </LinearLayout>
@@ -603,6 +605,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:visibility="gone"
                     android:orientation="horizontal">
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -661,11 +664,19 @@
                     android:textStyle="bold"
                     android:layout_marginTop="15dp"
                     android:textColor="@android:color/black"/>
-                <RelativeLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/rl_upload_per"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
                     android:background="@drawable/edit_text_border_right"
                     android:orientation="horizontal">
 
@@ -678,28 +689,36 @@
                     </androidx.recyclerview.widget.RecyclerView>
                     <ImageView
                         android:id="@+id/dummy_img_upi"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_alignParentLeft="true"
                         android:src="@drawable/upload_images3x"
                         android:visibility="visible"
                         android:layout_weight="1">
                     </ImageView>
+
+                </RelativeLayout>
                     <ImageView
                         android:id="@+id/permission_img_upload"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/upload_all"/>
-                </RelativeLayout>
-
-
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
-
+<ImageView
+    android:id="@+id/img_driver_tobeEmp"
+    android:layout_width="20dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginRight="5dp"
+    android:visibility="invisible"
+    android:src="@drawable/tick"/>
                     <TextView
                         android:id="@+id/txt_beEmployee"
                         android:layout_width="match_parent"
@@ -708,10 +727,10 @@
                         android:fontFamily="@font/avenir_black"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="15dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
                         android:drawablePadding="10dp"
-                        android:visibility="gone"
-                        android:drawableLeft="@drawable/tick"
+                        android:visibility="visible"
                         android:textColor="@color/grey"/>
 
                 </LinearLayout>
@@ -1288,7 +1307,8 @@
                         android:text="(Optional)"
                         android:fontFamily="@font/avenir_black"
                         android:textSize="12sp"
-                        android:textColor="@android:color/black"/>
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/grey"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
