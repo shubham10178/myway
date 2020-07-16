@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
+import com.fluper.seeway.activity.LoginActivity
 import com.fluper.seeway.activity.ProfileCreationDriverActivity
 import com.fluper.seeway.activity.ProfileCreationPassengerActivity
 import com.fluper.seeway.model.UserTypeModel
@@ -35,11 +36,13 @@ class ListAdapter constructor (val userList: ArrayList<UserTypeModel>,val mCtx: 
             holder.main_cons.setBackgroundColor(Color.parseColor("#FFFFFF"));
             if(strName.equals("Passenger")) {
 
-                val intent = Intent(mCtx, ProfileCreationPassengerActivity::class.java)
+                val intent = Intent(mCtx, LoginActivity::class.java)
+                intent.putExtra("type","Passenger")
                 mCtx?.startActivity(intent)
             }else{
 
-                val intent = Intent(mCtx, ProfileCreationDriverActivity::class.java)
+                val intent = Intent(mCtx, LoginActivity::class.java)
+                intent.putExtra("type","Driver")
                 mCtx?.startActivity(intent)
             }
 

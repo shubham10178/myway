@@ -29,6 +29,7 @@ import com.fluper.seeway.R
 import com.fluper.seeway.activity.NewDriverNavActivity
 import com.fluper.seeway.adapter.UploadImagesAdapter
 import com.fluper.seeway.model.ImageUploadModel
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +55,7 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
     private val PERMISSION_CODE = 1
     private val PERMISSION_CODE1 = 2
     var image_uri: Uri? = null
+    private var imageUri1: Uri? = null
     val idOrpassport_arrayList = ArrayList<ImageUploadModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -179,62 +181,28 @@ class DriverInsuranceFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        //   super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            if (data!!.clipData != null) {
+                val count = data!!.clipData!!
+                    .itemCount
+                for (i in 0 until count) {
+                    imageUri1 = data!!.clipData!!.getItemAt(i).uri
 
-
-            val clipData: ClipData? = data!!.clipData
-            if (clipData != null) {
-                for (i in 0 until clipData.getItemCount()) {
-                    val imageUri: Uri = clipData.getItemAt(i).getUri()
-                    //val pickedImage = data!!.data
-
-                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                    val cursor: Cursor? =
-                        activity?.contentResolver?.query(imageUri!!, filePath, null, null, null)
-                    cursor?.moveToFirst()
-                    val imagePath: String? =
-                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                    val options: BitmapFactory.Options = BitmapFactory.Options()
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
+                    val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri1)
 
                     idOrpassport_arrayList.add(ImageUploadModel(bitmap))
-
-                    cursor?.close()
-
-                    val uploadImageAdapter  = UploadImagesAdapter(idOrpassport_arrayList, activity)
-                    passport_rec.adapter = uploadImageAdapter
                 }
-            } else {
-                val uri = data.data
-                //val pickedImage = data!!.data
-
-                val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? =
-                    activity?.contentResolver?.query(uri!!, filePath, null, null, null)
-                cursor?.moveToFirst()
-                val imagePath: String? =
-                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                val options: BitmapFactory.Options = BitmapFactory.Options()
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
-
-                idOrpassport_arrayList.add(ImageUploadModel(bitmap))
-
-                cursor?.close()
-
-                val uploadImageAdapter  = UploadImagesAdapter(idOrpassport_arrayList, activity)
+                val uploadImageAdapter = UploadImagesAdapter(idOrpassport_arrayList, activity)
                 passport_rec.adapter = uploadImageAdapter
             }
+            else{
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, data?.data)
 
+                idOrpassport_arrayList.add(ImageUploadModel(bitmap))
+                val uploadImageAdapter = UploadImagesAdapter(idOrpassport_arrayList, activity)
+                passport_rec.adapter = uploadImageAdapter
+            }
 
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 200){

@@ -52,6 +52,7 @@ class ResetPassword : Fragment() {
         btn_submit.setOnClickListener{
 
             val i  = Intent(activity, LoginActivity::class.java)
+            i.putExtra("type","Reset")
             startActivity(i)
         }
 

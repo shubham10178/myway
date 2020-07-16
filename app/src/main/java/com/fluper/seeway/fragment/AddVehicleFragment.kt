@@ -68,6 +68,7 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
     private val PERMISSION_CODE = 300
     private val PERMISSION_CODE1 = 400
     var image_uri: Uri? = null
+    private var imageUri1: Uri? = null
     val uvi_arrayList = ArrayList<ImageUploadModel>()
     val ucd_arrayList = ArrayList<ImageUploadModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -271,135 +272,64 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
                     Toast.makeText(activity, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    //   super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
-            val clipData: ClipData? = data!!.clipData
-            if (clipData != null) {
-                for (i in 0 until clipData.getItemCount()) {
-                    val imageUri: Uri = clipData.getItemAt(i).getUri()
-                    //val pickedImage = data!!.data
+            if (data!!.clipData != null) {
+                val count = data!!.clipData!!
+                    .itemCount
+                for (i in 0 until count) {
+                    imageUri1 = data!!.clipData!!.getItemAt(i).uri
 
-                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                    val cursor: Cursor? =
-                        activity?.contentResolver?.query(imageUri!!, filePath, null, null, null)
-                    cursor?.moveToFirst()
-                    val imagePath: String? =
-                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                    val options: BitmapFactory.Options = BitmapFactory.Options()
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
+                    val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri1)
 
                     uvi_arrayList.add(ImageUploadModel(bitmap))
-
-                    cursor?.close()
-
-                    val uploadImageAdapter  = UploadImagesAdapter(uvi_arrayList, activity)
-                    vehicle_img_rec.adapter = uploadImageAdapter
                 }
-            } else {
-                val uri = data.data
-                //val pickedImage = data!!.data
-
-                val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? =
-                    activity?.contentResolver?.query(uri!!, filePath, null, null, null)
-                cursor?.moveToFirst()
-                val imagePath: String? =
-                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                val options: BitmapFactory.Options = BitmapFactory.Options()
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
-
-                uvi_arrayList.add(ImageUploadModel(bitmap))
-
-                cursor?.close()
-
-                val uploadImageAdapter  = UploadImagesAdapter(uvi_arrayList, activity)
+                val uploadImageAdapter = UploadImagesAdapter(uvi_arrayList, activity)
                 vehicle_img_rec.adapter = uploadImageAdapter
             }
+            else{
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, data?.data)
 
-
+                uvi_arrayList.add(ImageUploadModel(bitmap))
+                val uploadImageAdapter = UploadImagesAdapter(uvi_arrayList, activity)
+                vehicle_img_rec.adapter = uploadImageAdapter
+            }
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 200){
-
 
             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, image_uri)
 
             uvi_arrayList.add(ImageUploadModel(bitmap))
-
-
 
             val uploadImageAdapter = UploadImagesAdapter(uvi_arrayList, activity)
             vehicle_img_rec.adapter = uploadImageAdapter
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == 101) {
+            if (data!!.clipData != null) {
+                val count = data!!.clipData!!
+                    .itemCount
+                for (i in 0 until count) {
+                    imageUri1 = data!!.clipData!!.getItemAt(i).uri
 
-            val clipData: ClipData? = data!!.clipData
-            if (clipData != null) {
-                for (i in 0 until clipData.getItemCount()) {
-                    val imageUri: Uri = clipData.getItemAt(i).getUri()
-                    //val pickedImage = data!!.data
-
-                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                    val cursor: Cursor? =
-                        activity?.contentResolver?.query(imageUri!!, filePath, null, null, null)
-                    cursor?.moveToFirst()
-                    val imagePath: String? =
-                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                    val options: BitmapFactory.Options = BitmapFactory.Options()
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
+                    val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri1)
 
                     ucd_arrayList.add(ImageUploadModel(bitmap))
-
-                    cursor?.close()
-
-                    val uploadImageAdapter  = UploadImagesAdapter(ucd_arrayList, activity)
-                    car_doc_rec.adapter = uploadImageAdapter
                 }
-            } else {
-                val uri = data.data
-                //val pickedImage = data!!.data
-
-                val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? =
-                    activity?.contentResolver?.query(uri!!, filePath, null, null, null)
-                cursor?.moveToFirst()
-                val imagePath: String? =
-                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                val options: BitmapFactory.Options = BitmapFactory.Options()
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
-
-                ucd_arrayList.add(ImageUploadModel(bitmap))
-
-                cursor?.close()
-
-                val uploadImageAdapter  = UploadImagesAdapter(ucd_arrayList, activity)
+                val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, activity)
                 car_doc_rec.adapter = uploadImageAdapter
             }
+            else{
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, data?.data)
 
+                ucd_arrayList.add(ImageUploadModel(bitmap))
+                val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, activity)
+                car_doc_rec.adapter = uploadImageAdapter
+            }
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 201){
             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, image_uri)
@@ -470,5 +400,4 @@ class AddVehicleFragment : Fragment(), View.OnClickListener {
         }
         dialog.show()
     }
-
 }

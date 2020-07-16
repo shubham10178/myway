@@ -27,7 +27,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class UserTypeFragment : Fragment() {
     protected lateinit var rootView: View
-    lateinit var recyclerView: RecyclerView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,9 +65,7 @@ class UserTypeFragment : Fragment() {
         smoothScroller.setTargetPosition(0);
         layoutManager.startSmoothScroll(smoothScroller)
 
-
         val users = ArrayList<UserTypeModel>()
-
 
         users.add(UserTypeModel("Passenger", R.drawable.passenger))
         users.add(UserTypeModel("Driver", R.drawable.driver2x))
@@ -76,9 +74,6 @@ class UserTypeFragment : Fragment() {
         users.add(UserTypeModel("Parcel Send or Receive", R.drawable.parcel_send_receive3x))
         users.add(UserTypeModel("Delivery Boy", R.drawable.deliveryboy2x))
         users.add(UserTypeModel("User/ Master User", R.drawable.user_master_user2x))
-
-
-     //   var adapter = ListAdapter(users)
 
       var  adapter = ListAdapter(users, activity)
         recyclerView.adapter = adapter

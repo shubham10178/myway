@@ -28,6 +28,7 @@ import com.rilixtech.CountryCodePicker
 
 class LoginActivity : AppCompatActivity() {
 
+    private var type: String =""
     lateinit var forgotPassword_txt: TextView
     lateinit var btn_continue: Button
     lateinit var edt_User_Email: EditText
@@ -41,6 +42,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
+        if(type != null) {
+            type = intent.getStringExtra("type")
+        }
+
         forgotPassword_txt = findViewById(R.id.forgotPass_txt)
         btn_continue = findViewById(R.id.btn_continue)
         edt_User_Email = findViewById(R.id.edt_User_Email)
@@ -107,6 +113,9 @@ class LoginActivity : AppCompatActivity() {
     protected fun setFragment(fragment: Fragment?) {
         val fragmentManager: FragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        val args = Bundle()
+        args.putString("type", type)
+        fragment?.setArguments(args)
         if (fragment != null) {
             fragmentTransaction.add(android.R.id.content, fragment)
         }

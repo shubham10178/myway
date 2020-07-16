@@ -34,14 +34,12 @@ import com.fluper.seeway.R
 import com.fluper.seeway.adapter.DriverVehicleInfoAdapter
 import com.fluper.seeway.adapter.UploadImagesAdapter
 import com.fluper.seeway.fragment.AddVehicleFragment
-import com.fluper.seeway.fragment.ChosseSecurityFragment
 import com.fluper.seeway.fragment.DriverInsuranceFragment
 import com.fluper.seeway.model.ImageUploadModel
 import com.fluper.seeway.model.VehicleInfoModel
 import com.rilixtech.CountryCodePicker
 import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
 import java.io.IOException
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -49,18 +47,14 @@ import kotlin.collections.ArrayList
 class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
     RadioGroup.OnCheckedChangeListener {
 
+    private var imageUri1: Uri? = null
     private var vn_name: String? = null
     private var vmn_model_number: String? = null
-
     private var IMAGE_PICK_CODE = 1000
     private val PERMISSION_CODE1 = 1000
     private var IMAGE_CAPTURE_CODE = 1005
-    private val IMAGE_CAPTURE_PROFILE = 1012
     var image_uri: Uri? = null
     private val PERMISSION_CODE = 1001
-    var myBitmap: Bitmap? = null
-    var picUri: Uri? = null
-    val users = ArrayList<ImageUploadModel>()
     val udli_arrayList = ArrayList<ImageUploadModel>()
     val vehicleList = ArrayList<VehicleInfoModel>()
 
@@ -161,8 +155,6 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
 
         }
 
-
-
         rl_driver_Card.setOnClickListener {  val calendar = Calendar.getInstance()
 
             val datePickerDialog = DatePickerDialog(
@@ -205,13 +197,12 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun pickImageFromGallery() {
-
-        //Intent to pick image
         val intent = Intent()
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE)
+
 
     }
 
@@ -288,64 +279,29 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1001) {
-            try {
-                val clipData: ClipData? = data!!.clipData
-                if (clipData != null) {
-                    for (i in 0 until clipData.getItemCount()) {
-                        val imageUri: Uri = clipData.getItemAt(i).getUri()
-                        //val pickedImage = data!!.data
+            if (data!!.clipData != null) {
+                val count = data!!.clipData!!
+                    .itemCount
+                for (i in 0 until count) {
+                    imageUri1 = data!!.clipData!!.getItemAt(i).uri
 
-                        val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                        val cursor: Cursor? =
-                            contentResolver.query(imageUri!!, filePath, null, null, null)
-                        cursor?.moveToFirst()
-                        val imagePath: String? =
-                            cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                        val options: BitmapFactory.Options = BitmapFactory.Options()
-                        options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                        val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
-
-                        udli_arrayList.add(ImageUploadModel(bitmap))
-
-                        cursor?.close()
-
-                        val uploadImageAdapter = UploadImagesAdapter(udli_arrayList, this)
-                        driving_license_rec.adapter = uploadImageAdapter
-                    }
-                } else {
-                    val uri = data.data
-                    //val pickedImage = data!!.data
-
-                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                    val cursor: Cursor? =
-                        contentResolver.query(uri!!, filePath, null, null, null)
-                    cursor?.moveToFirst()
-                    val imagePath: String? =
-                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                    val options: BitmapFactory.Options = BitmapFactory.Options()
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
+                    val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
 
                     udli_arrayList.add(ImageUploadModel(bitmap))
-
-                    cursor?.close()
-
-                    val uploadImageAdapter = UploadImagesAdapter(udli_arrayList, this)
-                    driving_license_rec.adapter = uploadImageAdapter
                 }
-            } catch (e: Exception) {
+                val uploadImageAdapter = UploadImagesAdapter(udli_arrayList, this)
+                driving_license_rec.adapter = uploadImageAdapter
+            }
+            else{
+                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data?.data)
 
+                udli_arrayList.add(ImageUploadModel(bitmap))
+                val uploadImageAdapter = UploadImagesAdapter(udli_arrayList, this)
+                driving_license_rec.adapter = uploadImageAdapter
             }
         }
 
         if(resultCode == Activity.RESULT_OK && requestCode == 2001){
-
 
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, image_uri)
 
@@ -358,60 +314,31 @@ class ProfileCreationDriverActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1004) {
+            if (data!!.clipData != null) {
+                val count = data!!.clipData!!
+                    .itemCount
+                for (i in 0 until count) {
+                    imageUri1 = data!!.clipData!!.getItemAt(i).uri
 
-            val clipData: ClipData? = data!!.clipData
-            if (clipData != null) {
-                for (i in 0 until clipData.getItemCount()) {
-                    val imageUri: Uri = clipData.getItemAt(i).getUri()
-                    //val pickedImage = data!!.data
-
-                    val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                    val cursor: Cursor? =
-                        contentResolver.query(imageUri!!, filePath, null, null, null)
-                    cursor?.moveToFirst()
-                    val imagePath: String? =
-                        cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                    val options: BitmapFactory.Options = BitmapFactory.Options()
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                    val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
+                    val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
 
                     up_arrayList.add(ImageUploadModel(bitmap))
-
-                    cursor?.close()
-
-                    val uploadImageAdapter  = UploadImagesAdapter(up_arrayList, this)
-                    upload_permission_rec.adapter = uploadImageAdapter
                 }
-            } else {
-                val uri = data.data
-                //val pickedImage = data!!.data
+                val uploadImageAdapter = UploadImagesAdapter(up_arrayList, this)
+                upload_permission_rec.adapter = uploadImageAdapter
+            }
+            else {
 
-                val filePath = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? =
-                    contentResolver.query(uri!!, filePath, null, null, null)
-                cursor?.moveToFirst()
-                val imagePath: String? =
-                    cursor?.getColumnIndex(filePath[0])?.let { cursor.getString(it) }
-
-                val options: BitmapFactory.Options = BitmapFactory.Options()
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888
-                val bitmap: Bitmap = BitmapFactory.decodeFile(imagePath, options)
-
-
+                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data?.data)
 
                 up_arrayList.add(ImageUploadModel(bitmap))
-
-                cursor?.close()
-
-                val uploadImageAdapter  = UploadImagesAdapter(up_arrayList, this)
+                val uploadImageAdapter = UploadImagesAdapter(up_arrayList, this)
                 upload_permission_rec.adapter = uploadImageAdapter
             }
 
         }
         if(resultCode == Activity.RESULT_OK && requestCode == 2004){
+            rl_upload_per.isFocusableInTouchMode = true
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, image_uri)
 
             up_arrayList.add(ImageUploadModel(bitmap))

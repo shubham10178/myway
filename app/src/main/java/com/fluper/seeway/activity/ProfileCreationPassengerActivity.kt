@@ -14,23 +14,26 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.Window
-import android.widget.*
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.fluper.seeway.R
-import com.fluper.seeway.fragment.AddVehicleFragment
 import com.fluper.seeway.fragment.ChosseSecurityFragment
 import com.rilixtech.CountryCodePicker
-import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
+import io.card.payment.CardIOActivity
+import io.card.payment.CreditCard
 import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
-import kotlinx.android.synthetic.main.activity_profile_creation_passenger.btn_save
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProfileCreationPassengerActivity : AppCompatActivity() {
+class ProfileCreationPassengerActivity : AppCompatActivity(),View.OnClickListener {
+    private val REQUEST_AUTOTEST: Any? = 1
+    private val REQUEST_SCAN: Int = 100
     private var yeaR: Int = 0
     private var month: Int = 0
     private var day: Int = 0
@@ -53,6 +56,8 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
 
         val type = Typeface.createFromAsset(getAssets(),"font/avenir_black.ttf");
         (ccp as CountryCodePicker).setTypeFace(type)
+
+        iv_business_dropdown.setOnClickListener(this)
 
         //yha kro ok
         btn_skip_profile.setOnClickListener {
@@ -302,7 +307,79 @@ class ProfileCreationPassengerActivity : AppCompatActivity() {
 
             profile_image.setImageURI(image_uri)
         }
+        if (requestCode === REQUEST_SCAN) {
+            var resultDisplayStr: String
+            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
+                val scanResult: CreditCard =
+                    data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT)
+
+                // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
+                resultDisplayStr = """
+                    Card Number: ${scanResult.redactedCardNumber}
+                    
+                    """.trimIndent()
+
+                // Do something with the raw number, e.g.:
+                // myService.setCardNumber( scanResult.cardNumber );
+                if (scanResult.isExpiryValid) {
+                    resultDisplayStr += """
+                        Expiration Date: ${scanResult.expiryMonth}/${scanResult.expiryYear}
+                        
+                        """.trimIndent()
+                }
+                if (scanResult.cvv != null) {
+                    // Never log or display a CVV
+                    resultDisplayStr += """CVV has ${scanResult.cvv.length} digits.
+"""
+                }
+                if (scanResult.postalCode != null) {
+                    resultDisplayStr += """
+                        Postal Code: ${scanResult.postalCode}
+                        
+                        """.trimIndent()
+                }
+            } else {
+                resultDisplayStr = "Scan was canceled."
+            }
+            // do something with resultDisplayStr, maybe display it in a textView
+            // resultTextView.setText(resultDisplayStr);
+        }
     }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+R.id.iv_business_dropdown->{
+    if(ll_business.visibility == View.VISIBLE){
+        ll_business.visibility = View.GONE
+    }else{
+        ll_business.visibility = View.VISIBLE
+    }
+
+}
+           /* R.id.iv_business_dropdown -> {
+                val scanIntent = Intent(this, CardIOActivity::class.java)
+
+                // customize these values to suit your needs.
+
+                // customize these values to suit your needs.
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true) // default: false
+
+                scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false) // default: false
+
+                scanIntent.putExtra(
+                    CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE,
+                    false
+                ) // default: false
+
+
+                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
+
+                // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
+                startActivityForResult(scanIntent, REQUEST_SCAN)
+            }*/
+            }
+        }
+
 }
 
 

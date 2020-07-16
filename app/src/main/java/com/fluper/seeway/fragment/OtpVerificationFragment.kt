@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentTransaction
 
 import com.fluper.seeway.R
 import com.fluper.seeway.activity.LoginActivity
+import com.fluper.seeway.activity.ProfileCreationDriverActivity
+import com.fluper.seeway.activity.ProfileCreationPassengerActivity
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -59,9 +61,13 @@ class OtpVerificationFragment : Fragment() {
                 transaction.add(R.id.frame_container, userTypeFragment).commit()
             }else {
 
-                val userTypeFragment: Fragment = UserTypeFragment()
-                val transaction = childFragmentManager.beginTransaction()
-                transaction.add(R.id.frame_container, userTypeFragment).commit()
+                if(type.equals("Passenger")){
+                    val intent = Intent(requireActivity(), ProfileCreationPassengerActivity::class.java)
+                    requireActivity().startActivity(intent)
+                }else{
+                    val intent = Intent(requireActivity(), ProfileCreationDriverActivity::class.java)
+                    requireActivity().startActivity(intent)
+                }
             }
         }
 

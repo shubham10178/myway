@@ -7,12 +7,17 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.GONE
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.fluper.seeway.R
 import com.fluper.seeway.adapter.SliderAdapter
+import com.fluper.seeway.fragment.ForgotPassword
+import com.fluper.seeway.fragment.UserTypeFragment
 import com.viewpagerindicator.CirclePageIndicator
 import kotlinx.android.synthetic.main.activity_introduction.*
 import me.relex.circleindicator.CircleIndicator
@@ -52,10 +57,7 @@ class IntroductionActivity : AppCompatActivity() {
 
 
         btn_next1.setOnClickListener {
-
-                val i  = Intent(this@IntroductionActivity,LoginActivity::class.java)
-                startActivity(i)
-
+            setFragment(UserTypeFragment())
         }
 
         btn_next.setOnClickListener {
@@ -63,9 +65,7 @@ class IntroductionActivity : AppCompatActivity() {
         }
 
         btn_skip.setOnClickListener {
-
-            val i = Intent(this,LoginActivity::class.java)
-            startActivity(i)
+            setFragment(UserTypeFragment())
         }
 
 
@@ -100,11 +100,20 @@ class IntroductionActivity : AppCompatActivity() {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
-
-
         })
 
     }
+
+    protected fun setFragment(fragment: Fragment?) {
+        val fragmentManager: FragmentManager = supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        if (fragment != null) {
+            fragmentTransaction.add(android.R.id.content, fragment)
+        }
+        fragmentTransaction
+            .addToBackStack(null).commit()
+    }
+
     }
 
 
