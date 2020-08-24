@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
@@ -18,28 +19,26 @@ import com.fluper.seeway.activity.ProfileCreationDriverActivity
 import com.fluper.seeway.activity.ProfileCreationPassengerActivity
 import com.fluper.seeway.model.UserTypeModel
 
-
 class ListAdapter constructor (val userList: ArrayList<UserTypeModel>,val mCtx: Context?) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.user_type_item, parent, false)
         return ViewHolder(v)
     }
 
-
     override fun onBindViewHolder(holder: ListAdapter.ViewHolder, position: Int) {
         holder.bindItems(userList[position])
         holder.main_cons.setOnClickListener {
 
             val strName = userList.get(position).name
-            holder.main_cons.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            holder.main_cons.setBackgroundColor(Color.parseColor("#FFFFFF"))
             if(strName.equals("Passenger")) {
 
                 val intent = Intent(mCtx, LoginActivity::class.java)
                 intent.putExtra("type","Passenger")
                 mCtx?.startActivity(intent)
             }else{
+                Toast.makeText(mCtx,"Under Development",Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(mCtx, LoginActivity::class.java)
                 intent.putExtra("type","Driver")

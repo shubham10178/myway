@@ -72,7 +72,6 @@ class ProfileCreationPassengerActivity : AppCompatActivity(),View.OnClickListene
             val btn_create_profile = dialog.findViewById<View>(R.id.btn_create_profile) as Button
             btn_create_profile.setOnClickListener { dialog.dismiss() }
 
-
             btn_skip.setOnClickListener {
                 setFragment(ChosseSecurityFragment())
 
@@ -320,7 +319,7 @@ class ProfileCreationPassengerActivity : AppCompatActivity(),View.OnClickListene
                     """.trimIndent()
 
                 // Do something with the raw number, e.g.:
-                // myService.setCardNumber( scanResult.cardNumber );
+                // myService.setCardNumber( scanResult.cardNumber )
                 if (scanResult.isExpiryValid) {
                     resultDisplayStr += """
                         Expiration Date: ${scanResult.expiryMonth}/${scanResult.expiryYear}
@@ -354,7 +353,6 @@ R.id.iv_business_dropdown->{
     }else{
         ll_business.visibility = View.VISIBLE
     }
-
 }
            /* R.id.iv_business_dropdown -> {
                 val scanIntent = Intent(this, CardIOActivity::class.java)
@@ -370,8 +368,6 @@ R.id.iv_business_dropdown->{
                     CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE,
                     false
                 ) // default: false
-
-
                 // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
 
                 // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
@@ -379,7 +375,6 @@ R.id.iv_business_dropdown->{
             }*/
             }
         }
-
 }
 
 
