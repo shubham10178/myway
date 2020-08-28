@@ -90,7 +90,7 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
                 datePickerDialog.show()}*/
             R.id.btnSave->{
                 startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
-                    putExtra(Constants.UserType,Constants.Passenger)
+                    putExtra(Constants.UserType,sharedPreference.userType)
                 })
             }
         }
@@ -104,7 +104,9 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
         val btn_create_profile = dialog.findViewById<View>(R.id.btn_create_profile) as Button
         btn_create_profile.setOnClickListener { dialog.dismiss() }
         btn_skip.setOnClickListener {
-            startActivity(Intent(this, ChooseSecurityActivity::class.java))
+            startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                putExtra(Constants.UserType,sharedPreference.userType)
+            })
             dialog.dismiss()
         }
         dialog.show()

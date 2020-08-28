@@ -169,13 +169,13 @@
            <LinearLayout
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:orientation="horizontal">
+               android:orientation="horizontal"
+               android:gravity="center_vertical"
+               android:layout_marginTop="15dp">
                <RelativeLayout
-                   android:layout_width="wrap_content"
+                   android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:padding="5dp"
-                   android:layout_marginTop="10dp"
-                   android:layout_marginBottom="5dp"
                    android:layout_weight="1"
                    android:background="@drawable/edit_text_border_right"
                    android:orientation="horizontal">
@@ -202,7 +202,6 @@
                    android:id="@+id/img_upload_passport"
                    android:layout_width="20dp"
                    android:layout_height="20dp"
-                   android:layout_marginTop="10dp"
                    android:src="@drawable/upload_all"/>
            </LinearLayout>
 
@@ -283,7 +282,7 @@
                    <TextView
                        android:layout_width="match_parent"
                        android:layout_height="wrap_content"
-                       android:text="Slect Insurance Company"
+                       android:text="Health insurance company/ optional social security number"
                        android:fontFamily="@font/avenir_black"
                        android:textColor="@android:color/darker_gray"
                        android:textStyle="bold"

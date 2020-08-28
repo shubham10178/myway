@@ -1,10 +1,15 @@
 package com.fluper.seeway.base
 
 import androidx.fragment.app.Fragment
+import com.fluper.seeway.networks.ApiInterface
+import com.fluper.seeway.networks.RetrofitUtil
+import com.fluper.seeway.utilitarianFiles.SharedPreferenceUtils
 
 open class BaseFragment : Fragment() {
-    /*lateinit var mContext: HomeActivity
-    val apiInterface: ApiInterface by lazy {
+    val apiInterface : ApiInterface by lazy {
         RetrofitUtil.createBaseApiService()
-    }*/
+    }
+    val sharedPreference: SharedPreferenceUtils by lazy {
+        SharedPreferenceUtils.getInstance(requireContext().applicationContext)
+    }
 }

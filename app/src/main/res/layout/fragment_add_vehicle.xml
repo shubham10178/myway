@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_patterns2x"
-    android:fitsSystemWindows="true"
     android:paddingTop="@dimen/_24sdp"
     tools:context=".panels.driver.ChooseVehicleTypeActivity">
 
@@ -189,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:fontFamily="@font/avenir_black"
-                    android:text="Upload Vehicle  Image"
+                    android:text="Upload Vehicle Image"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold" />
@@ -197,24 +196,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="15dp">
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/edit_text_border_right"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:orientation="horizontal">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/vehicle_img_rec"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+                            android:visibility="gone"/>
 
                         <ImageView
                             android:id="@+id/dummy_vehicle_img"
@@ -223,7 +221,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_weight="1"
                             android:src="@drawable/upload_images3x"
-                            android:visibility="visible"></ImageView>
+                            android:visibility="visible"/>
 
                     </RelativeLayout>
 
@@ -231,7 +229,6 @@
                         android:id="@+id/vehicle_img_upload"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginTop="10dp"
                         android:src="@drawable/upload_all" />
                 </LinearLayout>
 
@@ -272,6 +269,7 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvVehicleColor"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -438,6 +436,7 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvAvailSheet"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -471,24 +470,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="15dp">
 
                     <RelativeLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/edit_text_border_right"
-                        android:orientation="horizontal"
-                        android:padding="5dp">
+                        android:orientation="horizontal">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/car_doc_rec"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+                            android:visibility="gone"/>
 
                         <ImageView
                             android:id="@+id/dummy_car_img"
@@ -497,7 +495,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_weight="1"
                             android:src="@drawable/upload_images3x"
-                            android:visibility="visible"></ImageView>
+                            android:visibility="visible"/>
 
                     </RelativeLayout>
 
@@ -505,7 +503,6 @@
                         android:id="@+id/car_doc_img_upload"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginTop="10dp"
                         android:src="@drawable/upload_all" />
                 </LinearLayout>
 
@@ -531,6 +528,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:checked="true"
                         android:backgroundTint="@android:color/holo_green_light"
                         android:button="@drawable/radio_selector"
                         android:fontFamily="@font/avenir_light"
@@ -589,7 +587,7 @@
                         android:layout_height="@dimen/_80sdp"
                         android:background="@drawable/shap_rec_bg"
                         android:fontFamily="@font/avenir_black"
-                        android:gravity="top|left"
+                        android:gravity="top|start"
                         android:hint="Describe here...."
                         android:padding="10dp"
                         android:textColor="@color/black"

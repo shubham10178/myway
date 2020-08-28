@@ -9,14 +9,14 @@ import android.widget.Button
 import android.widget.TextView
 import com.fluper.seeway.R
 import com.fluper.seeway.base.BaseActivity
-import com.fluper.seeway.panels.driver.DriverMainActivity
+import com.fluper.seeway.panels.driver.dashboard.DriverMainActivity
 import com.fluper.seeway.panels.driver.ProfileCreationDriverActivity
-import com.fluper.seeway.panels.passenger.PassengerMainActivity
+import com.fluper.seeway.panels.passenger.dashboard.PassengerMainActivity
 import com.fluper.seeway.utilitarianFiles.Constants
 import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
 import kotlinx.android.synthetic.main.fragment_chosse_security.*
 
-class ChooseSecurityActivity : BaseActivity(),View.OnClickListener {
+class ChooseSecurityActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_chosse_security)
@@ -33,20 +33,45 @@ class ChooseSecurityActivity : BaseActivity(),View.OnClickListener {
     private fun initClickListener() {
         txt_skip.setOnClickListener(this)
         btn_proceed.setOnClickListener(this)
+        btnFace.setOnClickListener(this)
+        btnFingerPrint.setOnClickListener(this)
+        btnPin.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
-        when(p0?.id){
-            R.id.txt_skip,R.id.btn_proceed->{
-                if (intent.hasExtra(Constants.UserType) && intent.getStringExtra(Constants.UserType).equals(Constants.Passenger)) {
-                    startActivity(Intent(this, PassengerMainActivity::class.java).apply {
-                        this@ChooseSecurityActivity.finishAffinity()
-                    })
-                } else if (intent.hasExtra(Constants.UserType) && intent.getStringExtra(Constants.UserType).equals(Constants.Driver)) {
-                    startActivity(Intent(this, DriverMainActivity::class.java).apply {
-                        this@ChooseSecurityActivity.finishAffinity()
-                    })
-                }
+        when (p0?.id) {
+            R.id.txt_skip, R.id.btn_proceed -> {
+                if (intent.hasExtra(Constants.UserType)) {
+                    when (intent.getStringExtra(Constants.UserType)) {
+                        Constants.Passenger -> {
+                            startActivity(Intent(this, PassengerMainActivity::class.java).apply {
+                                this@ChooseSecurityActivity.finishAffinity()
+                            })
+                        }
+                        Constants.Driver -> {
+                            startActivity(Intent(this, DriverMainActivity::class.java).apply {
+                                this@ChooseSecurityActivity.finishAffinity()
+                            })
+                        }
+                        else -> onBackPressed()
+                    }
+                } else
+                    onBackPressed()
+            }
+            R.id.btnFace -> {
+                startActivity(Intent(this,FaceLockActivity::class.java).apply {
+                    putExtra(Constants.UserType,intent.getStringExtra(Constants.UserType))
+                })
+            }
+            R.id.btnFingerPrint -> {
+                startActivity(Intent(this,FingerPrintLockActivity::class.java).apply {
+                    putExtra(Constants.UserType,intent.getStringExtra(Constants.UserType))
+                })
+            }
+            R.id.btnPin -> {
+                startActivity(Intent(this,PatternLockActivity::class.java).apply {
+                    putExtra(Constants.UserType,intent.getStringExtra(Constants.UserType))
+                })
             }
         }
     }

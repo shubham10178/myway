@@ -29,7 +29,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         statusBarFullScreenWithBackground()
-        prefs = getSharedPreferences("com.fluper.seeway", Context.MODE_PRIVATE)
 
         edt_User_Email.setOnClickListener(this)
         emailClick.setOnClickListener(this)
@@ -78,16 +77,25 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity(Intent(this, ForgotPasswordActivity::class.java))
             }
             R.id.btnFace -> {
+                startActivity(Intent(this,FaceLockActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                })
             }
             R.id.btnFingerPrint -> {
+                startActivity(Intent(this,FingerPrintLockActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                })
             }
             R.id.btnPin -> {
+                startActivity(Intent(this,PatternLockActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                })
             }
         }
     }
 
     private fun showDialog() {
-        val dialog = this.let { it1 -> Dialog(it1) }
+        val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.copyFrom(dialog.window?.attributes)
@@ -104,7 +112,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         btn_cont.setOnClickListener {
             startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
-                putExtra(Constants.CameFrom, prefs.getString(Constants.UserType, ""))
+                putExtra(Constants.UserType, sharedPreference.userType)
             })
             dialog.dismiss()
         }

@@ -13,9 +13,9 @@ import com.fluper.seeway.R
 import com.fluper.seeway.onBoard.model.ImageUploadModel
 
 class UploadImagesAdapter constructor(
-    val userList: ArrayList<ImageUploadModel>,
-    val mCtx: Context?,
-    val removePicListener:RemovePictures
+    private val userList: ArrayList<ImageUploadModel>,
+    private val mCtx: Context?,
+    private val removePicListener:RemovePictures
 ) : RecyclerView.Adapter<UploadImagesAdapter.ViewHolder>() {
 
 

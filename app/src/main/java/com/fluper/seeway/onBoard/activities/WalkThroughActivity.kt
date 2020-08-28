@@ -36,7 +36,6 @@ class WalkThroughActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_walkthrough)
         statusBarFullScreenWithBackground()
-        prefs = getSharedPreferences("com.fluper.seeway", Context.MODE_PRIVATE)
         val adapter: PagerAdapter = WalkThroughAdapter(this, image, pager)
         pager.adapter = WalkThroughAdapter(this, image, pager)
 
@@ -54,8 +53,7 @@ class WalkThroughActivity : BaseActivity() {
 
         btn_next1.setOnClickListener {
             startActivity(Intent(this, UserTypeActivity::class.java).apply {
-                val editor = prefs.edit()
-                editor.putBoolean(Constants.FirstRun, false).apply()
+                sharedPreference.firstRun = false
                 this@WalkThroughActivity.finish()
             })
         }
@@ -66,8 +64,7 @@ class WalkThroughActivity : BaseActivity() {
 
         btn_skip.setOnClickListener {
             startActivity(Intent(this, UserTypeActivity::class.java).apply {
-                val editor = prefs.edit()
-                editor.putBoolean(Constants.FirstRun, false).apply()
+                sharedPreference.firstRun = false
                 this@WalkThroughActivity.finish()
             })
         }

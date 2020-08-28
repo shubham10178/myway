@@ -29,10 +29,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/approval_text"
-            android:fontFamily="@font/avenir_light"
+            android:fontFamily="@font/avenir_black"
             android:layout_below="@+id/txt_header"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:gravity="center"
             android:layout_marginTop="20dp"/>
 

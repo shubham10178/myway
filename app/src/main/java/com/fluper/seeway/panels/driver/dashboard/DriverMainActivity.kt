@@ -1,30 +1,30 @@
-package com.fluper.seeway.panels.passenger
+package com.fluper.seeway.panels.driver.dashboard
 
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
 import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.onBoard.activities.UserTypeActivity
-import com.fluper.seeway.onBoard.adapter.HomeAddressAdapter
-import com.fluper.seeway.onBoard.model.AddressModel
+import com.fluper.seeway.panels.driver.ChooseVehicleTypeActivity
+import com.fluper.seeway.panels.passenger.NotificationPassengerActivity
 import com.fluper.seeway.utilitarianFiles.FusedLocationFetcher
+import com.fluper.seeway.utilitarianFiles.NetworkUtils
 import com.fluper.seeway.utilitarianFiles.showToast
 import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,21 +34,19 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.activity_new_passenger_nav.*
+import kotlinx.android.synthetic.main.activity_new_driver_nav.*
 import kotlinx.android.synthetic.main.navigation_menu.*
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
+class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListener {
 
-class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListener {
-    private lateinit var mMap: GoogleMap
-    private val bottomSheetDialogFragment by lazy { PassengerMainBottomSheetFragment() }
-    private var doubleBackToExitPressedOnce = false
-    private var fusedLocationFetcher: FusedLocationFetcher? = null
     private var dl: DrawerLayout? = null
     private var t: ActionBarDrawerToggle? = null
+    private lateinit var mMap: GoogleMap
+    private var doubleBackToExitPressedOnce = false
+    private var fusedLocationFetcher: FusedLocationFetcher? = null
     private val STORAGE_PERMISSION_CODE = 23
     val MULTIPLE_PERMISSIONS = 10 // code you want.
     var permissions = arrayOf(
@@ -64,17 +62,17 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_passenger_nav)
+        setContentView(R.layout.activity_new_driver_nav)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
         statusBarFullScreenWithBackground()
-
+        sharedPreference.isLoggedIn = true
         if (!Places.isInitialized())
             Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
-
-        bottomSheetFragment()
+        if (!NetworkUtils.isInternetAvailable(this.applicationContext))
+            showToast("Poor internet connection.")
         initMap()
         setToolBar()
         initDrawer()
@@ -86,96 +84,30 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         }
     }
 
-    private fun bottomSheetFragment() {
-        /*val bundle = Bundle()
-        //bundle.putParcelable(Constants.Property_List, propertyList)
-        bottomSheetDialogFragment.arguments = bundle
-        bottomSheetDialogFragment.show(
-            supportFragmentManager,
-            bottomSheetDialogFragment.tag
-        )*/
-        val behavior = BottomSheetBehavior.from(bottomSheet)
-        //behavior.isFitToContents = false
-        //behavior.halfExpandedRatio = 0.7f
-        //behavior.isGestureInsetBottomIgnored = true
-        behavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // React to dragging events
-                Log.e("onSlide", "onSlide")
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when {
-                    BottomSheetBehavior.STATE_EXPANDED == newState -> {
-                        /*Do it later*/
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED == newState -> {
-                        /*Do it later*/
-                    }
-                    BottomSheetBehavior.STATE_HIDDEN == newState -> {
-                        /*Do it later*/
-                    }
-                    BottomSheetBehavior.STATE_DRAGGING == newState -> {
-                        /*Do it later*/
-                    }
-                    BottomSheetBehavior.STATE_HALF_EXPANDED == newState -> {
-                        /*Do it later*/
-                    }
-                    BottomSheetBehavior.STATE_SETTLING == newState -> {
-                        /*Do it later*/
-                    }
-                    else -> {
-                        /*Do it later*/
-                    }
-                }
-            }
-        })
-    }
-
-    private fun initDrawer() {
-        btnLogout.setOnClickListener(this)
-        tvInviteEarn.setOnClickListener(this)
-    }
-
     private fun initView() {
-        ll_earnings.visibility = View.GONE
-        btnCurrentLocation.setOnClickListener {
+        ll_earnings.visibility = View.VISIBLE
+        img_seekbar.setOnClickListener {
             if (fusedLocationFetcher != null)
                 fusedLocationFetcher?.getCurrentLocation()
-        }
-        home_recycler.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        val users = ArrayList<AddressModel>()
-        users.add(AddressModel("Home", "383 joriseen st sunnyside Pretora", R.drawable.home_file))
-        users.add(AddressModel("Work", "580 Paul grugre St. pretoria", R.drawable.work_file))
-        users.add(AddressModel("Rosandra", "580 Paul grugre St. pretoria", R.drawable.star_file))
-        users.add(AddressModel("Rosandra", "580 Paul grugre St. pretoria", R.drawable.star_file))
-        val adapter = HomeAddressAdapter(users, this)
-        home_recycler.adapter = adapter
-    }
-
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            R.id.btnLogout -> {
-                startActivity(
-                    Intent(
-                        this@PassengerMainActivity,
-                        UserTypeActivity::class.java
-                    ).apply {
-                        this@PassengerMainActivity.finishAffinity()
-                    })
+            if (img_seekbar.drawable
+                    .constantState == resources.getDrawable(R.drawable.toggle_off_all)
+                    .constantState
+            ) {
+                ivProgress.visibility = View.VISIBLE
+                tvFinding.visibility = View.VISIBLE
+                val aniRotate = AnimationUtils.loadAnimation(this, R.anim.clock_wise)
+                ivProgress.startAnimation(aniRotate)
+                img_seekbar.setImageResource(R.drawable.toggle_on3x)
+                txt_active_status.setTextColor(Color.parseColor("#02B509"))
+                txt_active_status.text = "You are Online"
+            } else {
+                ivProgress.visibility = View.GONE
+                tvFinding.visibility = View.GONE
+                ivProgress.clearAnimation()
+                img_seekbar.setImageResource(R.drawable.toggle_off_all)
+                txt_active_status.setTextColor(Color.RED)
+                txt_active_status.text = "You are Offline"
             }
-            R.id.tvInviteEarn -> {
-                drawerHandler()
-            }
-        }
-    }
-
-    private fun drawerHandler() {
-        if (nav_dra.isDrawerOpen(GravityCompat.START)) {
-            nav_dra.closeDrawer(GravityCompat.START)
-        } else {
-            nav_dra.openDrawer(GravityCompat.START)
         }
     }
 
@@ -199,13 +131,61 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             showToast("Error in map loading...")
     }
 
-    /**
-     * Enables the My Location layer if the fine location permission has been granted.
-     */
+    private fun setToolBar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        dl = findViewById<View>(R.id.nav_dra) as DrawerLayout
+        t = ActionBarDrawerToggle(this, dl, toolbar, 0, 0)
+        dl!!.addDrawerListener(t!!)
+        t!!.syncState()
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+    }
+
+    private fun initDrawer() {
+        btnLogout.setOnClickListener(this)
+        tvInviteEarn.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.btnLogout -> {
+                startActivity(
+                    Intent(
+                        this,
+                        UserTypeActivity::class.java
+                    ).apply {
+                        sharedPreference.isLoggedIn = false
+                        sharedPreference.deletePreferences()
+                        this@DriverMainActivity.finishAffinity()
+                    })
+            }
+            R.id.tvInviteEarn -> {
+                drawerHandler()
+            }
+        }
+    }
+
+    private fun drawerHandler() {
+        if (nav_dra.isDrawerOpen(GravityCompat.START)) {
+            nav_dra.closeDrawer(GravityCompat.START)
+        } else {
+            nav_dra.openDrawer(GravityCompat.START)
+        }
+    }
+
     private fun enableMyLocation() {
         if (!::mMap.isInitialized) return
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             mMap.uiSettings.isMyLocationButtonEnabled = false
             mMap.isMyLocationEnabled = true
         } else {
@@ -231,7 +211,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
                             mMap.cameraPosition.target//map's center position latitude & longitude
                         try {
                             getAddressFromLocation(midLong!!)
-                        } catch (e: java.lang.Exception) {
+                        } catch (e: Exception) {
                         }
                     }
                     removeLocationUpdates()
@@ -274,26 +254,18 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         removeLocationUpdates()
     }
 
-    private fun setToolBar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        dl = findViewById<View>(R.id.nav_dra) as DrawerLayout
-        t = ActionBarDrawerToggle(this, dl, toolbar, 0, 0)
-        dl!!.addDrawerListener(t!!)
-        t!!.syncState()
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.home_screen_nav_passenger, menu)
+        menuInflater.inflate(R.menu.home_screen_nav_driver, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.btnNotification -> {
+            R.id.action_driver_chosse_vehicle -> {
+                startActivity(Intent(this, ChooseVehicleTypeActivity::class.java))
+                super.onOptionsItemSelected(item)
+            }
+            R.id.action_driver_notification -> {
                 startActivity(Intent(this, NotificationPassengerActivity::class.java))
                 super.onOptionsItemSelected(item)
             }
@@ -321,6 +293,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         }
         return true
     }
+
 
     //Requesting permission
     private fun requestStoragePermission() {
@@ -388,7 +361,6 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
-
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed()

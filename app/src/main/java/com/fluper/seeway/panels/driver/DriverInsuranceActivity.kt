@@ -21,6 +21,7 @@ import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.onBoard.adapter.RemovePictures
 import com.fluper.seeway.onBoard.adapter.UploadImagesAdapter
 import com.fluper.seeway.onBoard.model.ImageUploadModel
+import com.fluper.seeway.panels.driver.dashboard.DriverMainActivity
 import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
 import kotlinx.android.synthetic.main.fragment_driver_insurance.*
 

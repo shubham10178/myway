@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Seeway</string>
+    <string name="error_exception">Some Exception occurred</string>
+    <string name="something_went_wrong">Something went wrong</string>
+
     <string name="txt_header">"Lorem Ipsum is simply dummy text "</string>
     <string name="dummy_text">"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."</string>
 
@@ -42,7 +45,7 @@
     <string name="profile_alert">Making Profile is better for benefits and bonuses. But also can anonymously but need pay by card not with cash and goes to screen with selection of targets.</string>
     <string name="dummy_text2">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 </string>
     <string name="title_activity_home_screen_passenger">Map</string>
-    <string name="approval_text">you will be contacted by e-mail or telehone from human resources department for managing employment contract.</string>
+    <string name="approval_text">you will be contacted by e-mail or telephone from human resources department for managing employment contract.</string>
     <string name="title_activity_home_screen_nav_passenger">HomeScreenNavPassengerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -70,5 +73,6 @@
     <string name="invite">Invite &amp; Earn</string>
     <string name="logo">logo</string>
     <string name="title_activity_maps">Map</string>
+    <string name="amp"><![CDATA[&]]></string>
 
 </resources>

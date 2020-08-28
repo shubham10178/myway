@@ -295,7 +295,6 @@
                             android:text="Male"
                             android:layout_weight="1"
                             android:paddingLeft="10dp"
-                            android:textSize="12sp"
                             android:fontFamily="@font/avenir_black"
                             android:button="@drawable/radio_selector"
                             android:checked="true" />
@@ -305,7 +304,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="10dp"
-                            android:textSize="12sp"
                             android:fontFamily="@font/avenir_black"
                             android:button="@drawable/radio_selector"
                             android:layout_weight="1"
@@ -467,12 +465,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:orientation="horizontal"
                     android:layout_marginTop="10dp"
+                    android:gravity="center_vertical">
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/edit_text_border_right"
                     android:orientation="horizontal">
@@ -499,7 +497,6 @@
                         android:id="@+id/img_upload"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginTop="10dp"
                         android:src="@drawable/upload_all"/>
                 </LinearLayout>
                 <TextView
@@ -522,6 +519,9 @@
                     android:layout_height="wrap_content">
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/vehicle_info_rec"
+                        android:orientation="vertical"
+                        tools:listitem="@layout/vehicle_info_item"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                     </androidx.recyclerview.widget.RecyclerView>
@@ -544,15 +544,15 @@
                         android:src="@drawable/plus_all"/>
 
                     <TextView
+                        android:id="@+id/tvAddVehicle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add More Vehicle"
+                        android:text="Add Vehicle"
                         android:fontFamily="@font/avenir_black"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginLeft="8dp"
                         android:textColor="@android:color/black"/>
-
                 </LinearLayout>
 
                 <TextView
@@ -677,13 +677,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
                 <RelativeLayout
                     android:id="@+id/rl_upload_per"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/edit_text_border_right"
                     android:orientation="horizontal">
@@ -710,7 +709,6 @@
                         android:id="@+id/permission_img_upload"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
                         android:src="@drawable/upload_all"/>
                 </LinearLayout>
 

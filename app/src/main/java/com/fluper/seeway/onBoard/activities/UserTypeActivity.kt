@@ -31,8 +31,6 @@ class UserTypeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         statusBarFullScreenWithBackground()
         setContentView(R.layout.fragment_user_type)
-        prefs = getSharedPreferences("com.fluper.seeway", Context.MODE_PRIVATE)
-        prefs.getString(Constants.UserType, "")
         initView()
     }
 
@@ -66,16 +64,9 @@ class UserTypeActivity : BaseActivity() {
         val adapter = ListAdapter(users, this, object : UserType {
             override fun userTypeId(userType: String) {
                 when {
-                    userType.equals(Constants.Passenger) -> {
+                    userType.equals(Constants.Passenger) || userType.equals(Constants.Driver) -> {
                         startActivity(Intent(this@UserTypeActivity, LoginActivity::class.java).apply {
-                            val editor = prefs.edit()
-                            editor.putString(Constants.UserType, userType).apply()
-                        })
-                    }
-                    userType.equals(Constants.Driver) -> {
-                        startActivity(Intent(this@UserTypeActivity, LoginActivity::class.java).apply {
-                            val editor = prefs.edit()
-                            editor.putString(Constants.UserType, userType).apply()
+                            sharedPreference.userType = userType
                         })
                     }
                     else -> {

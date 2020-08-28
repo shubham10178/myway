@@ -27,23 +27,32 @@ class OtpVerificationActivity : BaseActivity() {
         setContentView(R.layout.fragment_otp_verification)
         setTimer()
         btn_otp_con = findViewById(R.id.btn_otp_con)
-        val type : String? = intent?.getStringExtra(Constants.CameFrom)
 
         btn_otp_con.setOnClickListener {
-            if(type.equals(Constants.ForgotPassword)){
+            if(intent.hasExtra(Constants.CameFrom)){
+                if (intent.getStringExtra(Constants.CameFrom).equals(Constants.ForgotPassword))
                 startActivity(Intent(this, ResetPasswordActivity::class.java).apply {
                     this@OtpVerificationActivity.finish()
                 })
+                else
+                    onBackPressed()
             }else {
-                if(type.equals(Constants.Passenger)){
-                    startActivity(Intent(this, ProfileCreationPassengerActivity::class.java).apply {
-                        this@OtpVerificationActivity.finish()
-                    })
-                }else if (type.equals(Constants.Driver)){
-                    startActivity(Intent(this, ProfileCreationDriverActivity::class.java).apply {
-                        this@OtpVerificationActivity.finish()
-                    })
-                }
+                if (intent.hasExtra(Constants.UserType)){
+                    when(intent.getStringExtra(Constants.UserType)) {
+                        Constants.Passenger -> {
+                            startActivity(Intent(this, ProfileCreationPassengerActivity::class.java).apply {
+                                this@OtpVerificationActivity.finish()
+                            })
+                        }
+                        Constants.Driver -> {
+                            startActivity(Intent(this, ProfileCreationDriverActivity::class.java).apply {
+                                this@OtpVerificationActivity.finish()
+                            })
+                        }
+                        else -> onBackPressed()
+                    }
+                }else
+                    onBackPressed()
             }
         }
         tvResendOtp.setOnClickListener {
