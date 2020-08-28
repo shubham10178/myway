@@ -10,7 +10,6 @@
 
 
     <string-array name="select_city">
-        <item></item>
         <item>Abu Dhabi</item>
         <item>Sharjah</item>
         <item>Al Ain</item>
@@ -34,7 +33,7 @@
         <item>Superb (Skoda)</item>
     </string-array>
     <string name="underline_text"> <u>Bankin account link</u>.</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="forgot_pass">We need to verify your account, your data will be secure and private.</string>
     <string name="forgot_pass1">Enter the new password then your password will be change Don"'"t forgot again</string>
@@ -69,5 +68,7 @@
     <string name="terms">Terms &amp; Conditions</string>
     <string name="save">Save &amp; Submit</string>
     <string name="invite">Invite &amp; Earn</string>
+    <string name="logo">logo</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

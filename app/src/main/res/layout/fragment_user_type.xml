@@ -1,43 +1,44 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:clickable="true"
-    android:background="@android:color/white"
     android:layout_height="match_parent"
-    >
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:background="@drawable/bg_patterns2x"
-    android:orientation="vertical">
+    android:background="@drawable/bg_patterns2x"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/_25sdp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-                android:text="Select User Type"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="15sp"
+            android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
-                android:fontFamily="@font/avenir_black"/>
+            android:fontFamily="@font/avenir_black"
+            android:gravity="center"
+            android:text="Select User Type"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@android:color/transparent"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
-</LinearLayout>
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+    </LinearLayout>
 </LinearLayout>

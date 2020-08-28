@@ -4,12 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@android:color/white"
-    tools:context=".fragment.ChosseSecurityFragment">
-<RelativeLayout
+    android:background="@drawable/bg_patterns2x"
+    tools:context=".onBoard.activities.ChooseSecurityActivity">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_patterns2x">
+    android:layout_marginTop="@dimen/_24sdp"
+    android:layout_marginStart="@dimen/_20sdp"
+    android:layout_marginEnd="@dimen/_20sdp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/txt_skip"
@@ -17,21 +20,18 @@
         android:layout_height="wrap_content"
         android:text="Skip"
         android:textColor="@android:color/black"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/_20sdp"
         android:fontFamily="@font/avenir_black"
-        android:padding="5dp"/>
+        android:padding="@dimen/_5sdp"
+        android:layout_gravity="end"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:layout_weight=".5"
             android:orientation="vertical">
 
             <ImageView
@@ -48,48 +48,30 @@
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:layout_marginTop="20dp"/>
-
-
+                android:layout_marginTop="@dimen/_35sdp"/>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
         <LinearLayout
             android:id="@+id/center_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="50dp"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_50sdp">
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_weight="1"
                 android:src="@drawable/face_id2x"/>
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_weight="1"
                 android:src="@drawable/touch_id"/>
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_weight="1"
                 android:src="@drawable/pin_lock2x"/>
-
-        </LinearLayout>
-
-
         </LinearLayout>
 
         <Button
@@ -99,13 +81,11 @@
             android:layout_gravity="center"
             android:background="@drawable/button_background_next"
             android:text="Proceed"
-            android:layout_below="@+id/center_layout"
+            android:layout_marginTop="@dimen/_70sdp"
             android:fontFamily="@font/avenir_black"
             android:textColor="@android:color/white"
-            android:layout_margin="20dp"
-            android:layout_marginTop="30dp"
             android:textAllCaps="false"/>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
 </RelativeLayout>

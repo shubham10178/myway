@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/bg_patterns2x"
-    tools:context=".activity.LoginActivity">
-
+    android:fitsSystemWindows="true"
+    tools:context=".onBoard.activities.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbarSize="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:orientation="vertical">
 
             <ImageView
@@ -29,9 +36,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="20dp"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -52,8 +58,8 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/avenir_black"
                         android:gravity="center"
-                        android:textColor="@color/black"
-                        android:text="Login with Facebook" />
+                        android:text="Login with Facebook"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
 
@@ -78,8 +84,8 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/avenir_black"
                         android:gravity="center"
-                        android:textColor="@color/black"
-                        android:text="Login with Google" />
+                        android:text="Login with Google"
+                        android:textColor="@color/black" />
 
                 </LinearLayout>
 
@@ -106,8 +112,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:text="Or"
                     android:fontFamily="@font/avenir_black"
+                    android:text="Or"
                     android:textColor="@android:color/black" />
 
                 <View
@@ -123,19 +129,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="-2dp"
                     android:background="@drawable/edit_text_border_right">
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/mail_all"/>
+                        android:src="@drawable/mail_all" />
 
                 </LinearLayout>
                 `
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -143,27 +152,28 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/emailClick"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextInputLayoutHintText"
-                        android:textColorHint="@color/grey"
-                        android:hint="Enter E-mail"
-                        app:hintTextColor="@android:color/darker_gray"
                         android:layout_marginLeft="5dp"
-                        >
+                        android:hint="Enter E-mail"
+                        android:textColorHint="@color/grey"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        app:hintTextColor="@android:color/darker_gray">
 
                         <EditText
                             android:id="@+id/edt_User_Email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenir_black"
-                            android:textColor="@color/black"
                             android:background="@null"
-                            android:translationY="5dp"
+                            android:fontFamily="@font/avenir_black"
                             android:paddingBottom="5dp"
-                            android:inputType="text"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
-                            android:singleLine="true"/>
+                            android:translationY="5dp"
+                            android:inputType="none"
+                            android:focusable="false"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,7 +182,6 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -193,8 +202,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:text="Or"
                     android:fontFamily="@font/avenir_black"
+                    android:text="Or"
                     android:textColor="@android:color/black" />
 
                 <View
@@ -204,6 +213,7 @@
                     android:background="@color/grey" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -215,13 +225,15 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="-2dp"
                     android:background="@drawable/edit_text_border_right">
+
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/mobile_all"/>
+                        android:src="@drawable/mobile_all" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -231,47 +243,48 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_marginLeft="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
 
                         <com.rilixtech.CountryCodePicker
                             android:id="@+id/ccp"
+                            android:layout_gravity="bottom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:ccp_hideNameCode="true"
                             app:ccp_showFlag="false"
                             app:ccp_textFont="avenir_black.ttf"
                             app:ccp_textSize="12sp" />
+
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/mobileClick"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:hintTextAppearance="@style/TextInputLayoutHintText"
-                            android:textColorHint="@color/grey"
                             android:hint="Enter Mobile Number"
-                            android:paddingLeft="8dp"
-                            app:hintTextColor="@android:color/darker_gray"
-                            android:layout_marginLeft="5dp"
-                            >
+                            android:textColorHint="@color/grey"
+                            app:hintTextAppearance="@style/TextInputLayoutHintText"
+                            app:hintTextColor="@android:color/darker_gray">
+
                             <EditText
                                 android:id="@+id/edt_phone_number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:maxLength="10"
-                                android:textColor="@android:color/black"
-                                android:textStyle="bold"
                                 android:background="@null"
-                                android:paddingBottom="5dp"
-                                android:paddingLeft="8dp"
-                                android:translationY="5dp"
                                 android:fontFamily="@font/avenir_black"
-                                android:textSize="12sp"
+                                android:paddingLeft="8dp"
+                                android:paddingBottom="5dp"
                                 android:singleLine="true"
-                                android:inputType="phone"/>
+                                android:textColor="@android:color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:translationY="5dp"
+                                android:inputType="none"
+                                android:focusable="false"/>
 
 
                         </com.google.android.material.textfield.TextInputLayout>
-
 
 
                     </LinearLayout>
@@ -286,8 +299,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -312,28 +325,29 @@
                         android:id="@+id/password_textInputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        app:hintTextAppearance="@style/TextInputLayoutHintText"
-                        android:textColorHint="@color/grey"
-                        android:hint="Enter Password"
-                        app:passwordToggleEnabled="true"
-                        app:hintTextColor="@android:color/darker_gray"
                         android:layout_marginLeft="5dp"
-                        >
+                        android:hint="Enter Password"
+                        android:textColorHint="@color/grey"
+                        app:hintTextAppearance="@style/TextInputLayoutHintText"
+                        app:hintTextColor="@android:color/darker_gray"
+                        app:passwordToggleEnabled="true">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edt_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenir_black"
-                            android:textColor="@color/black"
                             android:background="@null"
-                            android:translationY="5dp"
-                            android:paddingBottom="5dp"
+                            android:fontFamily="@font/avenir_black"
                             android:inputType="textPassword"
+                            android:paddingBottom="5dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
-                            android:singleLine="true"/>
+                            android:translationY="5dp" />
 
 
-                    </com.google.android.material.textfield.TextInputLayout>                </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -342,31 +356,40 @@
                 android:id="@+id/btn_continue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@drawable/button_background_next"
                 android:fontFamily="@font/avenir_black"
                 android:text="Continue"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white" />
 
-            <TextView
-                android:id="@+id/forgotPass_txt"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/avenir_black"
-                android:gravity="center"
-                android:text="Forgot Password?"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvForgot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_black"
+                    android:gravity="center"
+                    android:text="Forgot Password?"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -387,27 +410,28 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_border_left"
                     android:orientation="vertical">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Select Language"
-                        android:fontFamily="@font/avenir_black"
-                        android:textColor="@android:color/darker_gray"
-                        android:textStyle="bold"
                         android:layout_marginLeft="5dp"
-                        android:textSize="12sp"/>
+                        android:fontFamily="@font/avenir_black"
+                        android:text="Select Language"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
 
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/spinner_background"
                         android:entries="@array/lan_array"
                         android:fontFamily="@font/avenir_black"
                         android:textColor="@android:color/black"
                         android:textSize="12sp"
-                        android:background="@drawable/spinner_background"
-                        android:theme="@style/SpinnerTheme"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:theme="@style/SpinnerTheme" />
 
                 </LinearLayout>
 
@@ -433,8 +457,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:text="Or"
                     android:fontFamily="@font/avenir_black"
+                    android:text="Or"
                     android:textColor="@android:color/black" />
 
                 <View
@@ -449,13 +473,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_40sdp"
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/btnFace"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -463,6 +488,7 @@
                     android:src="@drawable/face_id2x" />
 
                 <ImageView
+                    android:id="@+id/btnFingerPrint"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -470,20 +496,13 @@
                     android:src="@drawable/touch_id" />
 
                 <ImageView
+                    android:id="@+id/btnPin"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/pin_lock2x" />
-
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/frame_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"/>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

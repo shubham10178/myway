@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.fluper.seeway">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
+         location permissions for the "MyLocation" functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,9 +16,10 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
+        android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:configChanges="orientation|keyboardHidden"
         android:hardwareAccelerated="false"
@@ -29,48 +30,97 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:windowSoftInputMode="stateHidden|adjustResize"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.NewDriverNavActivity" />
-        <activity android:name=".activity.SliderActivity" />
-        <activity android:name=".activity.NewPassengerNavActivity" />
-        <activity
-            android:name=".activity.HomeScreenNavDriverActivity"
-            android:configChanges="orientation|keyboardHidden" />
-        <activity
-            android:name=".activity.HomeScreenNavPassengerActivity"
-            android:configChanges="orientation|keyboardHidden" />
+        android:windowSoftInputMode="adjustPan">
 
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <activity
-            android:name=".activity.HomeScreenPassengerActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_home_screen_passenger" />
-        <activity
-            android:name=".activity.ProfileCreationDriverActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".activity.ProfileCreationPassengerActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".activity.IntroductionActivity"
-            android:configChanges="orientation|keyboardHidden" />
-        <activity
-            android:name=".activity.LoginActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.SplashScreen">
+            android:name=".onBoard.activities.SplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".onBoard.activities.WalkThroughActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".onBoard.activities.UserTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".onBoard.activities.LoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".onBoard.activities.MobileRegisterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".onBoard.activities.EmailRegisterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".onBoard.activities.OtpVerificationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".onBoard.activities.ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".onBoard.activities.ResetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" /> <!-- Security -->
+        <activity
+            android:name=".onBoard.activities.ChooseSecurityActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" /> <!-- User Panel -->
+        <activity
+            android:name=".panels.passenger.PassengerMainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".panels.passenger.ProfileCreationPassengerActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".panels.passenger.NotificationPassengerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- Driver Panel -->
+        <activity
+            android:name=".panels.driver.DriverMainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".panels.driver.ProfileCreationDriverActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".panels.driver.AddVehicleActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".panels.driver.DriverInsuranceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".panels.driver.ChooseVehicleTypeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

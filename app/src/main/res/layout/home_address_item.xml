@@ -25,12 +25,16 @@
             android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@android:color/black"
             android:fontFamily="@font/avenir_black"/>
 
         <TextView
             android:id="@+id/txt_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#9D9D9D"
+            android:textSize="@dimen/_12ssp"
             android:fontFamily="@font/avenir_light"/>
 
 

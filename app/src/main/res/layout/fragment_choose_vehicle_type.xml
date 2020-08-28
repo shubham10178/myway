@@ -1,296 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".fragment.ChooseVehicleTypeFragment">
-
+    android:background="#FCFCFC"
+    tools:context=".panels.driver.ChooseVehicleTypeActivity">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/clBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
+        android:elevation="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:targetApi="lollipop">
+        <LinearLayout
+            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:src="@drawable/back"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:text="Choose Vehicle"
+                android:fontFamily="@font/avenir_black"
+                android:textStyle="bold"
+                android:layout_marginEnd="@dimen/_40sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15ssp"
+                android:gravity="center"
+                android:textAlignment="center"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clBar"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
-    <LinearLayout
-        android:id="@+id/linear_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/otp_background"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:padding="5dp"
-            android:src="@drawable/back_all"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chosse Vehicle"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:gravity="center"
-            android:padding="10dp"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20ssp"
+                android:layout_marginEnd="@dimen/_20ssp"
+                android:orientation="vertical">
 
-    </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/linear_header"
-    android:orientation="vertical">
+                <RadioGroup
+                    android:id="@+id/radioSex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
 
-    <RadioGroup
-        android:id="@+id/radioSex"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/radioMale"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:button="@drawable/radio_selector"
+                        android:checked="true"
+                        android:fontFamily="@font/avenir_black"
+                        android:paddingLeft="10dp"
+                        android:text="Commercial Vehicle"
+                        android:textSize="15sp" />
 
-        <RadioButton
-            android:id="@+id/radioMale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Commercial Vehicle"
-            android:layout_weight="1"
-            android:paddingLeft="10dp"
-            android:textSize="15sp"
-            android:fontFamily="@font/avenir_black"
-            android:button="@drawable/radio_selector"
-            android:checked="true" />
+                </RadioGroup>
 
-    </RadioGroup>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vehicle Model Name"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/grey"
-            android:textSize="13sp"
-            android:padding="10dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hyundai Verna"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:gravity="end"
-            android:padding="10dp"
-            />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:padding="10dp"
+                        android:text="Vehicle Model Name"
+                        android:textColor="@color/grey"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:gravity="end"
+                        android:padding="10dp"
+                        android:text="Hyundai Verna"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vehicle Number"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/grey"
-            android:textSize="13sp"
-            android:padding="10dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="L 83011"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:gravity="end"
-            android:padding="10dp"
-            />
+                </LinearLayout>
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vehicle Color"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/grey"
-            android:textSize="13sp"
-            android:padding="10dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Red"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:gravity="end"
-            android:padding="10dp"
-            />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:padding="10dp"
+                        android:text="Vehicle Number"
+                        android:textColor="@color/grey"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:gravity="end"
+                        android:padding="10dp"
+                        android:text="L 83011"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
+                </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vehicle Registration \n Certificate Date"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/grey"
-            android:textSize="13sp"
-            android:padding="10dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10/06/2015"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:gravity="end"
-            android:padding="10dp"
-            />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:padding="10dp"
+                        android:text="Vehicle Color"
+                        android:textColor="@color/grey"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:gravity="end"
+                        android:padding="10dp"
+                        android:text="Red"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Number of Seats"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/grey"
-            android:textSize="13sp"
-            android:padding="10dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5"
-            android:layout_weight="1"
-            android:fontFamily="@font/avenir_black"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:gravity="end"
-            android:padding="10dp"
-            />
+                </LinearLayout>
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:padding="10dp"
+                        android:text="Vehicle Registration \n Certificate Date"
+                        android:textColor="@color/grey"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Driving License Image"
-            android:fontFamily="@font/avenir_black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textColor="@android:color/black"/>
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/upload_images3x"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1">
-        </ImageView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:gravity="end"
+                        android:padding="10dp"
+                        android:text="10/06/2015"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-    </LinearLayout>
+                </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Other Images"
-            android:fontFamily="@font/avenir_black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"
-            android:textColor="@android:color/black"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal">
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/upload_images3x"
-            android:layout_marginTop="10dp"
-            android:layout_weight=".5">
-        </ImageView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:padding="10dp"
+                        android:text="Number of Seats"
+                        android:textColor="@color/grey"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_marginTop="30dp"
-        android:text="Continue"
-        android:fontFamily="@font/avenir_black"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:background="@drawable/button_background_next"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenir_black"
+                        android:gravity="end"
+                        android:padding="10dp"
+                        android:text="5"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-</LinearLayout>
-</RelativeLayout>
+                </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/avenir_black"
+                        android:text="Driving License Image"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/upload_images3x"></ImageView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/avenir_black"
+                        android:text="Other Images"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <ImageView
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight=".5"
+                            android:src="@drawable/upload_images3x"></ImageView>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_30sdp"
+                    android:background="@drawable/button_background_next"
+                    android:fontFamily="@font/avenir_black"
+                    android:text="Continue"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

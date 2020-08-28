@@ -11,6 +11,7 @@
         android:id="@+id/txt_notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry"
         android:fontFamily="@font/avenir_black"
         android:textColor="@color/black"
         android:textSize="14sp"/>
@@ -19,6 +20,7 @@
         android:id="@+id/txt_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Friday at 9:50 Am"
         android:fontFamily="@font/avenir_black"
         android:textStyle="bold"
         android:textColor="@color/grey"

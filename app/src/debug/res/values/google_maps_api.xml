@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=09:D0:73:F6:66:9F:50:85:7B:7E:B6:83:9B:C5:5C:37:3E:AA:9F:6A%3Bcom.fluper.seeway.panels.passenger
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.fluper.seeway.panels.passenger
+
+    SHA-1 certificate fingerprint:
+    09:D0:73:F6:66:9F:50:85:7B:7E:B6:83:9B:C5:5C:37:3E:AA:9F:6A
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCttjGBkbHefuRAdMJXDkam_PrPLrdNG2k</string>
+</resources>
