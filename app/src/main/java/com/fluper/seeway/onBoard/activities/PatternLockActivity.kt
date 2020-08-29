@@ -25,7 +25,7 @@ class PatternLockActivity: BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btn_otp_con->{
-                if (intent.hasExtra(Constants.UserType)) {
+                /*if (intent.hasExtra(Constants.UserType)) {
                     when (intent.getStringExtra(Constants.UserType)) {
                         Constants.Passenger -> {
                             startActivity(Intent(this, PassengerMainActivity::class.java).apply {
@@ -40,7 +40,7 @@ class PatternLockActivity: BaseActivity(), View.OnClickListener {
                         else -> onBackPressed()
                     }
                 } else
-                    onBackPressed()
+                    onBackPressed()*/
             }
         }
     }

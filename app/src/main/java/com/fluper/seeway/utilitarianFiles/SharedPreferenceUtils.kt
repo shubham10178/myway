@@ -44,10 +44,6 @@ private constructor(val context: Context) {
         get() = sharedPreferences["accessToken", ""]!!
         set(value) = sharedPreferences.set("accessToken", value)
 
-    var deviceId: String?
-        get() = sharedPreferences["deviceId", ""]!!
-        set(value) = sharedPreferences.set("deviceId", value)
-
     var userOtp: String?
         get() = sharedPreferences["userOtp", ""]!!
         set(value) = sharedPreferences.set("userOtp", value)
@@ -77,51 +73,51 @@ private constructor(val context: Context) {
         set(value) = sharedPreferences.set("tokenType", value)
 
     var profileImage: String
-        get() = sharedPreferences["profileImage", "null"]!!
+        get() = sharedPreferences["profileImage", ""]!!
         set(value) = sharedPreferences.set("profileImage", value)
 
     var userEmailId: String
-        get() = sharedPreferences["userEmailId", "null"]!!
+        get() = sharedPreferences["userEmailId", ""]!!
         set(value) = sharedPreferences.set("userEmailId", value)
 
     var userMobile: String
-        get() = sharedPreferences["userMobile", "null"]!!
+        get() = sharedPreferences["userMobile", ""]!!
         set(value) = sharedPreferences.set("userMobile", value)
 
     var userCountryCode: String
-        get() = sharedPreferences["userCountryCode", "null"]!!
+        get() = sharedPreferences["userCountryCode", ""]!!
         set(value) = sharedPreferences.set("userCountryCode", value)
 
     var userType: String
-        get() = sharedPreferences["userType", "null"]!!
+        get() = sharedPreferences["userType", ""]!!
         set(value) = sharedPreferences.set("userType", value)
 
     var userName: String
-        get() = sharedPreferences["userName", "null"]!!
+        get() = sharedPreferences["userName", ""]!!
         set(value) = sharedPreferences.set("userName", value)
 
     var userFirstName: String
-        get() = sharedPreferences["userFirstName", "null"]!!
+        get() = sharedPreferences["userFirstName", ""]!!
         set(value) = sharedPreferences.set("userFirstName", value)
 
     var userSocialFirstName: String
-        get() = sharedPreferences["userSocialFirstName", "null"]!!
+        get() = sharedPreferences["userSocialFirstName", ""]!!
         set(value) = sharedPreferences.set("userSocialFirstName", value)
 
     var userSocialLastName: String
-        get() = sharedPreferences["userSocialLastName", "null"]!!
+        get() = sharedPreferences["userSocialLastName", ""]!!
         set(value) = sharedPreferences.set("userSocialLastName", value)
 
     var userLastName: String
-        get() = sharedPreferences["userLastName", "null"]!!
+        get() = sharedPreferences["userLastName", ""]!!
         set(value) = sharedPreferences.set("userLastName", value)
 
     var userPassword: String
-        get() = sharedPreferences["userPassword", "null"]!!
+        get() = sharedPreferences["userPassword", ""]!!
         set(value) = sharedPreferences.set("userPassword", value)
 
     var userConfirmPassword: String
-        get() = sharedPreferences["userConfirmPassword", "null"]!!
+        get() = sharedPreferences["userConfirmPassword", ""]!!
         set(value) = sharedPreferences.set("userConfirmPassword", value)
 
     var latitude: String?
@@ -135,6 +131,10 @@ private constructor(val context: Context) {
     var firstRun: Boolean
         get() = persistableSharedPreferences["firstRun", true]!!
         set(value) = persistableSharedPreferences.set("firstRun", value)
+
+    var deviceUniqueId: String?
+        get() = persistableSharedPreferences["deviceUniqueId", ""]!!
+        set(value) = persistableSharedPreferences.set("deviceUniqueId", value)
 
     /**
      * puts a key value pair in shared prefs if doesn't exists, otherwise updates value on given [key]

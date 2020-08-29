@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -20,7 +21,6 @@ import com.fluper.seeway.R
 import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.onBoard.adapter.RemovePictures
 import com.fluper.seeway.onBoard.adapter.UploadImagesAdapter
-import com.fluper.seeway.onBoard.model.ImageUploadModel
 import com.fluper.seeway.panels.driver.dashboard.DriverMainActivity
 import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
 import kotlinx.android.synthetic.main.fragment_driver_insurance.*
@@ -33,7 +33,7 @@ class DriverInsuranceActivity : BaseActivity(), View.OnClickListener {
     private val PERMISSION_CODE1 = 2
     private var imageUri: Uri? = null
     private var imageUri1: Uri? = null
-    private val idorpassportArraylist = ArrayList<ImageUploadModel>()
+    private val idorpassportArraylist = ArrayList<Bitmap>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,7 +141,7 @@ class DriverInsuranceActivity : BaseActivity(), View.OnClickListener {
 
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
 
-                    idorpassportArraylist.add(ImageUploadModel(bitmap))
+                    idorpassportArraylist.add(bitmap)
                 }
                 val uploadImageAdapter = UploadImagesAdapter(idorpassportArraylist, this, object :
                     RemovePictures {
@@ -156,7 +156,7 @@ class DriverInsuranceActivity : BaseActivity(), View.OnClickListener {
             } else {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data.data)
 
-                idorpassportArraylist.add(ImageUploadModel(bitmap))
+                idorpassportArraylist.add(bitmap)
                 val uploadImageAdapter = UploadImagesAdapter(idorpassportArraylist, this, object :
                     RemovePictures {
                     override fun removePictureId(picsCount: Int) {
@@ -175,7 +175,7 @@ class DriverInsuranceActivity : BaseActivity(), View.OnClickListener {
 
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
-            idorpassportArraylist.add(ImageUploadModel(bitmap))
+            idorpassportArraylist.add(bitmap)
 
 
             val uploadImageAdapter = UploadImagesAdapter(idorpassportArraylist, this, object :

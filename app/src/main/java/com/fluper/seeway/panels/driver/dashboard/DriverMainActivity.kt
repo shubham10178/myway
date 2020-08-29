@@ -18,15 +18,14 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.fluper.seeway.R
 import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.onBoard.activities.UserTypeActivity
 import com.fluper.seeway.panels.driver.ChooseVehicleTypeActivity
+import com.fluper.seeway.panels.driver.DriverViewModel
 import com.fluper.seeway.panels.passenger.NotificationPassengerActivity
-import com.fluper.seeway.utilitarianFiles.FusedLocationFetcher
-import com.fluper.seeway.utilitarianFiles.NetworkUtils
-import com.fluper.seeway.utilitarianFiles.showToast
-import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
+import com.fluper.seeway.utilitarianFiles.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -34,7 +33,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_driver_nav.*
+import kotlinx.android.synthetic.main.navigation_header.*
 import kotlinx.android.synthetic.main.navigation_menu.*
 import java.io.IOException
 import java.util.*
@@ -59,6 +60,7 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.ACCESS_FINE_LOCATION
     )
+    private lateinit var driverViewModel:DriverViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +71,12 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
         )
         statusBarFullScreenWithBackground()
         sharedPreference.isLoggedIn = true
+        driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         if (!Places.isInitialized())
             Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
         if (!NetworkUtils.isInternetAvailable(this.applicationContext))
             showToast("Poor internet connection.")
+        myObserver()
         initMap()
         setToolBar()
         initDrawer()
@@ -84,7 +88,32 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
         }
     }
 
+    private fun myObserver() {
+        driverViewModel.logout.observe(this, androidx.lifecycle.Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            showToast(it.message!!)
+            startActivity(
+                Intent(
+                    this,
+                    UserTypeActivity::class.java
+                ))
+            sharedPreference.isLoggedIn = false
+            sharedPreference.deletePreferences()
+            this@DriverMainActivity.finishAffinity()
+        })
+        driverViewModel.throwable.observe(this, androidx.lifecycle.Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            ErrorUtils.handlerGeneralError(this,it)
+        })
+    }
+
     private fun initView() {
+        if (sharedPreference.profileImage.isNotEmpty())
+            Picasso.get().load(sharedPreference.profileImage)
+                .placeholder(R.drawable.profile_placeholder2x)
+                .error(R.drawable.profile_placeholder2x).into(ivUserImage)
+        if (sharedPreference.userFirstName.isNotEmpty())
+            tvUserName.text = sharedPreference.userFirstName+" "+sharedPreference.userLastName
         ll_earnings.visibility = View.VISIBLE
         img_seekbar.setOnClickListener {
             if (fusedLocationFetcher != null)
@@ -151,15 +180,9 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnLogout -> {
-                startActivity(
-                    Intent(
-                        this,
-                        UserTypeActivity::class.java
-                    ).apply {
-                        sharedPreference.isLoggedIn = false
-                        sharedPreference.deletePreferences()
-                        this@DriverMainActivity.finishAffinity()
-                    })
+                drawerHandler()
+                ProgressBarUtils.getInstance().showProgress(this,false)
+                driverViewModel.logout(sharedPreference.accessToken!!)
             }
             R.id.tvInviteEarn -> {
                 drawerHandler()

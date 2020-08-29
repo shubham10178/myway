@@ -7,17 +7,17 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import com.fluper.seeway.R
 
-class ProgressDialogUtils {
+class ProgressBarUtils {
     private var c: Context? = null
     private var mDialog: Dialog? = null
 
     companion object {
-        var progressDialog: ProgressDialogUtils? = null
-        fun getInstance(): ProgressDialogUtils {
+        var progressDialog: ProgressBarUtils? = null
+        fun getInstance(): ProgressBarUtils {
             if (progressDialog == null) {
-                progressDialog = ProgressDialogUtils()
+                progressDialog = ProgressBarUtils()
             }
-            return progressDialog as ProgressDialogUtils
+            return progressDialog as ProgressBarUtils
         }
     }
 

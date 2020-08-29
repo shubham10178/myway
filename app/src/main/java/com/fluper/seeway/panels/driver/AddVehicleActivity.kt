@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,17 +17,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fluper.seeway.R
 import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.onBoard.adapter.RemovePictures
 import com.fluper.seeway.onBoard.adapter.UploadImagesAdapter
-import com.fluper.seeway.onBoard.model.AddVehicleInfoModel
-import com.fluper.seeway.onBoard.model.ImageUploadModel
-import com.fluper.seeway.utilitarianFiles.Constants
-import com.fluper.seeway.utilitarianFiles.getString
-import com.fluper.seeway.utilitarianFiles.showToast
-import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
+import com.fluper.seeway.utilitarianFiles.*
 import kotlinx.android.synthetic.main.fragment_add_vehicle.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,16 +38,48 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
     private val PERMISSION_CODE1 = 400
     private var image_uri: Uri? = null
     private var imageUri1: Uri? = null
-    private val uvi_arrayList = ArrayList<ImageUploadModel>()
-    private val ucd_arrayList = ArrayList<ImageUploadModel>()
+    private val uvi_arrayList = ArrayList<Bitmap>()
+    private val ucd_arrayList = ArrayList<Bitmap>()
     private var relationWithVehicle = "Owner"
+    private lateinit var driverViewModel: DriverViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_add_vehicle)
         statusBarFullScreenWithBackground()
+        driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
+        myObserver()
         initClickListener()
         imgUploadRec()
+    }
+
+    private fun myObserver() {
+        driverViewModel.addVehicles.observe(this, androidx.lifecycle.Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            val intent = Intent()
+            /*intent.putExtra(
+                Constants.Driver, AddVehicleInfoModel(
+                    edt_vn_driver.getString(),
+                    edt_vmn_driver.getString(),
+                    uvi_arrayList,
+                    tvVehicleColor.getString(),
+                    etCardDate_driver.getString(),
+                    tvAvailSheet.getString(),
+                    ucd_arrayList,
+                    relationWithVehicle,
+                    edt_describ.getString()
+                )
+            )*/
+            intent.putParcelableArrayListExtra(
+                Constants.Driver, it.response
+            )
+            setResult(111, intent)
+            onBackPressed()
+        })
+        driverViewModel.throwable.observe(this, androidx.lifecycle.Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            ErrorUtils.handlerGeneralError(this,it)
+        })
     }
 
     private fun initClickListener() {
@@ -78,14 +108,14 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.car_doc_img_upload -> {
-                if (ucd_arrayList.size <= 2) {
+                if (ucd_arrayList.size <= 0) {
                     uploadImg()
                     IMAGE_PICK_CODE = 101
                     IMAGE_CAPTURE_CODE = 201
                     dummy_car_img.visibility = View.GONE
                     car_doc_rec.visibility = View.VISIBLE
                 } else
-                    showToast("You can upload only 3 documents")
+                    showToast("You can upload only one document")
             }
             R.id.ll_vehicle_registration -> {
                 val calendar = Calendar.getInstance()
@@ -109,25 +139,21 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btn_save_addv -> {
                 if (isInputValid()) {
-                    val intent = Intent()
-                    /*intent.putExtra(
-                        Constants.Driver, AddVehicleInfoModel(
-                            edt_vn_driver.getString(),
-                            edt_vmn_driver.getString(),
-                            uvi_arrayList,
-                            tvVehicleColor.getString(),
-                            etCardDate_driver.getString(),
-                            tvAvailSheet.getString(),
-                            ucd_arrayList,
-                            relationWithVehicle,
-                            edt_describ.getString()
+                    if(NetworkUtils.isInternetAvailable(this)){
+                        ProgressBarUtils.getInstance().showProgress(this,false)
+                        driverViewModel.addVehicles(
+                            access_token = sharedPreference.accessToken!!,
+                            vehicle_number = getRequestBody(edt_vn_driver.getString()),
+                            vehicle_model = getRequestBody(edt_vmn_driver.getString()),
+                            vehicle_color = getRequestBody(tvVehicleColor.getString()),
+                            vehicle_imgae = getMultipartBodyArrayList(uvi_arrayList,"vehicle_imgae"),
+                            no_of_seats = getRequestBody(tvAvailSheet.getString()),
+                            car_document = getMultipartBody(ucd_arrayList[0],"car_document"),
+                            certificate_date = getRequestBody(etCardDate_driver.getString()),
+                            relation_with = getRequestBody(relationWithVehicle),
+                            description =  getRequestBody(edt_describ.getString())
                         )
-                    )*/
-                    intent.putExtra(
-                        Constants.Driver, AddVehicleInfoModel(edt_vn_driver.getString(), edt_vmn_driver.getString())
-                    )
-                    setResult(111, intent)
-                    onBackPressed()
+                    }
                 }
             }
         }
@@ -160,8 +186,9 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
                 showToast("Please enter vehicle registration date")
                 false
             }
-            tvAvailSheet.getString().isEmpty() -> {
-                showToast("Please enter available sheets")
+            tvAvailSheet.getString().isEmpty()||
+                    !tvAvailSheet.getString().isDigitsOnly()-> {
+                showToast("Please enter no. of available sheets")
                 false
             }
             ucd_arrayList.isNullOrEmpty() -> {
@@ -277,7 +304,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
 
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
 
-                    uvi_arrayList.add(ImageUploadModel(bitmap))
+                    uvi_arrayList.add(bitmap)
                 }
                 val uploadImageAdapter = UploadImagesAdapter(uvi_arrayList, this, object :
                     RemovePictures {
@@ -292,7 +319,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
             } else {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data.data)
 
-                uvi_arrayList.add(ImageUploadModel(bitmap))
+                uvi_arrayList.add(bitmap)
                 val uploadImageAdapter = UploadImagesAdapter(uvi_arrayList, this, object :
                     RemovePictures {
                     override fun removePictureId(picsCount: Int) {
@@ -309,7 +336,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
 
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, image_uri)
 
-            uvi_arrayList.add(ImageUploadModel(bitmap))
+            uvi_arrayList.add(bitmap)
 
             val uploadImageAdapter = UploadImagesAdapter(uvi_arrayList, this, object :
                 RemovePictures {
@@ -332,7 +359,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
 
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
 
-                    ucd_arrayList.add(ImageUploadModel(bitmap))
+                    ucd_arrayList.add(bitmap)
                 }
                 val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, this, object :
                     RemovePictures {
@@ -347,7 +374,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
             } else {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data.data)
 
-                ucd_arrayList.add(ImageUploadModel(bitmap))
+                ucd_arrayList.add(bitmap)
                 val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, this, object :
                     RemovePictures {
                     override fun removePictureId(picsCount: Int) {
@@ -364,7 +391,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
         if (resultCode == Activity.RESULT_OK && requestCode == 201) {
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, image_uri)
             uvi_arrayList.clear()
-            ucd_arrayList.add(ImageUploadModel(bitmap))
+            ucd_arrayList.add(bitmap)
 
 
             val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, this, object :

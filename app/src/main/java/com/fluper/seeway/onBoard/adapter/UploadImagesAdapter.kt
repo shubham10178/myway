@@ -2,6 +2,7 @@ package com.fluper.seeway.onBoard.adapter
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fluper.seeway.R
-import com.fluper.seeway.onBoard.model.ImageUploadModel
 
 class UploadImagesAdapter constructor(
-    private val userList: ArrayList<ImageUploadModel>,
+    private val userList: ArrayList<Bitmap>,
     private val mCtx: Context?,
     private val removePicListener:RemovePictures
 ) : RecyclerView.Adapter<UploadImagesAdapter.ViewHolder>() {
@@ -42,7 +42,7 @@ class UploadImagesAdapter constructor(
             if (mCtx != null) {
                 Glide
                     .with(mCtx)
-                    .load(userList[position].img)
+                    .load(userList[position])
                     .override(300, 200)
                     .into(holder.img_upload)
             }
@@ -69,7 +69,7 @@ class UploadImagesAdapter constructor(
         lateinit var img_upload: ImageView
         lateinit var img_cross: ImageView
 
-        fun bindItems(user: ImageUploadModel) {
+        fun bindItems(user: Bitmap) {
 
             img_upload = itemView.findViewById(R.id.img_upload) as ImageView
             img_cross = itemView.findViewById(R.id.img_cross) as ImageView

@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
@@ -24,12 +25,10 @@ import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.onBoard.activities.UserTypeActivity
 import com.fluper.seeway.onBoard.adapter.HomeAddressAdapter
 import com.fluper.seeway.onBoard.model.AddressModel
+import com.fluper.seeway.panels.driver.DriverViewModel
 import com.fluper.seeway.panels.passenger.NotificationPassengerActivity
 import com.fluper.seeway.panels.passenger.PassengerMainBottomSheetFragment
-import com.fluper.seeway.utilitarianFiles.FusedLocationFetcher
-import com.fluper.seeway.utilitarianFiles.NetworkUtils
-import com.fluper.seeway.utilitarianFiles.showToast
-import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
+import com.fluper.seeway.utilitarianFiles.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -38,7 +37,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_passenger_nav.*
+import kotlinx.android.synthetic.main.navigation_header.*
 import kotlinx.android.synthetic.main.navigation_menu.*
 import java.io.IOException
 import java.util.*
@@ -64,6 +65,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.ACCESS_FINE_LOCATION
     )
+    private lateinit var driverViewModel: DriverViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,10 +76,12 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         )
         statusBarFullScreenWithBackground()
         sharedPreference.isLoggedIn = true
+        driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         if (!Places.isInitialized())
             Places.initialize(applicationContext, resources.getString(R.string.google_maps_key))
         if (!NetworkUtils.isInternetAvailable(this.applicationContext))
             showToast("Poor internet connection.")
+        myObserver()
         bottomSheetFragment()
         initMap()
         setToolBar()
@@ -88,6 +92,25 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         } else {
             requestStoragePermission()
         }
+    }
+
+    private fun myObserver() {
+        driverViewModel.logout.observe(this, androidx.lifecycle.Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            showToast(it.message!!)
+            startActivity(
+                Intent(
+                    this@PassengerMainActivity,
+                    UserTypeActivity::class.java
+                ))
+            sharedPreference.isLoggedIn = false
+            sharedPreference.deletePreferences()
+            this@PassengerMainActivity.finishAffinity()
+        })
+        driverViewModel.throwable.observe(this, androidx.lifecycle.Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            ErrorUtils.handlerGeneralError(this, it)
+        })
     }
 
     private fun bottomSheetFragment() {
@@ -143,6 +166,12 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     }
 
     private fun initView() {
+        if (sharedPreference.profileImage.isNotEmpty())
+            Picasso.get().load(sharedPreference.profileImage)
+                .placeholder(R.drawable.profile_placeholder2x)
+                .error(R.drawable.profile_placeholder2x).into(ivUserImage)
+        if (sharedPreference.userFirstName.isNotEmpty())
+            tvUserName.text = sharedPreference.userFirstName+" "+sharedPreference.userLastName
         ll_earnings.visibility = View.GONE
         btnCurrentLocation.setOnClickListener {
             if (fusedLocationFetcher != null)
@@ -165,11 +194,13 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
                     Intent(
                         this@PassengerMainActivity,
                         UserTypeActivity::class.java
-                    ).apply {
-                        sharedPreference.isLoggedIn = false
-                        sharedPreference.deletePreferences()
-                        this@PassengerMainActivity.finishAffinity()
-                    })
+                    ))
+                sharedPreference.isLoggedIn = false
+                sharedPreference.deletePreferences()
+                this@PassengerMainActivity.finishAffinity()
+                /*drawerHandler()
+                ProgressBarUtils.getInstance().showProgress(this, false)
+                driverViewModel.logout(sharedPreference.accessToken!!)*/
             }
             R.id.tvInviteEarn -> {
                 drawerHandler()
@@ -210,8 +241,15 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
      */
     private fun enableMyLocation() {
         if (!::mMap.isInitialized) return
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             mMap.uiSettings.isMyLocationButtonEnabled = false
             mMap.isMyLocationEnabled = true
         } else {

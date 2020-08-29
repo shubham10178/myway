@@ -1,7 +1,10 @@
 package com.fluper.seeway.utilitarianFiles
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.util.Patterns
 import android.view.View
@@ -10,14 +13,26 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
-import org.w3c.dom.CDATASection
-import org.w3c.dom.CharacterData
-import org.w3c.dom.Text
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.*
+import kotlin.collections.ArrayList
+
+val String.isValidMobile: Boolean
+    get() = this.length in 7..12
+
+val String.isValidPassword: Boolean
+    get() = this.length >= 8
 
 fun AppCompatActivity.hideStatusBarWithBackground() {
     window.apply {
@@ -87,21 +102,17 @@ fun AppCompatActivity.statusBarTextColor() {
 
 }
 
-var toast: Toast? = null
 fun AppCompatActivity.showToast(message: String) {
-    if (toast != null) toast!!.cancel()
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    val str= if (message.isNotEmpty()) message else ""
+    Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
 }
-
 
 fun Fragment.showToast(message: String) {
-    if (toast != null) toast!!.cancel()
-    Toast.makeText(this.activity, message, Toast.LENGTH_SHORT).show()
+    val str= if (message.isNotEmpty()) message else ""
+    Toast.makeText(this.activity, str, Toast.LENGTH_SHORT).show()
 }
 
-var toast1: Toast? = null
 fun showToast(context: Context?, message: String) {
-    if (toast1 != null) toast1!!.cancel()
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
@@ -140,11 +151,11 @@ fun EditText.isValidNumbersWithCharacters() :Boolean{
 fun EditText.isValidNumbersOnly():Boolean{
     return when {
         this.getString().isEmpty() -> {
-            showToast(this.context,"Please enter number")
+            showToast(this.context,"Please enter mobile number")
             false
         }
         !this.getString().isDigitsOnly()-> {
-            showToast(this.context,"Please enter valid numbers")
+            showToast(this.context,"Please enter valid mobile number")
             false
         }
         else -> true
@@ -175,4 +186,57 @@ fun EditText.isValidMobileNumber(): Boolean{
         }
         else -> true
     }
+}
+
+fun AppCompatActivity.getRequestBody(value: String): RequestBody {
+    return value.toRequestBody("text/plain".toMediaTypeOrNull())
+}
+fun AppCompatActivity.getMultipartBody(filePath: Bitmap, keyName: String): MultipartBody.Part? {
+    return File(bitmapToFile(filePath,this).path!!).let {
+        MultipartBody.Part.createFormData(
+            keyName, it.name,
+            it.asRequestBody("image/*".toMediaTypeOrNull())
+        )
+    }
+}
+fun <E> List<E>?.toGson(): String? {
+    var gson = Gson()
+    return gson.toJson(this)
+}
+fun AppCompatActivity.getMultipartBodyArrayList(imageList: ArrayList<Bitmap>?,keyName: String): ArrayList<MultipartBody.Part>? {
+    var multiPartBody = ArrayList<MultipartBody.Part>()
+    imageList?.forEach {
+        File(bitmapToFile(it,this).path!!).let { file ->
+            multiPartBody.add(
+                MultipartBody.Part.createFormData(
+                    keyName,
+                    file.name,
+                    file.asRequestBody("image/*".toMediaTypeOrNull())
+                )
+            )
+        }
+    }
+    return if (multiPartBody.size == 0) null else multiPartBody
+}
+fun getOldImages(imageList: ArrayList<Any>?): List<String>? {
+    return imageList?.filter { it is String }?.map { it as String }
+}
+
+fun bitmapToFile(bitmap: Bitmap, context: Context?): Uri {
+    // Get the context wrapper
+    val wrapper = ContextWrapper(context)
+    // Initialize a new file instance to save bitmap object
+    var file = wrapper.getDir("Images", Context.MODE_PRIVATE)
+    file = File(file, "${UUID.randomUUID()}.jpg")
+    try {
+        // Compress the bitmap and save in jpg format
+        val stream: OutputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        stream.flush()
+        stream.close()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+    // Return the saved bitmap uri
+    return Uri.parse(file.absolutePath)
 }

@@ -57,7 +57,7 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
 
         // Set up the listener for take photo button
         btn_continue.setOnClickListener {
-            if (intent.hasExtra(Constants.UserType)) {
+            /*if (intent.hasExtra(Constants.UserType)) {
                 when (intent.getStringExtra(Constants.UserType)) {
                     Constants.Passenger -> {
                         startActivity(Intent(this, PassengerMainActivity::class.java).apply {
@@ -73,7 +73,7 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
                 }
             } else
                 onBackPressed()
-            takePhoto()
+            takePhoto()*/
         }
     }
 

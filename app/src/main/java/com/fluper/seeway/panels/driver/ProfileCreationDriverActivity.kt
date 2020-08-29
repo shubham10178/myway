@@ -20,6 +20,8 @@ import android.view.Window
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
@@ -29,14 +31,10 @@ import com.fluper.seeway.onBoard.adapter.DriverVehicleInfoAdapter
 import com.fluper.seeway.onBoard.adapter.RemovePictures
 import com.fluper.seeway.onBoard.adapter.RemoveVehicle
 import com.fluper.seeway.onBoard.adapter.UploadImagesAdapter
-import com.fluper.seeway.onBoard.model.AddVehicleInfoModel
-import com.fluper.seeway.onBoard.model.ImageUploadModel
-import com.fluper.seeway.utilitarianFiles.Constants
-import com.fluper.seeway.utilitarianFiles.showToast
-import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
+import com.fluper.seeway.panels.driver.model.AddVehicleResponseModel
+import com.fluper.seeway.utilitarianFiles.*
 import com.rilixtech.CountryCodePicker
 import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
-import kotlinx.android.synthetic.main.spinner_item.view.*
 import java.io.IOException
 
 class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
@@ -49,18 +47,26 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
     private var IMAGE_CAPTURE_CODE = 1005
     private var imageUri: Uri? = null
     private val PERMISSION_CODE = 1001
-    private val udliArraylist = ArrayList<ImageUploadModel>()
-    private val upArraylist = ArrayList<ImageUploadModel>()
-    private val vehicleList = ArrayList<AddVehicleInfoModel>()
+    private val udliArraylist = ArrayList<Bitmap>()
+    private val upArraylist = ArrayList<Bitmap>()
+    private val vehicleList = ArrayList<AddVehicleResponseModel.Response?>()
     private var driverVehicleInfoAdapter: DriverVehicleInfoAdapter? = null
+    private lateinit var driverViewModel: DriverViewModel
+    private var vehicleTypes = ArrayList<String>()
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation_driver)
         statusBarFullScreenWithBackground()
+        driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         val type = Typeface.createFromAsset(assets, "font/avenir_black.ttf")
         (ccp_driver as CountryCodePicker).typeFace = type
+        myObserver()
+        driverViewModel.getVehicleType()
+        vehicleTypes.clear()
+        udliArraylist.clear()
+        upArraylist.clear()
         vehicleList.clear()
         cardNumber()
         expiryDateFormat()
@@ -73,6 +79,35 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             }
         }
         uploadRecyclerview()
+    }
+
+    private fun myObserver() {
+        driverViewModel.getVehicleTypes.observe(this, Observer { it ->
+            if (!it.response.isNullOrEmpty()) {
+                vehicleTypes.clear()
+                vehicleTypes = it.response.map { it?.name } as ArrayList<String>
+                SpinnerUtil.setSpinner(spVehicleTypes, vehicleTypes, this)
+            } else
+                showToast("Vehicle types not available")
+        })
+
+        driverViewModel.deleteVehicles.observe(this, Observer {
+            showToast(it.message!!)
+            if (!it.response.isNullOrEmpty()) {
+                vehicleList.clear()
+                vehicleList.addAll(it.response)
+                tvAddVehicle.text = "Add More Vehicle"
+            } else {
+                vehicleList.clear()
+                tvAddVehicle.text = "Add Vehicle"
+            }
+            vehicle_info_rec.adapter =driverVehicleInfoAdapter
+        })
+
+        driverViewModel.throwable.observe(this, Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            ErrorUtils.handlerGeneralError(this, it)
+        })
     }
 
     private fun initClickListener() {
@@ -99,31 +134,38 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                 }
             }
             R.id.img_upload -> {
-                uploadImg(driving_license_rec)
-                IMAGE_PICK_CODE = 1001
-                IMAGE_CAPTURE_CODE = 2001
-                dummy_img_dl.visibility = View.GONE
-                driving_license_rec.visibility = View.VISIBLE
+                if (udliArraylist.size <= 0) {
+                    uploadImg(driving_license_rec)
+                    IMAGE_PICK_CODE = 1001
+                    IMAGE_CAPTURE_CODE = 2001
+                    dummy_img_dl.visibility = View.GONE
+                    driving_license_rec.visibility = View.VISIBLE
+                } else
+                    showToast("You can add only a license")
             }
             R.id.ll_add_vechicle -> {
-                if (vehicleList.size<=2)
+                if (vehicleList.size <= 3)
                     startActivityForResult(Intent(this, AddVehicleActivity::class.java), 111)
                 else
-                    showToast("You can add only three vehicles")
+                    showToast("You can add only four vehicles")
             }
             R.id.permission_img_upload -> {
-                uploadImg(upload_permission_rec)
-                IMAGE_PICK_CODE = 1004
-                IMAGE_CAPTURE_CODE = 2004
-                dummy_img_upi.visibility = View.GONE
-                upload_permission_rec.visibility = View.VISIBLE
+                if (upArraylist.size <= 0) {
+                    uploadImg(upload_permission_rec)
+                    IMAGE_PICK_CODE = 1004
+                    IMAGE_CAPTURE_CODE = 2004
+                    dummy_img_upi.visibility = View.GONE
+                    upload_permission_rec.visibility = View.VISIBLE
+                } else
+                    showToast("You can add only a permission")
             }
             R.id.btnSave -> {
                 if (vehicleList.isEmpty()) {
                     alertVehicleNotSelected()
                 } else {
                     if (img_driver_tobeEmp.isVisible) {
-                        startActivity(Intent(this, DriverInsuranceActivity::class.java))
+                        alertSubmit()
+                        //startActivity(Intent(this, DriverInsuranceActivity::class.java))
                     } else {
                         alertSubmit()
                     }
@@ -237,7 +279,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
 
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
 
-                    udliArraylist.add(ImageUploadModel(bitmap))
+                    udliArraylist.add(bitmap)
                 }
                 val uploadImageAdapter =
                     UploadImagesAdapter(udliArraylist, this, object : RemovePictures {
@@ -252,7 +294,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             } else {
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data.data)
 
-                udliArraylist.add(ImageUploadModel(bitmap))
+                udliArraylist.add(bitmap)
                 val uploadImageAdapter =
                     UploadImagesAdapter(udliArraylist, this, object : RemovePictures {
                         override fun removePictureId(picsCount: Int) {
@@ -270,7 +312,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
 
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
-            udliArraylist.add(ImageUploadModel(bitmap))
+            udliArraylist.add(bitmap)
 
 
             val uploadImageAdapter =
@@ -294,7 +336,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
 
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
 
-                    upArraylist.add(ImageUploadModel(bitmap))
+                    upArraylist.add(bitmap)
                 }
                 val uploadImageAdapter =
                     UploadImagesAdapter(upArraylist, this, object : RemovePictures {
@@ -310,7 +352,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
 
                 val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, data.data)
 
-                upArraylist.add(ImageUploadModel(bitmap))
+                upArraylist.add(bitmap)
                 val uploadImageAdapter =
                     UploadImagesAdapter(upArraylist, this, object : RemovePictures {
                         override fun removePictureId(picsCount: Int) {
@@ -328,7 +370,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             rl_upload_per.isFocusableInTouchMode = true
             val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
-            upArraylist.add(ImageUploadModel(bitmap))
+            upArraylist.add(bitmap)
 
 
             val uploadImageAdapter =
@@ -345,24 +387,24 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
         if (resultCode == 111 && requestCode == 111 && data != null && data.hasExtra(Constants.Driver)) {
             vehicleInfo(data)
             showToast("Vehicle added")
-        } else {
-            showToast("Vehicle not added")
         }
     }
 
     private fun vehicleInfo(data: Intent?) {
         data?.let {
-            vehicleList.add(it.getParcelableExtra(Constants.Driver)!!)
+            vehicleList.clear()
+            vehicleList.addAll(
+                it.getParcelableArrayListExtra<AddVehicleResponseModel.Response>(
+                    Constants.Driver
+                )!!
+            )
             tvAddVehicle.text = "Add More Vehicle"
         }
         driverVehicleInfoAdapter =
             DriverVehicleInfoAdapter(vehicleList, this, object : RemoveVehicle {
-                override fun removeVehicleId(vehicleCount: Int) {
-                    if (vehicleCount==0)
-                        tvAddVehicle.text = "Add Vehicle"
-                    else
-                        tvAddVehicle.text = "Add More Vehicle"
-                    showToast("Vehicle removed")
+                override fun removeVehicleId(vehicleId: String?, userId: String?) {
+                    if (!vehicleId.isNullOrEmpty() && !userId.isNullOrEmpty())
+                        driverViewModel.deleteVehicle(vehicleId, userId)
                 }
             })
         vehicle_info_rec.adapter = driverVehicleInfoAdapter

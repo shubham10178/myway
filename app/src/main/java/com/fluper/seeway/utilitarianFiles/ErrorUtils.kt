@@ -33,10 +33,11 @@ object ErrorUtils {
                     when (throwable.code()) {
                         401 -> {
                             //Logout
-                            forceLogout(context)
+                            //forceLogout(context)
+                            displayError(context, throwable)
                         }
                         403 -> {
-                            showToast(context,"Invalid OTP")
+                            displayError(context, throwable)
                         }
                         400 -> {
                             displayError(context, throwable)
@@ -45,7 +46,6 @@ object ErrorUtils {
                             showToast(context,"500 Internal server error")
                         }
                         else -> {
-
                             displayError(context, throwable)
                         }
                     }
@@ -97,7 +97,7 @@ object ErrorUtils {
            context.startActivity(intent)*/
     }
 
-    fun displayError(context: Context, exception: retrofit2.HttpException) {
+    private fun displayError(context: Context, exception: retrofit2.HttpException) {
         //Log.i(TAG, "displayError()")
         try {
             val errorBody = getGsonInstance().
@@ -105,11 +105,10 @@ object ErrorUtils {
                     ErrorBean::class.java)
             //  SnackbarUtils.displaySnackbar(view, errorBody.message)
             Log.e("ErrorMessage", errorBody.message)
-            Toast.makeText(context, errorBody.message, Toast.LENGTH_SHORT).show()
+            showToast(context,errorBody.message)
         } catch (e: Exception) {
             Log.e("MyExceptions", e.message!!)
-            Toast.makeText(context, context.getString(R.string.error_exception),
-                Toast.LENGTH_SHORT).show()
+            showToast(context,context.getString(R.string.error_exception))
         }
     }
 }

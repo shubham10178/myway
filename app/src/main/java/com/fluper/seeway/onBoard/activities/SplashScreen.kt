@@ -1,10 +1,12 @@
 package com.fluper.seeway.onBoard.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import android.view.animation.AnimationUtils
@@ -21,28 +23,37 @@ import java.security.NoSuchAlgorithmException
 
 class SplashScreen : BaseActivity() {
     private val splashTimeOut = 4000L
+
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splashscreen)
-        val topAnim = AnimationUtils.loadAnimation(this,R.anim.anim_top_splash)
-        val bottomAnim= AnimationUtils.loadAnimation(this,R.anim.anim_bottom_splash)
+        val topAnim = AnimationUtils.loadAnimation(this, R.anim.anim_top_splash)
+        val bottomAnim = AnimationUtils.loadAnimation(this, R.anim.anim_bottom_splash)
         ivSplashLogo.animation = topAnim
         hideStatusBarWithBackground()
+        sharedPreference.deviceUniqueId = Settings.Secure.getString(
+            this.applicationContext.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
         printHashKey(this)
         Handler().postDelayed(
             {
                 if (sharedPreference.firstRun) {
                     startActivity(Intent(this, WalkThroughActivity::class.java))
-                }
-                else {
-                    if (sharedPreference.isLoggedIn){
-                        when(sharedPreference.userType){
-                            Constants.Passenger->{
-                                startActivity(Intent(this, PassengerMainActivity::class.java).apply {
-                                    this@SplashScreen.finishAffinity()
-                                })
+                } else {
+                    if (sharedPreference.isLoggedIn) {
+                        when (sharedPreference.userType) {
+                            Constants.Passenger -> {
+                                startActivity(
+                                    Intent(
+                                        this,
+                                        PassengerMainActivity::class.java
+                                    ).apply {
+                                        this@SplashScreen.finishAffinity()
+                                    })
                             }
-                            Constants.Driver->{
+                            Constants.Driver -> {
                                 startActivity(Intent(this, DriverMainActivity::class.java).apply {
                                     this@SplashScreen.finishAffinity()
                                 })
@@ -52,19 +63,20 @@ class SplashScreen : BaseActivity() {
                             Constants.Parcel->{}
                             Constants.DeliveryBoy->{}
                             Constants.UserMasterUser->{}*/
-                            else->{
+                            else -> {
                                 sharedPreference.isLoggedIn = false
                                 sharedPreference.deletePreferences()
                                 showToast("Session expired.")
                                 startActivity(Intent(this, UserTypeActivity::class.java))
                             }
                         }
-                    }else{
+                    } else {
                         startActivity(Intent(this, UserTypeActivity::class.java))
                     }
                 }
                 this.finish()
-            }, splashTimeOut)
+            }, splashTimeOut
+        )
     }
 
     private fun printHashKey(pContext: Context) {
