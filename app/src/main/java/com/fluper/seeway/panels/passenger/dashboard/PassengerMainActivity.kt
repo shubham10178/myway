@@ -98,14 +98,13 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         driverViewModel.logout.observe(this, androidx.lifecycle.Observer {
             ProgressBarUtils.getInstance().hideProgress()
             showToast(it.message!!)
-            startActivity(
-                Intent(
-                    this@PassengerMainActivity,
-                    UserTypeActivity::class.java
-                ))
             sharedPreference.isLoggedIn = false
             sharedPreference.deletePreferences()
-            this@PassengerMainActivity.finishAffinity()
+            drawerHandler()
+            startActivity(
+                Intent(this@PassengerMainActivity, UserTypeActivity::class.java).apply {
+                    this@PassengerMainActivity.finishAffinity()
+                })
         })
         driverViewModel.throwable.observe(this, androidx.lifecycle.Observer {
             ProgressBarUtils.getInstance().hideProgress()
@@ -190,14 +189,13 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnLogout -> {
-                startActivity(
-                    Intent(
-                        this@PassengerMainActivity,
-                        UserTypeActivity::class.java
-                    ))
                 sharedPreference.isLoggedIn = false
                 sharedPreference.deletePreferences()
-                this@PassengerMainActivity.finishAffinity()
+                drawerHandler()
+                startActivity(
+                    Intent(this@PassengerMainActivity, UserTypeActivity::class.java).apply {
+                        this@PassengerMainActivity.finishAffinity()
+                    })
                 /*drawerHandler()
                 ProgressBarUtils.getInstance().showProgress(this, false)
                 driverViewModel.logout(sharedPreference.accessToken!!)*/

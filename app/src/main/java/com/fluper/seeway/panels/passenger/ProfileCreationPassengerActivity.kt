@@ -91,6 +91,7 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
             R.id.btnSave->{
                 startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
                     putExtra(Constants.UserType,sharedPreference.userType)
+                    this@ProfileCreationPassengerActivity.finish()
                 })
             }
         }

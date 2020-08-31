@@ -40,24 +40,21 @@ class MobileRegisterActivity : BaseActivity() {
         )
 
         btn_continue.setOnClickListener {
-            if (edt_phone_number.getString().isNotEmpty()){
-                if(checkForMobile(edt_phone_number.getString())) {
+                if(checkForMobile()) {
                     val intent= Intent()
                     intent.putExtra("ccp",ccp.selectedCountryNameCode)
                     intent.putExtra("mobile",edt_phone_number.getString())
                     setResult(2,intent)
                     onBackPressed()
                 }
-            }else{
-                Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()
-            }
         }
         img_back.setOnClickListener {
             onBackPressed()
         }
     }
-    private fun checkForMobile(mobile: String): Boolean {
-        return if (!mobile.isValidMobile){
+
+    private fun checkForMobile(): Boolean {
+        return if (edt_phone_number.getString().isNotEmpty() && !edt_phone_number.getString().isValidMobile){
             showToast("Please enter valid mobile number")
             false
         }else {

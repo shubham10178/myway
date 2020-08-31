@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
-    private var dialog: Dialog?=null
+    private var dialog: Dialog? = null
     private lateinit var driverViewModel: DriverViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,43 +57,70 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             ProgressBarUtils.getInstance().hideProgress()
             showToast(it.message!!)
             if (!it.response?._id.isNullOrEmpty())
-                sharedPreference.userId =it.response?._id!!
+                sharedPreference.userId = it.response?._id!!
+            else
+                sharedPreference.userId = ""
             if (!it.response?.mobile_number.isNullOrEmpty())
-                sharedPreference.userMobile =it.response?.mobile_number!!
+                sharedPreference.userMobile = it.response?.mobile_number!!
+            else
+                sharedPreference.userMobile = ""
             if (!it.response?.country_code.isNullOrEmpty())
-                sharedPreference.userCountryCode =it.response?.country_code!!
+                sharedPreference.userCountryCode = it.response?.country_code!!
+            else
+                sharedPreference.userCountryCode = ""
             if (!it.response?.access_token.isNullOrEmpty())
-                sharedPreference.accessToken =it.response?.access_token!!
+                sharedPreference.accessToken = it.response?.access_token!!
+            else
+                sharedPreference.accessToken = ""
             if (!it.response?.profile_image.isNullOrEmpty())
-                sharedPreference.profileImage =it.response?.profile_image!!
+                sharedPreference.profileImage = it.response?.profile_image!!
+            else
+                sharedPreference.profileImage = ""
             if (!it.response?.email.isNullOrEmpty())
-                sharedPreference.userEmailId =it.response?.email!!
+                sharedPreference.userEmailId = it.response?.email!!
+            else
+                sharedPreference.userEmailId = ""
             if (!it.response?.first_name.isNullOrEmpty())
-                sharedPreference.userFirstName =it.response?.first_name!!
+                sharedPreference.userFirstName = it.response?.first_name!!
+            else
+                sharedPreference.userFirstName = ""
             if (!it.response?.last_name.isNullOrEmpty())
-                sharedPreference.userLastName =it.response?.last_name!!
+                sharedPreference.userLastName = it.response?.last_name!!
+            else
+                sharedPreference.userLastName = ""
 
             it.response?.let {
-                if (it.is_term_accept == 0&& it.is_verified?.trim()?.toInt()==0 &&it.isProfileCreated?.trim()?.toInt()==0) {
+                if (it.is_term_accept == 0 && it.is_verified?.trim()
+                        ?.toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
+                ) {
                     showDialog(it._id!!)
-                }
-                else if (it.is_term_accept == 1&& it.is_verified?.trim()?.toInt()==0 &&it.isProfileCreated?.trim()?.toInt()==0) {
+                } else if (it.is_term_accept == 1 && it.is_verified?.trim()
+                        ?.toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
+                ) {
                     startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
                         putExtra(Constants.UserType, sharedPreference.userType)
                     })
-                }
-                else if (it.is_term_accept == 1&& it.is_verified?.trim()?.toInt()==1 &&it.isProfileCreated?.trim()?.toInt()==0) {
+                } else if (it.is_term_accept == 1 && it.is_verified?.trim()
+                        ?.toInt() == 1 && it.isProfileCreated?.trim()?.toInt() == 0
+                ) {
                     when (sharedPreference.userType) {
                         Constants.Passenger -> {
-                            startActivity(Intent(this, ProfileCreationPassengerActivity::class.java).apply {})
+                            startActivity(
+                                Intent(
+                                    this,
+                                    ProfileCreationPassengerActivity::class.java
+                                ).apply {})
                         }
                         Constants.Driver -> {
-                            startActivity(Intent(this, ProfileCreationDriverActivity::class.java).apply {})
+                            startActivity(
+                                Intent(
+                                    this,
+                                    ProfileCreationDriverActivity::class.java
+                                ).apply {})
                         }
                         else -> onBackPressed()
                     }
-                }
-                else{
+                } else {
                     when (sharedPreference.userType) {
                         Constants.Passenger -> {
                             startActivity(Intent(this, PassengerMainActivity::class.java).apply {
@@ -112,26 +139,42 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         })
 
         driverViewModel.termsAndConditions.observe(this, Observer {
-            if (dialog!=null){
+            if (dialog != null) {
                 dialog?.dismiss()
-                dialog=null
+                dialog = null
             }
             if (!it.response?._id.isNullOrEmpty())
-                sharedPreference.userId =it.response?._id!!
+                sharedPreference.userId = it.response?._id!!
+            else
+                sharedPreference.userId = ""
             if (!it.response?.mobile_number.isNullOrEmpty())
-                sharedPreference.userMobile =it.response?.mobile_number!!
+                sharedPreference.userMobile = it.response?.mobile_number!!
+            else
+                sharedPreference.userMobile = ""
             if (!it.response?.country_code.isNullOrEmpty())
-                sharedPreference.userCountryCode =it.response?.country_code!!
+                sharedPreference.userCountryCode = it.response?.country_code!!
+            else
+                sharedPreference.userCountryCode = ""
             if (!it.response?.access_token.isNullOrEmpty())
-                sharedPreference.accessToken =it.response?.access_token!!
+                sharedPreference.accessToken = it.response?.access_token!!
+            else
+                sharedPreference.accessToken = ""
             if (!it.response?.profile_image.isNullOrEmpty())
-                sharedPreference.profileImage =it.response?.profile_image!!
+                sharedPreference.profileImage = it.response?.profile_image!!
+            else
+                sharedPreference.profileImage = ""
             if (!it.response?.email.isNullOrEmpty())
-                sharedPreference.userEmailId =it.response?.email!!
+                sharedPreference.userEmailId = it.response?.email!!
+            else
+                sharedPreference.userEmailId = ""
             if (!it.response?.first_name.isNullOrEmpty())
-                sharedPreference.userFirstName =it.response?.first_name!!
+                sharedPreference.userFirstName = it.response?.first_name!!
+            else
+                sharedPreference.userFirstName = ""
             if (!it.response?.last_name.isNullOrEmpty())
-                sharedPreference.userLastName =it.response?.last_name!!
+                sharedPreference.userLastName = it.response?.last_name!!
+            else
+                sharedPreference.userLastName = ""
 
             startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
                 putExtra(Constants.UserType, sharedPreference.userType)
@@ -170,20 +213,26 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }, 2)
             }
             R.id.btn_continue -> {
-                if (isValidCredentials()) {
-                    if (NetworkUtils.isInternetAvailable(this)) {
-                        ProgressBarUtils.getInstance().showProgress(this, false)
-                        driverViewModel.signInSignUp(
-                            edt_User_Email.getString(),
-                            ccp.selectedCountryCodeWithPlus,
-                            edt_phone_number.getString(),
-                            sharedPreference.deviceUniqueId!!,
-                            edt_password.getString(),
-                            Constants.DeviceTypeAndroid,
-                            Constants.UserValueDriver,
-                        )
-                    }else
-                        showToast("Poor Connection")
+                if (sharedPreference.userType.equals(Constants.Driver)) {
+                    if (isValidCredentials()) {
+                        if (NetworkUtils.isInternetAvailable(this)) {
+                            ProgressBarUtils.getInstance().showProgress(this, false)
+                            driverViewModel.signInSignUp(
+                                edt_User_Email.getString(),
+                                ccp.selectedCountryCodeWithPlus,
+                                edt_phone_number.getString(),
+                                sharedPreference.deviceUniqueId!!,
+                                edt_password.getString(),
+                                Constants.DeviceTypeAndroid,
+                                Constants.UserValueDriver,
+                            )
+                        } else
+                            showToast("Poor Connection")
+                    }
+                } else {
+                    startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
+                        putExtra(Constants.UserType, sharedPreference.userType)
+                    })
                 }
             }
             R.id.tvForgot -> {
@@ -192,16 +241,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             R.id.btnFace -> {
                 startActivity(Intent(this, FaceLockActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
+                    putExtra(Constants.CameFrom,Constants.SignIn)
                 })
             }
             R.id.btnFingerPrint -> {
                 startActivity(Intent(this, FingerPrintLockActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
+                    putExtra(Constants.CameFrom,Constants.SignIn)
                 })
             }
             R.id.btnPin -> {
                 startActivity(Intent(this, PatternLockActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
+                    putExtra(Constants.CameFrom,Constants.SignIn)
                 })
             }
         }
@@ -217,7 +269,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 showToast("Please enter password")
                 false
             }
-            edt_password.getString().length <= 7 || edt_password.getString().length >= 14 -> {
+            !edt_password.getString().isValidPassword -> {
                 showToast("Please enter valid password")
                 false
             }
@@ -240,12 +292,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val btn_cont = dialog?.findViewById<Button>(R.id.btn_cont) as TextView
 
         val btn_cancel = dialog?.findViewById<View>(R.id.btn_cancel) as Button
-        btn_cancel.setOnClickListener { dialog?.dismiss() }
+        btn_cancel.setOnClickListener {
+            if (dialog != null) {
+                dialog?.dismiss()
+                dialog = null
+            }
+        }
 
         btn_cont.setOnClickListener {
             if (NetworkUtils.isInternetAvailable(this)) {
                 driverViewModel.termsAndCondition(str, "1")
-            }else
+            } else
                 showToast("Poor Connection")
         }
         dialog?.show()

@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_black"
-                android:text="Ankush Sharma"
+                android:text="Demo User"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_15ssp" />
 

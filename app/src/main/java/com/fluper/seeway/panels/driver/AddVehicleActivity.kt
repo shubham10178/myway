@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -188,7 +189,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
             }
             tvAvailSheet.getString().isEmpty()||
                     !tvAvailSheet.getString().isDigitsOnly()-> {
-                showToast("Please enter no. of available sheets")
+                showToast("Please enter no. of available sheets in digits")
                 false
             }
             ucd_arrayList.isNullOrEmpty() -> {
@@ -356,9 +357,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
                     .itemCount
                 for (i in 0 until count) {
                     imageUri1 = data.clipData!!.getItemAt(i).uri
-
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri1)
-
                     ucd_arrayList.add(bitmap)
                 }
                 val uploadImageAdapter = UploadImagesAdapter(ucd_arrayList, this, object :

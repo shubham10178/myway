@@ -18,12 +18,19 @@ class ResetPasswordActivity : BaseActivity() {
         driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         myObserver()
         btn_submit.setOnClickListener {
-            if (isValidPasswords()){
-                if (NetworkUtils.isInternetAvailable(this)){
-                    ProgressBarUtils.getInstance().showProgress(this,false)
-                    driverViewModel.resetPassword(sharedPreference.userId,edtConPassword.getString())
-                }else
-                    showToast("Poor Connection")
+            if (sharedPreference.userType.equals(Constants.Driver)) {
+                if (isValidPasswords()) {
+                    if (NetworkUtils.isInternetAvailable(this)) {
+                        ProgressBarUtils.getInstance().showProgress(this, false)
+                        driverViewModel.resetPassword(
+                            sharedPreference.userId,
+                            edtConPassword.getString()
+                        )
+                    } else
+                        showToast("Poor Connection")
+                }
+            } else {
+                onBackPressed()
             }
         }
         img_back.setOnClickListener {
@@ -39,7 +46,7 @@ class ResetPasswordActivity : BaseActivity() {
         })
         driverViewModel.throwable.observe(this, Observer {
             ProgressBarUtils.getInstance().hideProgress()
-            ErrorUtils.handlerGeneralError(this,it)
+            ErrorUtils.handlerGeneralError(this, it)
         })
     }
 

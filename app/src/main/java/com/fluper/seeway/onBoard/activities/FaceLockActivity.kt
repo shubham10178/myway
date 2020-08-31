@@ -17,6 +17,7 @@ import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.panels.driver.dashboard.DriverMainActivity
 import com.fluper.seeway.panels.passenger.dashboard.PassengerMainActivity
 import com.fluper.seeway.utilitarianFiles.Constants
+import com.fluper.seeway.utilitarianFiles.showToast
 import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.android.synthetic.main.activity_face_lock.*
@@ -32,7 +33,8 @@ typealias LumaListener = (luma: Double) -> Unit
 class FaceLockActivity : BaseActivity(), View.OnClickListener {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+
     // Used to bind the lifecycle of cameras to the lifecycle owner
     private lateinit var cameraProvider: ProcessCameraProvider
 
@@ -46,7 +48,7 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
 
         // Request camera permissions
         if (allPermissionsGranted()) {
-                startCamera()
+            startCamera()
         } else {
             ActivityCompat.requestPermissions(
                 this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
@@ -57,7 +59,7 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
 
         // Set up the listener for take photo button
         btn_continue.setOnClickListener {
-            /*if (intent.hasExtra(Constants.UserType)) {
+            if (intent.hasExtra(Constants.UserType)) {
                 when (intent.getStringExtra(Constants.UserType)) {
                     Constants.Passenger -> {
                         startActivity(Intent(this, PassengerMainActivity::class.java).apply {
@@ -65,15 +67,19 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
                         })
                     }
                     Constants.Driver -> {
-                        startActivity(Intent(this, DriverMainActivity::class.java).apply {
-                            this@FaceLockActivity.finishAffinity()
-                        })
+                        if (intent.hasExtra(Constants.CameFrom) && intent.getStringExtra(Constants.CameFrom).equals(Constants.SignIn)) {
+                            showToast("This service is under development")
+                            onBackPressed()
+                        } else
+                            startActivity(Intent(this, DriverMainActivity::class.java).apply {
+                                this@FaceLockActivity.finishAffinity()
+                            })
                     }
                     else -> onBackPressed()
                 }
             } else
                 onBackPressed()
-            takePhoto()*/
+            //takePhoto()
         }
     }
 
@@ -135,10 +141,11 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
                     })
                 }
             // Select back camera as a default
-            val cameraSelector:CameraSelector = if (cameraProvider.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA))
-                CameraSelector.DEFAULT_FRONT_CAMERA
-            else
-                CameraSelector.DEFAULT_BACK_CAMERA
+            val cameraSelector: CameraSelector =
+                if (cameraProvider.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA))
+                    CameraSelector.DEFAULT_FRONT_CAMERA
+                else
+                    CameraSelector.DEFAULT_BACK_CAMERA
             try {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
@@ -202,6 +209,7 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
+
 private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
 
     private fun ByteBuffer.toByteArray(): ByteArray {

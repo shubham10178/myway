@@ -60,7 +60,7 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.ACCESS_FINE_LOCATION
     )
-    private lateinit var driverViewModel:DriverViewModel
+    private lateinit var driverViewModel: DriverViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,18 +92,17 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
         driverViewModel.logout.observe(this, androidx.lifecycle.Observer {
             ProgressBarUtils.getInstance().hideProgress()
             showToast(it.message!!)
-            startActivity(
-                Intent(
-                    this,
-                    UserTypeActivity::class.java
-                ))
             sharedPreference.isLoggedIn = false
             sharedPreference.deletePreferences()
-            this@DriverMainActivity.finishAffinity()
+            drawerHandler()
+            startActivity(
+                Intent(this@DriverMainActivity, UserTypeActivity::class.java).apply {
+                    this@DriverMainActivity.finishAffinity()
+                })
         })
         driverViewModel.throwable.observe(this, androidx.lifecycle.Observer {
             ProgressBarUtils.getInstance().hideProgress()
-            ErrorUtils.handlerGeneralError(this,it)
+            ErrorUtils.handlerGeneralError(this, it)
         })
     }
 
@@ -113,7 +112,7 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
                 .placeholder(R.drawable.profile_placeholder2x)
                 .error(R.drawable.profile_placeholder2x).into(ivUserImage)
         if (sharedPreference.userFirstName.isNotEmpty())
-            tvUserName.text = sharedPreference.userFirstName+" "+sharedPreference.userLastName
+            tvUserName.text = sharedPreference.userFirstName + " " + sharedPreference.userLastName
         ll_earnings.visibility = View.VISIBLE
         img_seekbar.setOnClickListener {
             if (fusedLocationFetcher != null)
@@ -180,9 +179,13 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnLogout -> {
-                drawerHandler()
-                ProgressBarUtils.getInstance().showProgress(this,false)
-                driverViewModel.logout(sharedPreference.accessToken!!)
+                if (NetworkUtils.isInternetAvailable(this)) {
+                    ProgressBarUtils.getInstance().showProgress(this, false)
+                    driverViewModel.logout(sharedPreference.accessToken!!)
+                }else{
+                    showToast("Poor connection")
+                    drawerHandler()
+                }
             }
             R.id.tvInviteEarn -> {
                 drawerHandler()
@@ -384,6 +387,7 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
+
     override fun onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed()

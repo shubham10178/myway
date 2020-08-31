@@ -40,59 +40,94 @@ class ForgotPasswordActivity : BaseActivity() {
         }
 
         btn_continue.setOnClickListener {
-            if (isInputs()) {
-                if (NetworkUtils.isInternetAvailable(this)) {
-                    if (edtEmailPhone.getString().isDigitsOnly()) {
-                        mobile = edtEmailPhone.getString()
-                        countryCode = ccp.selectedCountryCodeWithPlus
-                        email = ""
-                    } else {
-                        email = edtEmailPhone.getString()
-                        mobile = ""
-                        countryCode = ""
-                    }
-                    ProgressBarUtils.getInstance().showProgress(this, false)
-                    driverViewModel.forgotPassword(
-                        countryCode,
-                        mobile,
-                        email,
-                        "2"
-                    )
-                } else
-                    showToast("Poor Connection")
+            if (sharedPreference.userType.equals(Constants.Driver)) {
+                if (isInputs()) {
+                    if (NetworkUtils.isInternetAvailable(this)) {
+                        if (edtEmailPhone.getString().isDigitsOnly()) {
+                            mobile = edtEmailPhone.getString()
+                            countryCode = ccp.selectedCountryCodeWithPlus
+                            email = ""
+                        } else {
+                            email = edtEmailPhone.getString()
+                            mobile = ""
+                            countryCode = ""
+                        }
+                        ProgressBarUtils.getInstance().showProgress(this, false)
+                        driverViewModel.forgotPassword(
+                            countryCode,
+                            mobile,
+                            email,
+                            "2"
+                        )
+                    } else
+                        showToast("Poor Connection")
+                }
+            } else {
+                startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
+                    putExtra(Constants.CameFrom, Constants.ForgotPassword)
+                    this@ForgotPasswordActivity.finish()
+                })
             }
         }
     }
 
-    private fun isInputs():Boolean{
-        return when{
-            edtEmailPhone.getString().isEmpty()->{
+    private fun isInputs(): Boolean {
+        return when {
+            edtEmailPhone.getString().isEmpty() -> {
                 showToast("please enter e-mail/ mobile number")
                 false
             }
-            edtEmailPhone.getString().isDigitsOnly() && !edtEmailPhone.getString().isValidMobile->{
+            edtEmailPhone.getString()
+                .isDigitsOnly() && !edtEmailPhone.getString().isValidMobile -> {
                 showToast("Please enter valid mobile number")
                 false
             }
-            !edtEmailPhone.getString().isDigitsOnly() && !Patterns.EMAIL_ADDRESS.matcher(edtEmailPhone.getString()).matches()->{
+            !edtEmailPhone.getString().isDigitsOnly() && !Patterns.EMAIL_ADDRESS.matcher(
+                edtEmailPhone.getString()
+            ).matches() -> {
                 showToast("Please enter valid email address")
                 false
             }
-            else->true
+            else -> true
         }
     }
+
     private fun myObserver() {
         driverViewModel.forgotPassword.observe(this, Observer {
             ProgressBarUtils.getInstance().hideProgress()
             showToast(it.message!!)
             if (!it.response?._id.isNullOrEmpty())
                 sharedPreference.userId = it.response?._id!!
+            else
+                sharedPreference.userId = ""
             if (!it.response?.mobile_number.isNullOrEmpty())
                 sharedPreference.userMobile = it.response?.mobile_number!!
+            else
+                sharedPreference.userMobile = ""
             if (!it.response?.country_code.isNullOrEmpty())
                 sharedPreference.userCountryCode = it.response?.country_code!!
+            else
+                sharedPreference.userCountryCode = ""
+            if (!it.response?.access_token.isNullOrEmpty())
+                sharedPreference.accessToken = it.response?.access_token!!
+            else
+                sharedPreference.accessToken = ""
+            if (!it.response?.profile_image.isNullOrEmpty())
+                sharedPreference.profileImage = it.response?.profile_image!!
+            else
+                sharedPreference.profileImage = ""
             if (!it.response?.email.isNullOrEmpty())
                 sharedPreference.userEmailId = it.response?.email!!
+            else
+                sharedPreference.userEmailId = ""
+            if (!it.response?.first_name.isNullOrEmpty())
+                sharedPreference.userFirstName = it.response?.first_name!!
+            else
+                sharedPreference.userFirstName = ""
+            if (!it.response?.last_name.isNullOrEmpty())
+                sharedPreference.userLastName = it.response?.last_name!!
+            else
+                sharedPreference.userLastName = ""
 
             startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
                 putExtra(Constants.CameFrom, Constants.ForgotPassword)

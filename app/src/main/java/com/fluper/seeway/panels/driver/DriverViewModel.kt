@@ -6,6 +6,7 @@ import com.fluper.seeway.base.BaseViewModel
 import com.fluper.seeway.database.beans.MessageResponse
 import com.fluper.seeway.panels.driver.model.AddVehicleResponseModel
 import com.fluper.seeway.panels.driver.model.GetVehicleTypesResponseModel
+import com.fluper.seeway.panels.driver.model.ProfileCreationResponse
 import com.fluper.seeway.panels.driver.model.RegisterResponseModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,17 +15,17 @@ import okhttp3.RequestBody
 
 class DriverViewModel : BaseViewModel() {
     var throwable = MutableLiveData<Throwable>()
-    var forgotPassword = MutableLiveData<RegisterResponseModel>()
-    var otpVerify = MutableLiveData<RegisterResponseModel>()
-    var resendOtp = MutableLiveData<RegisterResponseModel>()
-    var resetPassword = MutableLiveData<RegisterResponseModel>()
+    var forgotPassword = MutableLiveData<ProfileCreationResponse>()
+    var otpVerify = MutableLiveData<ProfileCreationResponse>()
+    var resendOtp = MutableLiveData<ProfileCreationResponse>()
+    var resetPassword = MutableLiveData<ProfileCreationResponse>()
 
     var signInSignUp = MutableLiveData<RegisterResponseModel>()
     var termsAndConditions = MutableLiveData<RegisterResponseModel>()
     var getVehicleTypes = MutableLiveData<GetVehicleTypesResponseModel>()
     var addVehicles = MutableLiveData<AddVehicleResponseModel>()
     var deleteVehicles = MutableLiveData<AddVehicleResponseModel>()
-    var profileCreation = MutableLiveData<RegisterResponseModel>()
+    var profileCreation = MutableLiveData<ProfileCreationResponse>()
 
     var logout = MutableLiveData<MessageResponse>()
 
@@ -68,7 +69,7 @@ class DriverViewModel : BaseViewModel() {
             )
     }
 
-    private fun onForgotPassword(it: RegisterResponseModel) {
+    private fun onForgotPassword(it: ProfileCreationResponse) {
         forgotPassword.value = it
     }
 
@@ -89,7 +90,7 @@ class DriverViewModel : BaseViewModel() {
             )
     }
 
-    private fun onOtpVerify(it: RegisterResponseModel) {
+    private fun onOtpVerify(it: ProfileCreationResponse) {
         otpVerify.value = it
     }
 
@@ -110,7 +111,7 @@ class DriverViewModel : BaseViewModel() {
             )
     }
 
-    private fun onOtpResend(it: RegisterResponseModel) {
+    private fun onOtpResend(it: ProfileCreationResponse) {
         resendOtp.value = it
     }
 
@@ -131,7 +132,7 @@ class DriverViewModel : BaseViewModel() {
             )
     }
 
-    private fun onResetPassword(it: RegisterResponseModel) {
+    private fun onResetPassword(it: ProfileCreationResponse) {
         resetPassword.value = it
     }
 
@@ -261,6 +262,7 @@ class DriverViewModel : BaseViewModel() {
     @SuppressLint("CheckResult")
     fun profile(
         access_token: String,
+        user_type:RequestBody,
         first_name: RequestBody,
         last_name: RequestBody,
         city: RequestBody,
@@ -284,7 +286,7 @@ class DriverViewModel : BaseViewModel() {
         gexpay_account: RequestBody,
 
         gender: RequestBody,
-        somking_status: RequestBody,
+        smoking_status: RequestBody,
         vehicle_type_id: RequestBody,
         driving_licence: MultipartBody.Part?,
 
@@ -295,6 +297,7 @@ class DriverViewModel : BaseViewModel() {
     ) {
         apiInterface.profile(
             access_token = access_token,
+            user_type = user_type,
             first_name = first_name,
             last_name = last_name,
             city = city,
@@ -318,7 +321,7 @@ class DriverViewModel : BaseViewModel() {
             gexpay_account = gexpay_account,
 
             gender = gender,
-            somking_status = somking_status,
+            somking_status = smoking_status,
             vehicle_type_id = vehicle_type_id,
             driving_licence = driving_licence,
 
@@ -334,7 +337,7 @@ class DriverViewModel : BaseViewModel() {
             )
     }
 
-    private fun onProfileCreate(it: RegisterResponseModel) {
+    private fun onProfileCreate(it: ProfileCreationResponse) {
         profileCreation.value = it
     }
 }

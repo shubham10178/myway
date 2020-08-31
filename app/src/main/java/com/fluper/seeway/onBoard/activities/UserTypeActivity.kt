@@ -66,6 +66,7 @@ class UserTypeActivity : BaseActivity() {
                 when {
                     userType.equals(Constants.Passenger) || userType.equals(Constants.Driver) -> {
                         startActivity(Intent(this@UserTypeActivity, LoginActivity::class.java).apply {
+                            sharedPreference.deletePreferences()
                             sharedPreference.userType = userType
                         })
                     }

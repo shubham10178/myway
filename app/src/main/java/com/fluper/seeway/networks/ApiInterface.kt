@@ -3,6 +3,7 @@ package com.fluper.seeway.networks
 import com.fluper.seeway.database.beans.MessageResponse
 import com.fluper.seeway.panels.driver.model.AddVehicleResponseModel
 import com.fluper.seeway.panels.driver.model.GetVehicleTypesResponseModel
+import com.fluper.seeway.panels.driver.model.ProfileCreationResponse
 import com.fluper.seeway.panels.driver.model.RegisterResponseModel
 import com.fluper.seeway.utilitarianFiles.ApiConstants
 import com.fluper.seeway.utilitarianFiles.Constants
@@ -20,28 +21,28 @@ interface ApiInterface {
         @Field("mobile_number")mobile_number:String,
         @Field("email")email:String,
         @Field("user_type")user_type:String
-    ): Observable<RegisterResponseModel>
+    ): Observable<ProfileCreationResponse>
 
     @FormUrlEncoded
     @POST(ApiConstants.VerifyOtp)
     fun verifyOtp(
         @Field("user_id")user_id:String,
         @Field("verificationCode")verificationCode:String
-    ): Observable<RegisterResponseModel>
+    ): Observable<ProfileCreationResponse>
 
     @FormUrlEncoded
     @POST(ApiConstants.ResendOtp)
     fun resendOtp(
         @Field("mobile_number")mobile_number:String,
         @Field("country_code")country_code:String
-    ): Observable<RegisterResponseModel>
+    ): Observable<ProfileCreationResponse>
 
     @FormUrlEncoded
     @POST(ApiConstants.ResetPassword)
     fun resetPassword(
         @Field("user_id")user_id:String,
         @Field("password")password:String
-    ): Observable<RegisterResponseModel>
+    ): Observable<ProfileCreationResponse>
 
     @FormUrlEncoded
     @POST(ApiConstants.Register)
@@ -55,7 +56,6 @@ interface ApiInterface {
         @Field("user_type")user_type:String
     ): Observable<RegisterResponseModel>
 
-    @FormUrlEncoded
     @POST(ApiConstants.Logout)
     fun logout(
         @Header("access_token")access_token:String
@@ -97,6 +97,7 @@ interface ApiInterface {
     @POST(ApiConstants.CompleteProfile)
     fun profile(
         @Header("access_token") access_token: String,
+        @Part("user_type")user_type:RequestBody,
         @Part("first_name")first_name :RequestBody,
         @Part("last_name")last_name :RequestBody,
         @Part("city")city :RequestBody,
@@ -128,6 +129,6 @@ interface ApiInterface {
         @Part("user_permission")user_permission :RequestBody,
         @Part upload_permission :MultipartBody.Part? = null,
         @Part profile_image :MultipartBody.Part? = null
-    ):Observable<RegisterResponseModel>
+    ):Observable<ProfileCreationResponse>
 
 }

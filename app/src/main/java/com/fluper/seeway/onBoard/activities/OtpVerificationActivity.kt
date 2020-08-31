@@ -37,21 +37,37 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
             ProgressBarUtils.getInstance().hideProgress()
             showToast(it.message!!)
             if (!it.response?._id.isNullOrEmpty())
-                sharedPreference.userId =it.response?._id!!
+                sharedPreference.userId = it.response?._id!!
+            else
+                sharedPreference.userId = ""
             if (!it.response?.mobile_number.isNullOrEmpty())
-                sharedPreference.userMobile =it.response?.mobile_number!!
+                sharedPreference.userMobile = it.response?.mobile_number!!
+            else
+                sharedPreference.userMobile = ""
             if (!it.response?.country_code.isNullOrEmpty())
-                sharedPreference.userCountryCode =it.response?.country_code!!
+                sharedPreference.userCountryCode = it.response?.country_code!!
+            else
+                sharedPreference.userCountryCode = ""
             if (!it.response?.access_token.isNullOrEmpty())
-                sharedPreference.accessToken =it.response?.access_token!!
+                sharedPreference.accessToken = it.response?.access_token!!
+            else
+                sharedPreference.accessToken = ""
             if (!it.response?.profile_image.isNullOrEmpty())
-                sharedPreference.profileImage =it.response?.profile_image!!
+                sharedPreference.profileImage = it.response?.profile_image!!
+            else
+                sharedPreference.profileImage = ""
             if (!it.response?.email.isNullOrEmpty())
-                sharedPreference.userEmailId =it.response?.email!!
+                sharedPreference.userEmailId = it.response?.email!!
+            else
+                sharedPreference.userEmailId = ""
             if (!it.response?.first_name.isNullOrEmpty())
-                sharedPreference.userFirstName =it.response?.first_name!!
+                sharedPreference.userFirstName = it.response?.first_name!!
+            else
+                sharedPreference.userFirstName = ""
             if (!it.response?.last_name.isNullOrEmpty())
-                sharedPreference.userLastName =it.response?.last_name!!
+                sharedPreference.userLastName = it.response?.last_name!!
+            else
+                sharedPreference.userLastName = ""
 
             if (intent.hasExtra(Constants.CameFrom)) {
                 if (intent.getStringExtra(Constants.CameFrom).equals(Constants.ForgotPassword))
@@ -64,14 +80,22 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
                 if (intent.hasExtra(Constants.UserType)) {
                     when (intent.getStringExtra(Constants.UserType)) {
                         Constants.Passenger -> {
-                            startActivity(Intent(this, ProfileCreationPassengerActivity::class.java).apply {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    ProfileCreationPassengerActivity::class.java
+                                ).apply {
                                     this@OtpVerificationActivity.finish()
-                            })
+                                })
                         }
                         Constants.Driver -> {
-                            startActivity(Intent(this, ProfileCreationDriverActivity::class.java).apply {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    ProfileCreationDriverActivity::class.java
+                                ).apply {
                                     this@OtpVerificationActivity.finish()
-                            })
+                                })
                         }
                         else -> onBackPressed()
                     }
@@ -83,55 +107,110 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
             ProgressBarUtils.getInstance().hideProgress()
             showToast(it.message!!)
             if (!it.response?._id.isNullOrEmpty())
-                sharedPreference.userId =it.response?._id!!
+                sharedPreference.userId = it.response?._id!!
+            else
+                sharedPreference.userId = ""
             if (!it.response?.mobile_number.isNullOrEmpty())
-                sharedPreference.userMobile =it.response?.mobile_number!!
+                sharedPreference.userMobile = it.response?.mobile_number!!
+            else
+                sharedPreference.userMobile = ""
             if (!it.response?.country_code.isNullOrEmpty())
-                sharedPreference.userCountryCode =it.response?.country_code!!
+                sharedPreference.userCountryCode = it.response?.country_code!!
+            else
+                sharedPreference.userCountryCode = ""
             if (!it.response?.access_token.isNullOrEmpty())
-                sharedPreference.accessToken =it.response?.access_token!!
+                sharedPreference.accessToken = it.response?.access_token!!
+            else
+                sharedPreference.accessToken = ""
             if (!it.response?.profile_image.isNullOrEmpty())
-                sharedPreference.profileImage =it.response?.profile_image!!
+                sharedPreference.profileImage = it.response?.profile_image!!
+            else
+                sharedPreference.profileImage = ""
             if (!it.response?.email.isNullOrEmpty())
-                sharedPreference.userEmailId =it.response?.email!!
+                sharedPreference.userEmailId = it.response?.email!!
+            else
+                sharedPreference.userEmailId = ""
             if (!it.response?.first_name.isNullOrEmpty())
-                sharedPreference.userFirstName =it.response?.first_name!!
+                sharedPreference.userFirstName = it.response?.first_name!!
+            else
+                sharedPreference.userFirstName = ""
             if (!it.response?.last_name.isNullOrEmpty())
-                sharedPreference.userLastName =it.response?.last_name!!
+                sharedPreference.userLastName = it.response?.last_name!!
+            else
+                sharedPreference.userLastName = ""
 
         })
 
         driverViewModel.throwable.observe(this, Observer {
             ProgressBarUtils.getInstance().hideProgress()
-            ErrorUtils.handlerGeneralError(this,it)
+            ErrorUtils.handlerGeneralError(this, it)
         })
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btn_otp_con -> {
-                if (pinview.value.isNotEmpty()) {
-                    if (NetworkUtils.isInternetAvailable(this)){
-                        ProgressBarUtils.getInstance().showProgress(this,false)
-                        driverViewModel.otpVerify(
-                            sharedPreference.userId,
-                            pinview.value.trim()
+                if (sharedPreference.userType.equals(Constants.Driver)) {
+                    if (pinview.value.isNotEmpty()) {
+                        if (NetworkUtils.isInternetAvailable(this)) {
+                            ProgressBarUtils.getInstance().showProgress(this, false)
+                            driverViewModel.otpVerify(
+                                sharedPreference.userId,
+                                pinview.value.trim()
+                            )
+                        } else
+                            showToast("Poor Connection")
+                    } else
+                        showToast("Please enter otp")
+                } else {
+                    if (intent.hasExtra(Constants.CameFrom)) {
+                        if (intent.getStringExtra(Constants.CameFrom)
+                                .equals(Constants.ForgotPassword)
                         )
-                    }else
-                        showToast("Poor Connection")
-                }else
-                    showToast("Please enter otp")
+                            startActivity(Intent(this, ResetPasswordActivity::class.java).apply {
+                                this@OtpVerificationActivity.finish()
+                            })
+                        else
+                            onBackPressed()
+                    } else {
+                        if (intent.hasExtra(Constants.UserType)) {
+                            when (intent.getStringExtra(Constants.UserType)) {
+                                Constants.Passenger -> {
+                                    startActivity(
+                                        Intent(
+                                            this,
+                                            ProfileCreationPassengerActivity::class.java
+                                        ).apply {
+                                            this@OtpVerificationActivity.finish()
+                                        })
+                                }
+                                Constants.Driver -> {
+                                    startActivity(
+                                        Intent(
+                                            this,
+                                            ProfileCreationDriverActivity::class.java
+                                        ).apply {
+                                            this@OtpVerificationActivity.finish()
+                                        })
+                                }
+                                else -> onBackPressed()
+                            }
+                        } else
+                            onBackPressed()
+                    }
+                }
             }
             R.id.tvResendOtp -> {
                 if (timerCompleted) {
                     setTimer()
-                    if (NetworkUtils.isInternetAvailable(this)){
-                        ProgressBarUtils.getInstance().showProgress(this,false)
-                        driverViewModel.resendOtp(
-                            sharedPreference.userMobile,
-                            sharedPreference.userCountryCode
-                        )
-                    }
+                    if (sharedPreference.userType.equals(Constants.Driver))
+                        if (NetworkUtils.isInternetAvailable(this)) {
+                            ProgressBarUtils.getInstance().showProgress(this, false)
+                            driverViewModel.resendOtp(
+                                sharedPreference.userMobile,
+                                sharedPreference.userCountryCode
+                            )
+                        }
                 } else {
                     showToast("Please wait...")
                 }
