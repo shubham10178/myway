@@ -27,29 +27,33 @@ class PatternLockActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btn_otp_con -> {
-                if (intent.hasExtra(Constants.UserType)) {
-                    when (intent.getStringExtra(Constants.UserType)) {
-                        Constants.Passenger -> {
-                            startActivity(Intent(this, PassengerMainActivity::class.java).apply {
-                                this@PatternLockActivity.finishAffinity()
-                            })
-                        }
-                        Constants.Driver -> {
-                            if (intent.hasExtra(Constants.CameFrom) && intent.getStringExtra(
-                                    Constants.CameFrom
-                                ).equals(Constants.SignIn)
-                            ) {
-                                showToast("This service is under development")
-                                onBackPressed()
-                            } else
+                if (intent.hasExtra(Constants.CameFrom) && intent.getStringExtra(Constants.CameFrom)
+                        .equals(Constants.SignIn)
+                ) {
+                    showToast("This service is under development")
+                    onBackPressed()
+                } else {
+                    if (intent.hasExtra(Constants.UserType)) {
+                        when (intent.getStringExtra(Constants.UserType)) {
+                            Constants.Passenger -> {
+                                startActivity(
+                                    Intent(
+                                        this,
+                                        PassengerMainActivity::class.java
+                                    ).apply {
+                                        this@PatternLockActivity.finishAffinity()
+                                    })
+                            }
+                            Constants.Driver -> {
                                 startActivity(Intent(this, DriverMainActivity::class.java).apply {
                                     this@PatternLockActivity.finishAffinity()
                                 })
+                            }
+                            else -> onBackPressed()
                         }
-                        else -> onBackPressed()
-                    }
-                } else
-                    onBackPressed()
+                    } else
+                        onBackPressed()
+                }
             }
         }
     }

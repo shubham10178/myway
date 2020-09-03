@@ -18,7 +18,6 @@ class ResetPasswordActivity : BaseActivity() {
         driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         myObserver()
         btn_submit.setOnClickListener {
-            if (sharedPreference.userType.equals(Constants.Driver)) {
                 if (isValidPasswords()) {
                     if (NetworkUtils.isInternetAvailable(this)) {
                         ProgressBarUtils.getInstance().showProgress(this, false)
@@ -29,9 +28,6 @@ class ResetPasswordActivity : BaseActivity() {
                     } else
                         showToast("Poor Connection")
                 }
-            } else {
-                onBackPressed()
-            }
         }
         img_back.setOnClickListener {
             onBackPressed()

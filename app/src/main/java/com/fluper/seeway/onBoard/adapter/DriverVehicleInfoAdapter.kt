@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 import com.fluper.seeway.R
-import com.fluper.seeway.panels.driver.model.AddVehicleResponseModel
+import com.fluper.seeway.database.model.AddVehicleResponseModel
 import kotlinx.android.synthetic.main.vehicle_info_item.view.*
 
 

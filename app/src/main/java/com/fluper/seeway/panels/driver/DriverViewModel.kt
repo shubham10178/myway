@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import com.fluper.seeway.base.BaseViewModel
 import com.fluper.seeway.database.beans.MessageResponse
-import com.fluper.seeway.panels.driver.model.AddVehicleResponseModel
-import com.fluper.seeway.panels.driver.model.GetVehicleTypesResponseModel
-import com.fluper.seeway.panels.driver.model.ProfileCreationResponse
-import com.fluper.seeway.panels.driver.model.RegisterResponseModel
+import com.fluper.seeway.database.model.AddVehicleResponseModel
+import com.fluper.seeway.database.model.GetVehicleTypesResponseModel
+import com.fluper.seeway.database.model.ProfileCreationResponse
+import com.fluper.seeway.database.model.RegisterResponseModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
@@ -97,12 +97,10 @@ class DriverViewModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun resendOtp(
-        mobile_number: String,
-        country_code: String
+        user_id: String
     ) {
         apiInterface.resendOtp(
-            mobile_number = mobile_number,
-            country_code = country_code
+            user_id = user_id
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -287,13 +285,17 @@ class DriverViewModel : BaseViewModel() {
 
         gender: RequestBody,
         smoking_status: RequestBody,
-        vehicle_type_id: RequestBody,
+        vehicle_type_id: RequestBody?,
         driving_licence: MultipartBody.Part?,
 
         user_id: RequestBody,
         user_permission: RequestBody,
         upload_permission: MultipartBody.Part?,
-        profile_image: MultipartBody.Part?
+        profile_image: MultipartBody.Part?,
+
+        email: RequestBody?,
+        country_code: RequestBody?,
+        mobile_number: RequestBody?
     ) {
         apiInterface.profile(
             access_token = access_token,
@@ -328,7 +330,11 @@ class DriverViewModel : BaseViewModel() {
             user_id = user_id,
             user_permission = user_permission,
             upload_permission = upload_permission,
-            profile_image = profile_image
+            profile_image = profile_image,
+
+            email = email,
+            country_code = country_code,
+            mobile_number =mobile_number
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

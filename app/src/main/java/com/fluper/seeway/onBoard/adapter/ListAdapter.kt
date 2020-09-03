@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.fluper.seeway.R
 import com.fluper.seeway.onBoard.model.UserTypeModel
@@ -35,12 +35,12 @@ class ListAdapter constructor(val userList: ArrayList<UserTypeModel>, val contex
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        lateinit var main_cons: RelativeLayout
+        lateinit var main_cons: ConstraintLayout
 
         fun bindItems(user: UserTypeModel) {
             val img_User = itemView.findViewById(R.id.img_User) as ImageView
             val txt_user_type = itemView.findViewById(R.id.txt_user_type) as TextView
-            main_cons = itemView.findViewById(R.id.main_cons) as RelativeLayout
+            main_cons = itemView.findViewById(R.id.main_cons) as ConstraintLayout
 
             img_User.setBackgroundResource(user.img)
 

@@ -4,16 +4,21 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Patterns
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.fluper.seeway.R
 import com.fluper.seeway.base.BaseActivity
+import com.fluper.seeway.database.model.RegisterResponseModel
 import com.fluper.seeway.panels.driver.DriverViewModel
 import com.fluper.seeway.panels.driver.ProfileCreationDriverActivity
 import com.fluper.seeway.panels.driver.dashboard.DriverMainActivity
@@ -36,20 +41,40 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         initClickListener()
         myObserver()
+
         val type = Typeface.createFromAsset(assets, "font/avenir_black.ttf")
         (ccp as CountryCodePicker).typeFace = type
         edt_password.onFocusChangeListener = OnFocusChangeListener { view, isFocused ->
             if (isFocused) {
-                //                edt_password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
-                //                password_textInputLayout.setPasswordVisibilityToggleEnabled(false)
                 edt_password.typeface = type
-
             } else {
-                //                edt_password.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
                 edt_password.typeface = type
-                //                password_textInputLayout.setPasswordVisibilityToggleEnabled(true)
             }
         }
+        handleEditTextView()
+    }
+
+    private fun handleEditTextView() {
+        edt_phone_number.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                //
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString().isDigitsOnly() || s.toString()[0].toString().equals("+")) {
+                    if (s.toString().isNotEmpty() && s.toString()[0].toString().equals("+")) {
+                        edt_phone_number.setText(
+                            s.toString().removePrefix(ccp.selectedCountryCodeWithPlus)
+                        )
+                        edt_phone_number.setSelection(edt_phone_number.getString().length)
+                    }
+                }
+            }
+        })
     }
 
     private fun myObserver() {
@@ -90,17 +115,26 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 sharedPreference.userLastName = ""
 
             it.response?.let {
-                if (it.is_term_accept == 0 && it.is_verified?.trim()
+                var isVerified = ""
+                if (sharedPreference.loginWith.equals(Constants.LoginWithMobile)) {
+                    if (!it.is_mobile_verified.isNullOrEmpty())
+                        isVerified = it.is_mobile_verified
+                } else {
+                    if (!it.is_email_verified.isNullOrEmpty())
+                        isVerified = it.is_email_verified
+                }
+
+                if (it.is_term_accept == 0 && isVerified?.trim()
                         ?.toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
                 ) {
                     showDialog(it._id!!)
-                } else if (it.is_term_accept == 1 && it.is_verified?.trim()
+                } else if (it.is_term_accept == 1 && isVerified?.trim()
                         ?.toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
                 ) {
                     startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
                         putExtra(Constants.UserType, sharedPreference.userType)
                     })
-                } else if (it.is_term_accept == 1 && it.is_verified?.trim()
+                } else if (it.is_term_accept == 1 && isVerified?.trim()
                         ?.toInt() == 1 && it.isProfileCreated?.trim()?.toInt() == 0
                 ) {
                     when (sharedPreference.userType) {
@@ -123,9 +157,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     when (sharedPreference.userType) {
                         Constants.Passenger -> {
-                            startActivity(Intent(this, PassengerMainActivity::class.java).apply {
-                                this@LoginActivity.finishAffinity()
-                            })
+                            startActivity(
+                                Intent(
+                                    this,
+                                    PassengerMainActivity::class.java
+                                ).apply {
+                                    this@LoginActivity.finishAffinity()
+                                })
                         }
                         Constants.Driver -> {
                             startActivity(Intent(this, DriverMainActivity::class.java).apply {
@@ -180,18 +218,24 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 putExtra(Constants.UserType, sharedPreference.userType)
             })
         })
+
         driverViewModel.throwable.observe(this, Observer {
             ProgressBarUtils.getInstance().hideProgress()
             ErrorUtils.handlerGeneralError(this, it)
         })
     }
 
+    private fun redirectAfterLogin(it: RegisterResponseModel.Response) {
+
+    }
+
     private fun initClickListener() {
-        edt_User_Email.setOnClickListener(this)
+        /*edt_User_Email.setOnClickListener(this)
         emailClick.setOnClickListener(this)
         edt_phone_number.setOnClickListener(this)
         mobileClick.setOnClickListener(this)
-        ccp.setOnClickListener(this)
+        ccp.setOnClickListener(this)*/
+
         btn_continue.setOnClickListener(this)
         tvForgot.setOnClickListener(this)
         btnFace.setOnClickListener(this)
@@ -201,7 +245,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(p0: View) {
         when (p0.id) {
-            R.id.edt_User_Email, R.id.emailClick -> {
+            /*R.id.edt_User_Email, R.id.emailClick -> {
                 startActivityForResult(Intent(this, EmailRegisterActivity::class.java).apply {
                     putExtra("email", edt_User_Email.text.toString())
                 }, 1)
@@ -211,28 +255,30 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     putExtra("ccp", ccp.selectedCountryNameCode)
                     putExtra("mobile", edt_phone_number.text.toString())
                 }, 2)
-            }
+            }*/
             R.id.btn_continue -> {
-                if (sharedPreference.userType.equals(Constants.Driver)) {
-                    if (isValidCredentials()) {
-                        if (NetworkUtils.isInternetAvailable(this)) {
-                            ProgressBarUtils.getInstance().showProgress(this, false)
-                            driverViewModel.signInSignUp(
-                                edt_User_Email.getString(),
-                                ccp.selectedCountryCodeWithPlus,
-                                edt_phone_number.getString(),
-                                sharedPreference.deviceUniqueId!!,
-                                edt_password.getString(),
-                                Constants.DeviceTypeAndroid,
-                                Constants.UserValueDriver,
-                            )
-                        } else
-                            showToast("Poor Connection")
-                    }
-                } else {
-                    startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
-                        putExtra(Constants.UserType, sharedPreference.userType)
-                    })
+                if (isValidCredentials()) {
+                    if (NetworkUtils.isInternetAvailable(this)) {
+                        if (edt_User_Email.getString().isNotEmpty())
+                            sharedPreference.loginWith = Constants.LoginWithEmail
+                        else
+                            sharedPreference.loginWith = Constants.LoginWithMobile
+                        ProgressBarUtils.getInstance().showProgress(this, false)
+                        driverViewModel.signInSignUp(
+                            edt_User_Email.getString(),
+                            ccp.selectedCountryCodeWithPlus,
+                            edt_phone_number.getString(),
+                            sharedPreference.deviceUniqueId!!,
+                            edt_password.getString(),
+                            Constants.DeviceTypeAndroid,
+                            when (sharedPreference.userType) {
+                                Constants.Passenger -> Constants.UserValuePassenger
+                                Constants.Driver -> Constants.UserValueDriver
+                                else -> ""
+                            }
+                        )
+                    } else
+                        showToast("Poor Connection")
                 }
             }
             R.id.tvForgot -> {
@@ -241,19 +287,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             R.id.btnFace -> {
                 startActivity(Intent(this, FaceLockActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
-                    putExtra(Constants.CameFrom,Constants.SignIn)
+                    putExtra(Constants.CameFrom, Constants.SignIn)
                 })
             }
             R.id.btnFingerPrint -> {
                 startActivity(Intent(this, FingerPrintLockActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
-                    putExtra(Constants.CameFrom,Constants.SignIn)
+                    putExtra(Constants.CameFrom, Constants.SignIn)
                 })
             }
             R.id.btnPin -> {
                 startActivity(Intent(this, PatternLockActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
-                    putExtra(Constants.CameFrom,Constants.SignIn)
+                    putExtra(Constants.CameFrom, Constants.SignIn)
                 })
             }
         }
@@ -263,6 +309,22 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         return when {
             edt_User_Email.getString().isEmpty() && edt_phone_number.getString().isEmpty() -> {
                 showToast("Please enter email or mobile")
+                false
+            }
+            edt_User_Email.getString().isNotEmpty() && edt_phone_number.getString()
+                .isNotEmpty() -> {
+                //showToast("Please enter only either email or mobile")
+                false
+            }
+            edt_User_Email.getString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(
+                edt_User_Email.getString()
+            ).matches() -> {
+                showToast("Please enter valid email address")
+                false
+            }
+            edt_phone_number.getString()
+                .isNotEmpty() && !edt_phone_number.getString().isValidMobile -> {
+                showToast("Please enter valid mobile number")
                 false
             }
             edt_password.getString().isEmpty() -> {
@@ -306,37 +368,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 showToast("Poor Connection")
         }
         dialog?.show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            1 -> {
-                if (requestCode == resultCode) {
-                    edt_User_Email.setText(
-                        if (data != null && data.hasExtra("email"))
-                            data.getStringExtra("email")
-                        else ""
-                    )
-                }
-            }
-            2 -> {
-                if (requestCode == resultCode) {
-                    val ccpCode = if (data != null && data.hasExtra("ccp"))
-                        data.getStringExtra("ccp")
-                    else ""
-                    if (!ccpCode.isNullOrEmpty()) {
-                        ccp.setDefaultCountryUsingNameCode(ccpCode)
-                        ccp.resetToDefaultCountry()
-                    }
-                    edt_phone_number.setText(
-                        if (data != null && data.hasExtra("mobile"))
-                            data.getStringExtra("mobile")
-                        else ""
-                    )
-                }
-            }
-            else -> super.onActivityResult(requestCode, resultCode, data)
-        }
     }
 
     override fun onBackPressed() {

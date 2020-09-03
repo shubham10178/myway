@@ -14,7 +14,6 @@ import android.provider.MediaStore
 import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -41,7 +40,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
     private var imageUri1: Uri? = null
     private val uvi_arrayList = ArrayList<Bitmap>()
     private val ucd_arrayList = ArrayList<Bitmap>()
-    private var relationWithVehicle = "Owner"
+    private var relationWithVehicle = ""
     private lateinit var driverViewModel: DriverViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +78,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
         })
         driverViewModel.throwable.observe(this, androidx.lifecycle.Observer {
             ProgressBarUtils.getInstance().hideProgress()
-            ErrorUtils.handlerGeneralError(this,it)
+            ErrorUtils.handlerGeneralError(this, it)
         })
     }
 
@@ -140,19 +139,22 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btn_save_addv -> {
                 if (isInputValid()) {
-                    if(NetworkUtils.isInternetAvailable(this)){
-                        ProgressBarUtils.getInstance().showProgress(this,false)
+                    if (NetworkUtils.isInternetAvailable(this)) {
+                        ProgressBarUtils.getInstance().showProgress(this, false)
                         driverViewModel.addVehicles(
                             access_token = sharedPreference.accessToken!!,
                             vehicle_number = getRequestBody(edt_vn_driver.getString()),
                             vehicle_model = getRequestBody(edt_vmn_driver.getString()),
                             vehicle_color = getRequestBody(tvVehicleColor.getString()),
-                            vehicle_imgae = getMultipartBodyArrayList(uvi_arrayList,"vehicle_imgae"),
+                            vehicle_imgae = getMultipartBodyArrayList(
+                                uvi_arrayList,
+                                "vehicle_imgae"
+                            ),
                             no_of_seats = getRequestBody(tvAvailSheet.getString()),
-                            car_document = getMultipartBody(ucd_arrayList[0],"car_document"),
+                            car_document = getMultipartBody(ucd_arrayList[0], "car_document"),
                             certificate_date = getRequestBody(etCardDate_driver.getString()),
                             relation_with = getRequestBody(relationWithVehicle),
-                            description =  getRequestBody(edt_describ.getString())
+                            description = getRequestBody(edt_describ.getString())
                         )
                     }
                 }
@@ -187,8 +189,8 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
                 showToast("Please enter vehicle registration date")
                 false
             }
-            tvAvailSheet.getString().isEmpty()||
-                    !tvAvailSheet.getString().isDigitsOnly()-> {
+            tvAvailSheet.getString().isEmpty() ||
+                    !tvAvailSheet.getString().isDigitsOnly() -> {
                 showToast("Please enter no. of available sheets in digits")
                 false
             }
@@ -245,7 +247,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
     private fun pickImageFromGallery() {
         val intent = Intent()
         intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICK_CODE)
     }
@@ -295,7 +297,16 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+        if (resultCode == 0 && data == null) {
+            if (uvi_arrayList.isNullOrEmpty()) {
+                dummy_vehicle_img.visibility = View.VISIBLE
+                vehicle_img_rec.visibility = View.GONE
+            }
+            if (ucd_arrayList.isNullOrEmpty()) {
+                dummy_car_img.visibility = View.VISIBLE
+                car_doc_rec.visibility = View.GONE
+            }
+        }
         if (resultCode == Activity.RESULT_OK && requestCode == 100) {
             if (data!!.clipData != null) {
                 val count = data.clipData!!

@@ -1,17 +1,17 @@
 package com.fluper.seeway.panels.driver.dashboard
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -96,7 +96,7 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
             sharedPreference.deletePreferences()
             drawerHandler()
             startActivity(
-                Intent(this@DriverMainActivity, UserTypeActivity::class.java).apply {
+                Intent(this, UserTypeActivity::class.java).apply {
                     this@DriverMainActivity.finishAffinity()
                 })
         })
@@ -107,12 +107,13 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
     }
 
     private fun initView() {
-        if (sharedPreference.profileImage.isNotEmpty())
-            Picasso.get().load(sharedPreference.profileImage)
-                .placeholder(R.drawable.profile_placeholder2x)
-                .error(R.drawable.profile_placeholder2x).into(ivUserImage)
         if (sharedPreference.userFirstName.isNotEmpty())
             tvUserName.text = sharedPreference.userFirstName + " " + sharedPreference.userLastName
+        else
+            if (sharedPreference.userEmailId.isNotEmpty())
+                tvUserName.text = sharedPreference.userEmailId
+            else
+                tvUserName.text = sharedPreference.userCountryCode + " " + sharedPreference.userMobile
         ll_earnings.visibility = View.VISIBLE
         img_seekbar.setOnClickListener {
             if (fusedLocationFetcher != null)
@@ -179,18 +180,36 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnLogout -> {
-                if (NetworkUtils.isInternetAvailable(this)) {
-                    ProgressBarUtils.getInstance().showProgress(this, false)
-                    driverViewModel.logout(sharedPreference.accessToken!!)
-                }else{
-                    showToast("Poor connection")
-                    drawerHandler()
-                }
+                alertSubmit()
             }
             R.id.tvInviteEarn -> {
                 drawerHandler()
             }
         }
+    }
+
+    private fun alertSubmit() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.layout_logout)
+        val btnLogoutD = dialog.findViewById<Button>(R.id.btnLogout)
+        val btnCancelD = dialog.findViewById<Button>(R.id.btnCancel)
+        btnLogoutD.setOnClickListener {
+            if (NetworkUtils.isInternetAvailable(this)) {
+                ProgressBarUtils.getInstance().showProgress(this, false)
+                driverViewModel.logout(sharedPreference.accessToken!!)
+            } else {
+                showToast("Poor connection")
+                drawerHandler()
+            }
+            dialog.dismiss()
+        }
+        btnCancelD.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.dismiss()
+        dialog.show()
     }
 
     private fun drawerHandler() {

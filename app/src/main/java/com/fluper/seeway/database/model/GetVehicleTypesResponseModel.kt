@@ -1,4 +1,4 @@
-package com.fluper.seeway.panels.driver.model
+package com.fluper.seeway.database.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

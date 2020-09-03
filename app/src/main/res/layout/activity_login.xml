@@ -167,13 +167,26 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:fontFamily="@font/avenir_black"
+                            android:imeOptions="actionNext"
+                            android:inputType="textEmailAddress"
+                            android:paddingBottom="5dp"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:translationY="5dp" />
+                        <!--<EditText
+                            android:id="@+id/edt_User_Email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:fontFamily="@font/avenir_black"
                             android:paddingBottom="5dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
                             android:textSize="12sp"
                             android:translationY="5dp"
                             android:inputType="none"
-                            android:focusable="false"/>
+                            android:focusable="false"/>-->
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -234,7 +247,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_border_left"
@@ -290,8 +303,59 @@
                     </LinearLayout>
 
 
-                </LinearLayout>
+                </LinearLayout>-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_border_left"
+                    android:orientation="vertical">
 
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+
+                        <com.rilixtech.CountryCodePicker
+                            android:id="@+id/ccp"
+                            android:layout_gravity="bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:ccp_hideNameCode="true"
+                            app:ccp_showFlag="false"
+                            app:ccp_textFont="avenir_black.ttf"
+                            app:ccp_textSize="12sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter Mobile Number"
+                            android:textColorHint="@color/grey"
+                            app:hintTextAppearance="@style/TextInputLayoutHintText"
+                            app:hintTextColor="@android:color/darker_gray">
+
+                            <EditText
+                                android:id="@+id/edt_phone_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:fontFamily="@font/avenir_black"
+                                android:inputType="phone"
+                                android:imeOptions="actionNext"
+                                android:paddingLeft="8dp"
+                                android:paddingBottom="5dp"
+                                android:singleLine="true"
+                                android:textColor="@android:color/black"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                android:translationY="5dp" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -339,6 +403,7 @@
                             android:background="@null"
                             android:fontFamily="@font/avenir_black"
                             android:inputType="textPassword"
+                            android:imeOptions="actionDone"
                             android:paddingBottom="5dp"
                             android:singleLine="true"
                             android:textColor="@color/black"

@@ -70,12 +70,16 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
                 sharedPreference.userLastName = ""
 
             if (intent.hasExtra(Constants.CameFrom)) {
-                if (intent.getStringExtra(Constants.CameFrom).equals(Constants.ForgotPassword))
-                    startActivity(Intent(this, ResetPasswordActivity::class.java).apply {
+                when {
+                    intent.getStringExtra(Constants.CameFrom).equals(Constants.ForgotPassword) -> startActivity(Intent(this, ResetPasswordActivity::class.java).apply {
                         this@OtpVerificationActivity.finish()
                     })
-                else
-                    onBackPressed()
+                    intent.getStringExtra(Constants.CameFrom).equals(Constants.SignUp) -> startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                        putExtra(Constants.UserType, sharedPreference.userType)
+                        this@OtpVerificationActivity.finish()
+                    })
+                    else -> onBackPressed()
+                }
             } else {
                 if (intent.hasExtra(Constants.UserType)) {
                     when (intent.getStringExtra(Constants.UserType)) {
@@ -138,7 +142,6 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
                 sharedPreference.userLastName = it.response?.last_name!!
             else
                 sharedPreference.userLastName = ""
-
         })
 
         driverViewModel.throwable.observe(this, Observer {
@@ -150,8 +153,8 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btn_otp_con -> {
-                if (sharedPreference.userType.equals(Constants.Driver)) {
-                    if (pinview.value.isNotEmpty()) {
+                if (pinview.value.isNotEmpty()) {
+                    if (pinview.value.length == 4) {
                         if (NetworkUtils.isInternetAvailable(this)) {
                             ProgressBarUtils.getInstance().showProgress(this, false)
                             driverViewModel.otpVerify(
@@ -161,56 +164,19 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
                         } else
                             showToast("Poor Connection")
                     } else
-                        showToast("Please enter otp")
-                } else {
-                    if (intent.hasExtra(Constants.CameFrom)) {
-                        if (intent.getStringExtra(Constants.CameFrom)
-                                .equals(Constants.ForgotPassword)
-                        )
-                            startActivity(Intent(this, ResetPasswordActivity::class.java).apply {
-                                this@OtpVerificationActivity.finish()
-                            })
-                        else
-                            onBackPressed()
-                    } else {
-                        if (intent.hasExtra(Constants.UserType)) {
-                            when (intent.getStringExtra(Constants.UserType)) {
-                                Constants.Passenger -> {
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ProfileCreationPassengerActivity::class.java
-                                        ).apply {
-                                            this@OtpVerificationActivity.finish()
-                                        })
-                                }
-                                Constants.Driver -> {
-                                    startActivity(
-                                        Intent(
-                                            this,
-                                            ProfileCreationDriverActivity::class.java
-                                        ).apply {
-                                            this@OtpVerificationActivity.finish()
-                                        })
-                                }
-                                else -> onBackPressed()
-                            }
-                        } else
-                            onBackPressed()
-                    }
-                }
+                        showToast("Please enter complete otp")
+                } else
+                    showToast("Please enter otp")
             }
             R.id.tvResendOtp -> {
                 if (timerCompleted) {
                     setTimer()
-                    if (sharedPreference.userType.equals(Constants.Driver))
-                        if (NetworkUtils.isInternetAvailable(this)) {
-                            ProgressBarUtils.getInstance().showProgress(this, false)
-                            driverViewModel.resendOtp(
-                                sharedPreference.userMobile,
-                                sharedPreference.userCountryCode
-                            )
-                        }
+                    if (NetworkUtils.isInternetAvailable(this)) {
+                        ProgressBarUtils.getInstance().showProgress(this, false)
+                        driverViewModel.resendOtp(
+                            sharedPreference.userId
+                        )
+                    }
                 } else {
                     showToast("Please wait...")
                 }

@@ -113,7 +113,7 @@
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapCharacters"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -168,7 +168,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
-                                android:inputType="text"
+                                android:inputType="textCapSentences"
                                 android:imeOptions="actionNext"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
@@ -274,7 +274,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
-                                android:inputType="text"
+                                android:inputType="textCapSentences"
                                 android:imeOptions="actionNext"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
@@ -441,7 +441,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
-                                android:inputType="text"
+                                android:inputType="number"
                                 android:imeOptions="actionNext"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
@@ -528,13 +528,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:checked="true"
                         android:backgroundTint="@android:color/holo_green_light"
                         android:button="@drawable/radio_selector"
-                        android:fontFamily="@font/avenir_light"
+                        android:fontFamily="@font/avenir_black"
                         android:paddingLeft="10dp"
                         android:text="Owner"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="12sp" />
 
                     <RadioButton
                         android:id="@+id/radioTenant"
@@ -543,10 +542,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:button="@drawable/radio_selector"
-                        android:fontFamily="@font/avenir_light"
+                        android:fontFamily="@font/avenir_black"
                         android:paddingLeft="10dp"
                         android:text="Tenant"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="12sp" />
 
                     <RadioButton
                         android:id="@+id/radioLease"
@@ -555,10 +554,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:button="@drawable/radio_selector"
-                        android:fontFamily="@font/avenir_light"
+                        android:fontFamily="@font/avenir_black"
                         android:paddingLeft="10dp"
                         android:text="Lease"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="12sp" />
 
                     <RadioButton
                         android:id="@+id/radioOther"
@@ -567,10 +566,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:button="@drawable/radio_selector"
-                        android:fontFamily="@font/avenir_light"
+                        android:fontFamily="@font/avenir_black"
                         android:paddingLeft="10dp"
                         android:text="Other"
-                        android:textSize="@dimen/_12ssp" />
+                        android:textSize="12sp" />
 
                 </RadioGroup>
 
@@ -588,6 +587,8 @@
                         android:background="@drawable/shap_rec_bg"
                         android:fontFamily="@font/avenir_black"
                         android:gravity="top|start"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapSentences"
                         android:hint="Describe here...."
                         android:padding="10dp"
                         android:textColor="@color/black"

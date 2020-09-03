@@ -97,6 +97,7 @@
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:inputType="phone"
+                                android:imeOptions="actionDone"
                                 android:maxLength="10"
                                 android:paddingLeft="8dp"
                                 android:paddingBottom="5dp"

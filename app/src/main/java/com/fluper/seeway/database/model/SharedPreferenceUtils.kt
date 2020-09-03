@@ -1,9 +1,10 @@
-package com.fluper.seeway.utilitarianFiles
+package com.fluper.seeway.database.model
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.fluper.seeway.utilitarianFiles.Constants
 
 class SharedPreferenceUtils
 private constructor(val context: Context) {
@@ -91,6 +92,14 @@ private constructor(val context: Context) {
     var userType: String
         get() = sharedPreferences["userType", ""]!!
         set(value) = sharedPreferences.set("userType", value)
+
+    var loginWith: String
+        get() = sharedPreferences["loginWith", ""]!!
+        set(value) = sharedPreferences.set("loginWith", value)
+
+    var loginType: String
+        get() = sharedPreferences["loginType", ""]!!
+        set(value) = sharedPreferences.set("loginType", value)
 
     var userName: String
         get() = sharedPreferences["userName", ""]!!

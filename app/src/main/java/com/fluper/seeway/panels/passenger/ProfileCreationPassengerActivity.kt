@@ -18,11 +18,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.fluper.seeway.R
 import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.onBoard.activities.ChooseSecurityActivity
-import com.fluper.seeway.utilitarianFiles.Constants
-import com.fluper.seeway.utilitarianFiles.statusBarFullScreenWithBackground
+import com.fluper.seeway.onBoard.activities.OtpVerificationActivity
+import com.fluper.seeway.panels.driver.DriverViewModel
+import com.fluper.seeway.utilitarianFiles.*
 import com.rilixtech.CountryCodePicker
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
@@ -35,17 +38,96 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
     private val IMAGE_CAPTURE_CODE = 1001
     var image_uri: Uri? = null
     private val PERMISSION_CODE = 1001
+    private lateinit var driverViewModel: DriverViewModel
+    private var gender = ""
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_creation_passenger)
         statusBarFullScreenWithBackground()
+        driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         val type = Typeface.createFromAsset(assets, "font/avenir_black.ttf")
-        (ccp as CountryCodePicker).typeFace = type
+        (ccpPassenger as CountryCodePicker).typeFace = type
+        myObserver()
         cardNumber()
         expiryDateFormat()
         initClickListener()
+        if (sharedPreference.userEmailId.isNotEmpty()) {
+            tvPassengerEmail.setText(sharedPreference.userEmailId)
+            tvPassengerEmail.isEnabled = false
+        }
+        if (sharedPreference.userCountryCode.isNotEmpty()) {
+            ccpPassenger.setDefaultCountryUsingNameCode(sharedPreference.userCountryCode)
+            ccpPassenger.resetToDefaultCountry()
+        }
+        if (sharedPreference.userMobile.isNotEmpty()) {
+            tvPassengerMobile.setText(sharedPreference.userMobile)
+            tvPassengerMobile.isEnabled = false
+        }
+        radioSex.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.radioMale -> gender = "Male"
+                R.id.radioFemale -> gender = "Female"
+            }
+        }
+    }
+
+    private fun myObserver() {
+        driverViewModel.profileCreation.observe(this, Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            showToast(it.message!!)
+            if (!it.response?._id.isNullOrEmpty())
+                sharedPreference.userId = it.response?._id!!
+            else
+                sharedPreference.userId = ""
+            if (!it.response?.mobile_number.isNullOrEmpty())
+                sharedPreference.userMobile = it.response?.mobile_number!!
+            else
+                sharedPreference.userMobile = ""
+            if (!it.response?.country_code.isNullOrEmpty())
+                sharedPreference.userCountryCode = it.response?.country_code!!
+            else
+                sharedPreference.userCountryCode = ""
+            if (!it.response?.access_token.isNullOrEmpty())
+                sharedPreference.accessToken = it.response?.access_token!!
+            else
+                sharedPreference.accessToken = ""
+            if (!it.response?.profile_image.isNullOrEmpty())
+                sharedPreference.profileImage = it.response?.profile_image!!
+            else
+                sharedPreference.profileImage = ""
+            if (!it.response?.email.isNullOrEmpty())
+                sharedPreference.userEmailId = it.response?.email!!
+            else
+                sharedPreference.userEmailId = ""
+            if (!it.response?.first_name.isNullOrEmpty())
+                sharedPreference.userFirstName = it.response?.first_name!!
+            else
+                sharedPreference.userFirstName = ""
+            if (!it.response?.last_name.isNullOrEmpty())
+                sharedPreference.userLastName = it.response?.last_name!!
+            else
+                sharedPreference.userLastName = ""
+            if ((it.response?.is_mobile_verified?.trim()
+                    ?.toInt() == 0) || (it.response?.is_email_verified?.trim()?.toInt() == 0)
+            ) {
+                startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
+                    putExtra(Constants.CameFrom, Constants.SignUp)
+                    this@ProfileCreationPassengerActivity.finish()
+                })
+            } else {
+                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                    this@ProfileCreationPassengerActivity.finish()
+                })
+            }
+        })
+
+        driverViewModel.throwable.observe(this, Observer {
+            ProgressBarUtils.getInstance().hideProgress()
+            ErrorUtils.handlerGeneralError(this, it)
+        })
     }
 
     private fun initClickListener() {
@@ -53,15 +135,18 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
         ivProfileImage.setOnClickListener(this)
         ivCamera.setOnClickListener(this)
         tvBusinessDropDown.setOnClickListener(this)
-        //rlCard.setOnClickListener(this)
         btnSave.setOnClickListener(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnSkip->{ showProfileSkipDialog() }
-            R.id.ivProfileImage,R.id.ivCamera->{ showImagePickerDialog() }
+            R.id.btnSkip -> {
+                showProfileSkipDialog()
+            }
+            R.id.ivProfileImage, R.id.ivCamera -> {
+                showImagePickerDialog()
+            }
             R.id.tvBusinessDropDown -> {
                 if (ll_business.visibility == View.VISIBLE) {
                     ll_business.visibility = View.GONE
@@ -88,15 +173,74 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
                     calendar[Calendar.DAY_OF_MONTH]
                 )
                 datePickerDialog.show()}*/
-            R.id.btnSave->{
-                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
-                    putExtra(Constants.UserType,sharedPreference.userType)
-                    this@ProfileCreationPassengerActivity.finish()
-                })
+            R.id.btnSave -> {
+                if (isProfileInputsValid()) {
+                    if (NetworkUtils.isInternetAvailable(this)) {
+                        ProgressBarUtils.getInstance().showProgress(this, false)
+                        var firstName = ""
+                        var lastName = ""
+                        if (tvPassengerName.getString().contains(" ")) {
+                            val arrayList = ArrayList(tvPassengerName.getString().split(" "))
+                            firstName = arrayList[0]
+                            arrayList.removeAt(0)
+                            repeat(arrayList.size) {
+                                lastName = lastName + " " + arrayList[it]
+                            }
+                        } else
+                            firstName = tvPassengerName.getString()
+                        driverViewModel.profile(
+                            access_token = sharedPreference.accessToken!!,
+                            user_type = getRequestBody(Constants.UserValuePassenger),
+                            first_name = getRequestBody(firstName),
+                            last_name = getRequestBody(lastName),
+                            city = getRequestBody(""),
+                            id_proof = null,
+                            account_holdar_name = getRequestBody(""),
+                            account_number = getRequestBody(""),
+                            ifsc_code = getRequestBody(""),
+                            branch_name = getRequestBody(""),
+                            business_name = getRequestBody(tvBusinessName.getString()),
+                            business_address1 = getRequestBody(tvBusinessAddress1.getString()),
+                            business_address2 = getRequestBody(tvBusinessAddress2.getString()),
+                            business_city = getRequestBody(tvBusinessCity.getString()),
+                            business_country = getRequestBody(tvBusinessCountry.getString()),
+                            vat_number = getRequestBody(tvVatNumber.getString()),
+                            card_number = getRequestBody(etCardNo.getString()),
+                            expiry_date = getRequestBody(etCardDate.getString()),
+                            cvv = getRequestBody(tvCvv.getString()),
+                            gexpay_account = getRequestBody(tvGexpayAccount.getString()),
+                            gender = getRequestBody(gender),
+                            smoking_status = getRequestBody(""),
+                            vehicle_type_id = null,
+                            driving_licence = null,
+                            user_id = getRequestBody(sharedPreference.userId),
+                            user_permission = getRequestBody(""),
+                            upload_permission = null,
+                            profile_image = when (image_uri) {
+                                null -> {
+                                    null
+                                }
+                                else -> {
+                                    getMultipartBody(
+                                        MediaStore.Images.Media.getBitmap(
+                                            this.contentResolver,
+                                            image_uri
+                                        ), "profile_image"
+                                    )
+                                }
+                            },
+                            email = getRequestBody(tvPassengerEmail.getString()),
+                            country_code = getRequestBody(ccpPassenger.selectedCountryCodeWithPlus),
+                            mobile_number = getRequestBody(tvPassengerMobile.getString())
+                        )
+                    } else
+                        showToast("Poor connection")
+                }
             }
         }
     }
-    private fun showProfileSkipDialog(){
+
+    private fun showProfileSkipDialog() {
         val dialog = this.let { it1 -> Dialog(it1) }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -106,14 +250,163 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
         btn_create_profile.setOnClickListener { dialog.dismiss() }
         btn_skip.setOnClickListener {
             startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
-                putExtra(Constants.UserType,sharedPreference.userType)
+                putExtra(Constants.UserType, sharedPreference.userType)
             })
             dialog.dismiss()
         }
         dialog.show()
     }
+
+    private fun isProfileInputsValid(): Boolean {
+        return when {
+            /*image_uri == null -> {
+                showToast("Please upload profile pic")
+                false
+            }*/
+            !tvPassengerName.isValidName() -> {
+                false
+            }
+            tvPassengerName.getString()
+                .isNotEmpty() && (tvPassengerName.getString().length < 3 || tvPassengerName.getString().length > 35) -> {
+                showToast("Name should not exceed 35 characters")
+                false
+            }
+            !tvPassengerEmail.isValidEmail() -> {
+                false
+            }
+            tvPassengerMobile.getString().isEmpty() -> {
+                showToast("Please enter mobile number")
+                false
+            }
+            !tvPassengerMobile.getString().isValidMobile -> {
+                showToast("Please enter valid mobile number")
+                false
+            }
+            gender.isEmpty() -> {
+                showToast("Please select gender")
+                false
+            }
+
+            /*smoker.isEmpty() -> {
+                showToast("Please select smoking status")
+                false
+            }
+            city.isEmpty() -> {
+                showToast("Please select city")
+                false
+            }
+            vehicleTypeId.isEmpty() -> {
+                showToast("Please select vehicle type")
+                false
+            }
+            udliArraylist.isNullOrEmpty() -> {
+                showToast("Please upload driving license image")
+                false
+            }
+            vehicleList.isNullOrEmpty() -> {
+                showToast("Please add at least one vehicle")
+                alertVehicleNotSelected()
+                false
+            }
+            permissionCategory.isEmpty() -> {
+                showToast("Please choose permission category")
+                false
+            }
+            upArraylist.isNullOrEmpty() -> {
+                showToast("Please upload permission documents")
+                false
+            }
+            tvAccountNumber.getString().isEmpty() -> {
+                showToast("Please enter account number")
+                false
+            }
+            !tvAccountNumber.getString().isDigitsOnly() -> {
+                showToast("Please enter valid account number")
+                false
+            }
+            tvAccountHolderName.getString().isEmpty() -> {
+                showToast("Please enter account holder name")
+                false
+            }
+            tvBranchName.getString().isEmpty() -> {
+                showToast("Please enter branch name")
+                false
+            }
+            tvIfscCode.getString().isEmpty() -> {
+                showToast("Please enter IFSC code")
+                false
+            }*/
+
+            isBusinessName() && tvBusinessName.getString().isEmpty() -> {
+                showToast("Please enter business or company name")
+                false
+            }
+            isBusinessName() && (tvBusinessAddress1.getString()
+                .isEmpty() && tvBusinessAddress2.getString().isEmpty()) -> {
+                showToast("Please enter business address")
+                false
+            }
+            isBusinessName() && tvBusinessCity.getString().isEmpty() -> {
+                showToast("Please enter business city")
+                false
+            }
+            isBusinessName() && tvBusinessCountry.getString().isEmpty() -> {
+                showToast("Please enter business country")
+                false
+            }
+            isBusinessName() && tvVatNumber.getString().isEmpty() -> {
+                showToast("Please enter VAT number")
+                false
+            }
+            isCardDetails() && etCardNo.text.isNullOrEmpty() -> {
+                showToast("Please enter card number")
+                return false
+            }
+            isCardDetails() && etCardNo.text.toString().length < 19 -> {
+                showToast("Please enter valid card number")
+                return false
+            }
+            isCardDetails() && etCardDate.text.isNullOrEmpty() -> {
+                showToast("Please enter expiry date")
+                return false
+            }
+            isCardDetails() && etCardDate.text.toString().length < 5 -> {
+                showToast("Please enter valid expiry date")
+                return false
+            }
+            isCardDetails() && tvCvv.text.isNullOrEmpty() -> {
+                showToast("Please enter cvv no")
+                return false
+            }
+            isCardDetails() && tvCvv.text.toString().length < 3 -> {
+                showToast("Please enter valid cvv no")
+                return false
+            }
+            tvGexpayAccount.getString().isEmpty() -> {
+                showToast("Please enter GexPay account")
+                return false
+            }
+            else -> true
+        }
+    }
+
+    private fun isBusinessName(): Boolean {
+        return tvBusinessName.getString().isNotEmpty()
+                || tvBusinessAddress1.getString().isNotEmpty()
+                || tvBusinessAddress2.getString().isNotEmpty()
+                || tvBusinessCity.getString().isNotEmpty()
+                || tvBusinessCountry.getString().isNotEmpty()
+                || tvVatNumber.getString().isNotEmpty()
+    }
+
+    private fun isCardDetails(): Boolean {
+        return etCardNo.getString().isNotEmpty()
+                || etCardDate.getString().isNotEmpty()
+                || tvCvv.getString().isNotEmpty()
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun showImagePickerDialog(){
+    private fun showImagePickerDialog() {
         val dialog = this.let { it1 -> Dialog(it1) }
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -170,12 +463,14 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
         }
         dialog.show()
     }
+
     private fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
+
     private fun openCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "New Picture")
@@ -186,6 +481,7 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
+
     private fun cardNumber() {
         var x = 1
         var add = 0
@@ -231,6 +527,7 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
             override fun afterTextChanged(s: Editable) {}
         })
     }
+
     private fun expiryDateFormat() {
         etCardDate.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {//
@@ -243,14 +540,14 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
                 var current = p0.toString()
                 if (current.length == 2 && start == 1) {
                     if (current.trim('/').toInt() <= 12) {
-                        etCardDate.setText(current + "/");
+                        etCardDate.setText(current + "/")
                         etCardDate.setSelection(current.length + 1)
                     } else {
                         if (current.length == 2 && start == 1) {
                             var shiftedCharInMonth =
                                 current.removeSuffix(current[current.length - 1].toString())
                             var shiftedCharInYear = current[current.length - 1].toString()
-                            etCardDate.setText("0" + shiftedCharInMonth + "/" + shiftedCharInYear);
+                            etCardDate.setText("0" + shiftedCharInMonth + "/" + shiftedCharInYear)
                             etCardDate.setSelection(current.length + 2)
                         }
                     }
@@ -298,6 +595,7 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            image_uri = data?.data
             ivProfileImage.setImageURI(data?.data)
         }
 

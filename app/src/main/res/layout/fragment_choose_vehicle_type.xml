@@ -101,7 +101,6 @@
                         android:fontFamily="@font/avenir_black"
                         android:gravity="end"
                         android:padding="10dp"
-                        android:text="Hyundai Verna"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -131,7 +130,6 @@
                         android:fontFamily="@font/avenir_black"
                         android:gravity="end"
                         android:padding="10dp"
-                        android:text="L 83011"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -161,7 +159,6 @@
                         android:fontFamily="@font/avenir_black"
                         android:gravity="end"
                         android:padding="10dp"
-                        android:text="Red"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -191,7 +188,6 @@
                         android:fontFamily="@font/avenir_black"
                         android:gravity="end"
                         android:padding="10dp"
-                        android:text="10/06/2015"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -221,7 +217,6 @@
                         android:fontFamily="@font/avenir_black"
                         android:gravity="end"
                         android:padding="10dp"
-                        android:text="5"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         android:textStyle="bold" />

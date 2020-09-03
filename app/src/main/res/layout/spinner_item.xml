@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:fontFamily="@font/avenir_black"
     android:textColorHint="#606060"
-    android:textColor="#606060"
+    android:textColor="@android:color/black"
     android:singleLine="true"
-    android:textSize="@dimen/_13ssp"/>
+    android:textStyle="bold"
+    android:textSize="12sp"/>

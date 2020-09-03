@@ -58,29 +58,7 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         // Set up the listener for take photo button
-        btn_continue.setOnClickListener {
-            if (intent.hasExtra(Constants.UserType)) {
-                when (intent.getStringExtra(Constants.UserType)) {
-                    Constants.Passenger -> {
-                        startActivity(Intent(this, PassengerMainActivity::class.java).apply {
-                            this@FaceLockActivity.finishAffinity()
-                        })
-                    }
-                    Constants.Driver -> {
-                        if (intent.hasExtra(Constants.CameFrom) && intent.getStringExtra(Constants.CameFrom).equals(Constants.SignIn)) {
-                            showToast("This service is under development")
-                            onBackPressed()
-                        } else
-                            startActivity(Intent(this, DriverMainActivity::class.java).apply {
-                                this@FaceLockActivity.finishAffinity()
-                            })
-                    }
-                    else -> onBackPressed()
-                }
-            } else
-                onBackPressed()
-            //takePhoto()
-        }
+        btn_continue.setOnClickListener(this)
     }
 
     override fun onBackPressed() {
@@ -186,8 +164,38 @@ class FaceLockActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(p0: View?) {
-
-
+        when (p0?.id) {
+            R.id.btn_continue -> {
+                if (intent.hasExtra(Constants.CameFrom) && intent.getStringExtra(Constants.CameFrom)
+                        .equals(Constants.SignIn)
+                ) {
+                    showToast("This service is under development")
+                    onBackPressed()
+                } else {
+                    if (intent.hasExtra(Constants.UserType)) {
+                        when (intent.getStringExtra(Constants.UserType)) {
+                            Constants.Passenger -> {
+                                startActivity(
+                                    Intent(
+                                        this,
+                                        PassengerMainActivity::class.java
+                                    ).apply {
+                                        this@FaceLockActivity.finishAffinity()
+                                    })
+                            }
+                            Constants.Driver -> {
+                                startActivity(Intent(this, DriverMainActivity::class.java).apply {
+                                    this@FaceLockActivity.finishAffinity()
+                                })
+                            }
+                            else -> onBackPressed()
+                        }
+                    } else
+                        onBackPressed()
+                }
+                //takePhoto()
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(

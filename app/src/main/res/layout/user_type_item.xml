@@ -1,58 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view_outer"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_cons"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="@dimen/_120sdp"
     android:layout_gravity="center"
-    card_view:cardBackgroundColor="@android:color/transparent"
-    card_view:cardCornerRadius="5dp"
-    card_view:cardElevation="5dp"
-    app:ignore="NamespaceTypo">
-
-    <RelativeLayout
-        android:id="@+id/main_cons"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:orientation="vertical"
-        android:padding="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    android:background="@android:color/transparent"
+    android:elevation="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_20sdp">
 
         <ImageView
             android:id="@+id/img_User"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:background="@drawable/round_shape"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:text="Belal Khan"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            app:layout_constraintBottom_toTopOf="@+id/txt_user_type"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/txt_user_type"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/img_User"
-            android:layout_marginTop="100dp"
             android:background="@color/transparent"
             android:fontFamily="@font/avenir_black"
             android:gravity="center"
-            android:padding="5dp"
-            android:text="bvc"
+            android:text="Passenger"
             android:textColor="@android:color/white"
             android:textSize="15sp"
-            app:layout_constraintBottom_toTopOf="@+id/img_User"
-            app:layout_constraintEnd_toEndOf="@+id/img_User"
-            app:layout_constraintStart_toStartOf="@+id/img_User"
-            app:layout_constraintTop_toBottomOf="@+id/img_User" />
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+            android:padding="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintVertical_bias="0.25"
+            app:layout_constraintStart_toStartOf="@id/img_User"
+            app:layout_constraintEnd_toEndOf="@id/img_User"
+            app:layout_constraintTop_toBottomOf="@id/img_User"
+            app:layout_constraintBottom_toTopOf="@id/img_User"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

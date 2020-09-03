@@ -122,12 +122,13 @@
                         app:hintTextColor="@android:color/darker_gray">
 
                         <EditText
+                            android:id="@+id/tvPassengerName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:fontFamily="@font/avenir_black"
                             android:imeOptions="actionNext"
-                            android:inputType="textPersonName"
+                            android:inputType="textCapSentences"
                             android:paddingBottom="5dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
@@ -176,7 +177,7 @@
                         app:hintTextColor="@android:color/darker_gray">
 
                         <EditText
-                            android:id="@+id/edt_User_Email"
+                            android:id="@+id/tvPassengerEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
@@ -230,7 +231,7 @@
                         android:orientation="horizontal">
 
                         <com.rilixtech.CountryCodePicker
-                            android:id="@+id/ccp"
+                            android:id="@+id/ccpPassenger"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
@@ -248,7 +249,7 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
-                                android:id="@+id/edt_phone_number"
+                                android:id="@+id/tvPassengerMobile"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
@@ -262,8 +263,6 @@
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:translationY="5dp" />
-
-
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -297,7 +296,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:button="@drawable/radio_selector"
-                        android:checked="true"
                         android:fontFamily="@font/avenir_black"
                         android:paddingLeft="10dp"
                         android:text="Male"
@@ -394,12 +392,13 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvBusinessName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapSentences"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -449,12 +448,13 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvBusinessAddress1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapSentences"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -504,12 +504,13 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvBusinessAddress2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapSentences"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -559,12 +560,13 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvBusinessCity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapSentences"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -614,12 +616,13 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvBusinessCountry"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="text"
+                                android:inputType="textCapSentences"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -668,12 +671,13 @@
                             app:hintTextColor="@android:color/darker_gray">
 
                             <EditText
+                                android:id="@+id/tvVatNumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="number"
+                                android:inputType="textCapCharacters"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -681,10 +685,7 @@
                                 android:translationY="5dp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
-
                     </LinearLayout>
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -694,7 +695,6 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -704,7 +704,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="15sp"
                     android:textStyle="bold" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -825,37 +824,6 @@
                             android:translationY="5dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-                    <!--<androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvCard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:fontFamily="@font/avenir_black"
-                        android:paddingBottom="0dp"
-                        android:text="Card Expiry Date"
-                        android:textColor="@color/grey"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etCardDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tvCard"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginLeft="4dp"
-                        android:background="@null"
-                        android:editable="false"
-                        android:enabled="false"
-                        android:focusableInTouchMode="false"
-                        android:fontFamily="@font/avenir_black"
-                        android:paddingTop="0dp"
-                        android:paddingBottom="5dp"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:translationY="5dp"
-                        android:visibility="gone" />-->
                 </RelativeLayout>
 
             </LinearLayout>
@@ -896,6 +864,7 @@
                         app:hintTextColor="@android:color/darker_gray">
 
                         <EditText
+                            android:id="@+id/tvCvv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
@@ -963,12 +932,13 @@
                         app:hintTextColor="@android:color/darker_gray">
 
                         <EditText
+                            android:id="@+id/tvGexpayAccount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:fontFamily="@font/avenir_black"
                             android:imeOptions="actionDone"
-                            android:inputType="text"
+                            android:inputType="textCapCharacters"
                             android:paddingBottom="5dp"
                             android:singleLine="true"
                             android:textColor="@color/black"
@@ -991,6 +961,7 @@
                 android:textColor="@color/alert_green"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

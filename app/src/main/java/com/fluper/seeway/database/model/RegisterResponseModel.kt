@@ -1,14 +1,14 @@
-package com.fluper.seeway.panels.driver.model
+package com.fluper.seeway.database.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
 @Parcelize
-data class ProfileCreationResponse(
+data class RegisterResponseModel(
     val message: String? = "", // Login Successful
     val response: Response? = Response()
-) : Parcelable {
+) :Parcelable{
     @Parcelize
     data class Response(
         val _id: String? = "", // 5f49980f67fb861306b3078e
@@ -29,7 +29,8 @@ data class ProfileCreationResponse(
         val isProfileCreated: String? = "", // 1
         val is_document_verified: Int? = 0, // 0
         val is_term_accept: Int? = 0, // 1
-        val is_verified: String? = "", // 1
+        val is_mobile_verified: String? = "", // 1
+        val is_email_verified: String? = "", //1
         val last_name: String? = "", // Kumar
         val latitude: Double? = 0.0, // 77.7440948
         val location: @RawValue Location? = Location(),
@@ -44,7 +45,7 @@ data class ProfileCreationResponse(
         val user_type: Int? = 0, // 2
         val vat_number: String? = "", // null
         val vehicleDetails: @RawValue List<VehicleDetail?>? = listOf(),
-        val vehicle_type_id: String? = "",//is coming as String in profile completion
+        val vehicle_type_id: @RawValue VehicleTypeId? = VehicleTypeId(),//is coming as String in profile completion
         val verificationCode: String? = ""
     ) :Parcelable{
         @Parcelize

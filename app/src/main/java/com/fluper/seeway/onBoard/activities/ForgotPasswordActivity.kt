@@ -40,33 +40,30 @@ class ForgotPasswordActivity : BaseActivity() {
         }
 
         btn_continue.setOnClickListener {
-            if (sharedPreference.userType.equals(Constants.Driver)) {
-                if (isInputs()) {
-                    if (NetworkUtils.isInternetAvailable(this)) {
-                        if (edtEmailPhone.getString().isDigitsOnly()) {
-                            mobile = edtEmailPhone.getString()
-                            countryCode = ccp.selectedCountryCodeWithPlus
-                            email = ""
-                        } else {
-                            email = edtEmailPhone.getString()
-                            mobile = ""
-                            countryCode = ""
+            if (isInputs()) {
+                if (NetworkUtils.isInternetAvailable(this)) {
+                    if (edtEmailPhone.getString().isDigitsOnly()) {
+                        mobile = edtEmailPhone.getString()
+                        countryCode = ccp.selectedCountryCodeWithPlus
+                        email = ""
+                    } else {
+                        email = edtEmailPhone.getString()
+                        mobile = ""
+                        countryCode = ""
+                    }
+                    ProgressBarUtils.getInstance().showProgress(this, false)
+                    driverViewModel.forgotPassword(
+                        country_code = countryCode,
+                        mobile_number = mobile,
+                        email = email,
+                        user_type = when (sharedPreference.userType) {
+                            Constants.Passenger -> Constants.UserValuePassenger
+                            Constants.Driver -> Constants.UserValueDriver
+                            else -> ""
                         }
-                        ProgressBarUtils.getInstance().showProgress(this, false)
-                        driverViewModel.forgotPassword(
-                            countryCode,
-                            mobile,
-                            email,
-                            "2"
-                        )
-                    } else
-                        showToast("Poor Connection")
-                }
-            } else {
-                startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
-                    putExtra(Constants.CameFrom, Constants.ForgotPassword)
-                    this@ForgotPasswordActivity.finish()
-                })
+                    )
+                } else
+                    showToast("Poor Connection")
             }
         }
     }
@@ -74,7 +71,7 @@ class ForgotPasswordActivity : BaseActivity() {
     private fun isInputs(): Boolean {
         return when {
             edtEmailPhone.getString().isEmpty() -> {
-                showToast("please enter e-mail/ mobile number")
+                showToast("Please enter e-mail/ mobile number")
                 false
             }
             edtEmailPhone.getString()

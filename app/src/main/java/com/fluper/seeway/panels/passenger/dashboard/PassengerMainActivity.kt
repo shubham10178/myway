@@ -1,16 +1,16 @@
 package com.fluper.seeway.panels.passenger.dashboard
 
 import android.Manifest
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -102,7 +102,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             sharedPreference.deletePreferences()
             drawerHandler()
             startActivity(
-                Intent(this@PassengerMainActivity, UserTypeActivity::class.java).apply {
+                Intent(this, UserTypeActivity::class.java).apply {
                     this@PassengerMainActivity.finishAffinity()
                 })
         })
@@ -170,7 +170,13 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
                 .placeholder(R.drawable.profile_placeholder2x)
                 .error(R.drawable.profile_placeholder2x).into(ivUserImage)
         if (sharedPreference.userFirstName.isNotEmpty())
-            tvUserName.text = sharedPreference.userFirstName+" "+sharedPreference.userLastName
+            tvUserName.text = sharedPreference.userFirstName + " " + sharedPreference.userLastName
+        else
+            if (sharedPreference.userEmailId.isNotEmpty())
+                tvUserName.text = sharedPreference.userEmailId
+            else
+                tvUserName.text =
+                    sharedPreference.userCountryCode + " " + sharedPreference.userMobile
         ll_earnings.visibility = View.GONE
         btnCurrentLocation.setOnClickListener {
             if (fusedLocationFetcher != null)
@@ -189,21 +195,36 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnLogout -> {
-                sharedPreference.isLoggedIn = false
-                sharedPreference.deletePreferences()
-                drawerHandler()
-                startActivity(
-                    Intent(this@PassengerMainActivity, UserTypeActivity::class.java).apply {
-                        this@PassengerMainActivity.finishAffinity()
-                    })
-                /*drawerHandler()
-                ProgressBarUtils.getInstance().showProgress(this, false)
-                driverViewModel.logout(sharedPreference.accessToken!!)*/
+                alertSubmit()
             }
             R.id.tvInviteEarn -> {
                 drawerHandler()
             }
         }
+    }
+
+    private fun alertSubmit() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.layout_logout)
+        val btnLogoutD = dialog.findViewById<Button>(R.id.btnLogout)
+        val btnCancelD = dialog.findViewById<Button>(R.id.btnCancel)
+        btnLogoutD.setOnClickListener {
+            if (NetworkUtils.isInternetAvailable(this)) {
+                ProgressBarUtils.getInstance().showProgress(this, false)
+                driverViewModel.logout(sharedPreference.accessToken!!)
+            } else {
+                showToast("Poor connection")
+                drawerHandler()
+            }
+            dialog.dismiss()
+        }
+        btnCancelD.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.dismiss()
+        dialog.show()
     }
 
     private fun drawerHandler() {

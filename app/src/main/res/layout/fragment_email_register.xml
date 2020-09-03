@@ -82,6 +82,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:fontFamily="@font/avenir_black"
+                            android:imeOptions="actionDone"
                             android:inputType="textEmailAddress"
                             android:paddingBottom="5dp"
                             android:singleLine="true"

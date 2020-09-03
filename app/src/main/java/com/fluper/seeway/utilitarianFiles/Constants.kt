@@ -28,5 +28,8 @@ interface Constants {
         const val UserMasterUser = "User/ Master User"
         const val latitude = "latitude"
         const val longitude = "longitude"
+
+        const val LoginWithEmail = "Email"
+        const val LoginWithMobile = "Mobile"
     }
 }
