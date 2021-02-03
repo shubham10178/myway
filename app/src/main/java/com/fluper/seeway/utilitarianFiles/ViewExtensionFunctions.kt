@@ -191,18 +191,15 @@ fun EditText.isValidMobileNumber(): Boolean{
 fun AppCompatActivity.getRequestBody(value: String): RequestBody {
     return value.toRequestBody("text/plain".toMediaTypeOrNull())
 }
-fun AppCompatActivity.getMultipartBody(filePath: Bitmap, keyName: String): MultipartBody.Part? {
-    return File(bitmapToFile(filePath,this).path!!).let {
-        MultipartBody.Part.createFormData(
-            keyName, it.name,
-            it.asRequestBody("image/*".toMediaTypeOrNull())
-        )
-    }
-}
+
 fun <E> List<E>?.toGson(): String? {
     var gson = Gson()
     return gson.toJson(this)
 }
+fun getOldImages(imageList: ArrayList<Any>?): List<String>? {
+    return imageList?.filter { it is String }?.map { it as String }
+}
+
 fun AppCompatActivity.getMultipartBodyArrayList(imageList: ArrayList<Bitmap>?,keyName: String): ArrayList<MultipartBody.Part>? {
     var multiPartBody = ArrayList<MultipartBody.Part>()
     imageList?.forEach {
@@ -218,10 +215,14 @@ fun AppCompatActivity.getMultipartBodyArrayList(imageList: ArrayList<Bitmap>?,ke
     }
     return if (multiPartBody.size == 0) null else multiPartBody
 }
-fun getOldImages(imageList: ArrayList<Any>?): List<String>? {
-    return imageList?.filter { it is String }?.map { it as String }
+fun AppCompatActivity.getMultipartBody(filePath: Bitmap, keyName: String): MultipartBody.Part? {
+    return File(bitmapToFile(filePath,this).path!!).let {
+        MultipartBody.Part.createFormData(
+            keyName, it.name,
+            it.asRequestBody("image/*".toMediaTypeOrNull())
+        )
+    }
 }
-
 fun bitmapToFile(bitmap: Bitmap, context: Context?): Uri {
     // Get the context wrapper
     val wrapper = ContextWrapper(context)

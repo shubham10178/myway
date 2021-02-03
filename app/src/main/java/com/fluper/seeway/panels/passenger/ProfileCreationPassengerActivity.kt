@@ -33,8 +33,8 @@ import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
 
 class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
     private val REQUEST_SCAN: Int = 100
-    private val IMAGE_PICK_CODE = 1000
     private val PERMISSION_CODE1 = 1000
+    private val IMAGE_PICK_CODE = 1000
     private val IMAGE_CAPTURE_CODE = 1001
     var image_uri: Uri? = null
     private val PERMISSION_CODE = 1001

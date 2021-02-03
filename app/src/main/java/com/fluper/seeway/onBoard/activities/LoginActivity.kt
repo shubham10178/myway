@@ -316,14 +316,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 //showToast("Please enter only either email or mobile")
                 false
             }
-            edt_User_Email.getString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(
-                edt_User_Email.getString()
-            ).matches() -> {
+            edt_User_Email.getString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(edt_User_Email.getString()).matches() -> {
                 showToast("Please enter valid email address")
                 false
             }
-            edt_phone_number.getString()
-                .isNotEmpty() && !edt_phone_number.getString().isValidMobile -> {
+            edt_phone_number.getString().isNotEmpty() && !edt_phone_number.getString().isValidMobile -> {
                 showToast("Please enter valid mobile number")
                 false
             }
