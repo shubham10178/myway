@@ -41,6 +41,7 @@
     <string name="forgot_pass">We need to verify your account, your data will be secure and private.</string>
     <string name="forgot_pass1">Enter the new password then your password will be change Don"'"t forgot again</string>
     <string name="verification_txt">Enter 4 digit verification code(OTP) sent on your registered Mobile Number.</string>
+    <string name="verification_txt_email">Enter 4 digit verification code(OTP) sent on your registered Email.</string>
     <string name="reset_password">Enter the new password then your password will be changed. Do not forgot again.</string>
     <string name="profile_alert">Making Profile is better for benefits and bonuses. But also can anonymously but need pay by card not with cash and goes to screen with selection of targets.</string>
     <string name="dummy_text2">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 </string>

@@ -25,6 +25,18 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         statusBarFullScreenWithBackground()
         setContentView(R.layout.fragment_otp_verification)
+
+        when(sharedPreference.loginWith){
+            Constants.LoginWithEmail->{
+                tvTextDescription.text = getString(R.string.verification_txt)
+            }
+            Constants.LoginWithMobile->{
+                tvTextDescription.text = getString(R.string.verification_txt)
+            }
+
+        }
+
+
         driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         setTimer()
         myObserver()
@@ -186,10 +198,14 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
 
     private fun setTimer() {
         if (timer == null) {
-            timer = object : CountDownTimer(50000, 1000) {
+            timer = object : CountDownTimer(60000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     sec = millisUntilFinished / 1000
-                    tvTimer.text = "00:" + sec.toString()
+                    if(sec.toString().length==1){
+                        tvTimer.text = "00:" + "0"+sec.toString()
+                    }else{
+                        tvTimer.text = "00:" + sec.toString()
+                    }
                     timerCompleted = false
                     //here you can have your logic to set text to edittext
                 }
