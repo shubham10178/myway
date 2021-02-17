@@ -11,6 +11,8 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.InputFilter
+import android.text.Spanned
 import android.text.TextWatcher
 import android.view.View
 import android.view.Window
@@ -39,7 +41,7 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
     var image_uri: Uri? = null
     private val PERMISSION_CODE = 1001
     private lateinit var driverViewModel: DriverViewModel
-    private var gender = ""
+    private var gender = "Male"
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,20 +111,39 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
                 sharedPreference.userLastName = it.response?.last_name!!
             else
                 sharedPreference.userLastName = ""
-            if ((it.response?.is_mobile_verified?.trim()
+
+
+          /*  if ((it.response?.is_mobile_verified?.trim()
                     ?.toInt() == 0) || (it.response?.is_email_verified?.trim()?.toInt() == 0)
             ) {
                 startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
                     putExtra(Constants.CameFrom, Constants.SignUp)
                     this@ProfileCreationPassengerActivity.finish()
                 })
-            } else {
+            } */
+
+             if (it.response?.is_mobile_verified?.trim()
+                    ?.toInt() == 1) {
+                 startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                     putExtra(Constants.UserType, sharedPreference.userType)
+                     this@ProfileCreationPassengerActivity.finish()
+                 })
+            }
+
+            if ((it.response?.is_email_verified?.trim()?.toInt() == 1)) {
                 startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
                     this@ProfileCreationPassengerActivity.finish()
                 })
-            }
+            } /*else {
+                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                    this@ProfileCreationPassengerActivity.finish()
+                })
+            }*/
         })
+
+
 
         driverViewModel.throwable.observe(this, Observer {
             ProgressBarUtils.getInstance().hideProgress()
@@ -286,57 +307,6 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
                 showToast("Please select gender")
                 false
             }
-
-            /*smoker.isEmpty() -> {
-                showToast("Please select smoking status")
-                false
-            }
-            city.isEmpty() -> {
-                showToast("Please select city")
-                false
-            }
-            vehicleTypeId.isEmpty() -> {
-                showToast("Please select vehicle type")
-                false
-            }
-            udliArraylist.isNullOrEmpty() -> {
-                showToast("Please upload driving license image")
-                false
-            }
-            vehicleList.isNullOrEmpty() -> {
-                showToast("Please add at least one vehicle")
-                alertVehicleNotSelected()
-                false
-            }
-            permissionCategory.isEmpty() -> {
-                showToast("Please choose permission category")
-                false
-            }
-            upArraylist.isNullOrEmpty() -> {
-                showToast("Please upload permission documents")
-                false
-            }
-            tvAccountNumber.getString().isEmpty() -> {
-                showToast("Please enter account number")
-                false
-            }
-            !tvAccountNumber.getString().isDigitsOnly() -> {
-                showToast("Please enter valid account number")
-                false
-            }
-            tvAccountHolderName.getString().isEmpty() -> {
-                showToast("Please enter account holder name")
-                false
-            }
-            tvBranchName.getString().isEmpty() -> {
-                showToast("Please enter branch name")
-                false
-            }
-            tvIfscCode.getString().isEmpty() -> {
-                showToast("Please enter IFSC code")
-                false
-            }*/
-
             isBusinessName() && tvBusinessName.getString().isEmpty() -> {
                 showToast("Please enter business or company name")
                 false

@@ -3,6 +3,7 @@ package com.fluper.seeway.onBoard.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,14 +27,14 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
         statusBarFullScreenWithBackground()
         setContentView(R.layout.fragment_otp_verification)
 
+        Log.e("Bharat",sharedPreference.loginWith)
         when(sharedPreference.loginWith){
             Constants.LoginWithEmail->{
-                tvTextDescription.text = getString(R.string.verification_txt)
+                tvTextDescription.text = getString(R.string.verification_txt_email)
             }
             Constants.LoginWithMobile->{
                 tvTextDescription.text = getString(R.string.verification_txt)
             }
-
         }
 
 
@@ -42,6 +43,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener {
         myObserver()
         btn_otp_con.setOnClickListener(this)
         tvResendOtp.setOnClickListener(this)
+
     }
 
     private fun myObserver() {

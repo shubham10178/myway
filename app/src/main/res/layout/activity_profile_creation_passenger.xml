@@ -131,6 +131,7 @@
                             android:inputType="textCapSentences"
                             android:paddingBottom="5dp"
                             android:singleLine="true"
+                            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:textColor="@color/black"
                             android:textSize="12sp"
                             android:translationY="5dp" />
@@ -256,6 +257,7 @@
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
                                 android:inputType="phone"
+                                android:digits="0123456789"
                                 android:paddingLeft="8dp"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
@@ -299,6 +301,7 @@
                         android:fontFamily="@font/avenir_black"
                         android:paddingLeft="10dp"
                         android:text="Male"
+                        android:checked="true"
                         android:textSize="12sp" />
 
                     <RadioButton
@@ -341,11 +344,9 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/avenir_black"
-                    android:text="(if you want make business, Optional)"
+                    android:text="(If you want make business)"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
-                    app:drawableEndCompat="@drawable/drop_down"
-                    app:drawableRightCompat="@drawable/drop_down" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -354,7 +355,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -386,7 +387,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:hint="Business or Company Name"
+                            android:hint="Business or Company Name (Optional)"
                             android:textColorHint="@color/grey"
                             app:hintTextAppearance="@style/TextInputLayoutHintText"
                             app:hintTextColor="@android:color/darker_gray">
@@ -442,7 +443,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:hint="Business Street Address 1"
+                            android:hint="Business Street Address 1 (Optional)"
                             android:textColorHint="@color/grey"
                             app:hintTextAppearance="@style/TextInputLayoutHintText"
                             app:hintTextColor="@android:color/darker_gray">
@@ -498,7 +499,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:hint="Business Street Address 2"
+                            android:hint="Business Street Address 2 (Optional)"
                             android:textColorHint="@color/grey"
                             app:hintTextAppearance="@style/TextInputLayoutHintText"
                             app:hintTextColor="@android:color/darker_gray">
@@ -554,7 +555,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:hint="Business City"
+                            android:hint="Business City (Optional)"
                             android:textColorHint="@color/grey"
                             app:hintTextAppearance="@style/TextInputLayoutHintText"
                             app:hintTextColor="@android:color/darker_gray">
@@ -610,7 +611,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:hint="Business Country"
+                            android:hint="Business Country (Optional)"
                             android:textColorHint="@color/grey"
                             app:hintTextAppearance="@style/TextInputLayoutHintText"
                             app:hintTextColor="@android:color/darker_gray">
@@ -665,7 +666,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:hint="VAT Number"
+                            android:hint="VAT Number (Optional)"
                             android:textColorHint="@color/grey"
                             app:hintTextAppearance="@style/TextInputLayoutHintText"
                             app:hintTextColor="@android:color/darker_gray">
