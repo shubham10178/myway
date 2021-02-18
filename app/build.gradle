@@ -142,4 +142,7 @@ dependencies {
     //Rx
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+
+    //biometric
+    implementation "androidx.biometric:biometric-ktx:1.2.0-alpha02"
 }

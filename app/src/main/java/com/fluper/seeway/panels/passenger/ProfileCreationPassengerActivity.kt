@@ -14,6 +14,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.Spanned
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -55,6 +56,20 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
         cardNumber()
         expiryDateFormat()
         initClickListener()
+
+
+        Log.e("Bharat",sharedPreference.loginWith)
+        when(sharedPreference.loginWith){
+            Constants.LoginWithEmail->{
+                ccpPassenger.isEnabled = true
+
+            }
+            Constants.LoginWithMobile->{
+                ccpPassenger.isEnabled = false
+            }
+        }
+
+
         if (sharedPreference.userEmailId.isNotEmpty()) {
             tvPassengerEmail.setText(sharedPreference.userEmailId)
             tvPassengerEmail.isEnabled = false

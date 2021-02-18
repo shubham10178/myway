@@ -14,6 +14,9 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,11 +31,20 @@ import com.fluper.seeway.panels.passenger.dashboard.PassengerMainActivity
 import com.fluper.seeway.utilitarianFiles.*
 import com.rilixtech.CountryCodePicker
 import kotlinx.android.synthetic.main.activity_login.*
+import java.util.concurrent.Executor
 
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private var dialog: Dialog? = null
+
+    private lateinit var executor: Executor
+    private lateinit var biometricPrompt: BiometricPrompt
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+
+
+
+
     private lateinit var driverViewModel: DriverViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,8 +137,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         isVerified = it.is_email_verified
                 }
 
-                if (it.is_term_accept == 0 && isVerified?.trim()
-                        ?.toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
+                if (it.is_term_accept == 0 && isVerified.trim()
+                    .toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
                 ) {
                     showDialog(it._id!!)
                 } else if (it.is_term_accept == 1 && isVerified?.trim()
@@ -245,6 +257,48 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         btnPin.setOnClickListener(this)
     }
 
+    fun enableFaceId(){
+
+        executor = ContextCompat.getMainExecutor(this)
+        biometricPrompt = BiometricPrompt(this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int,
+                                                   errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    Toast.makeText(applicationContext,
+                        "Authentication error: $errString", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    Toast.makeText(applicationContext,
+                        "Authentication succeeded!", Toast.LENGTH_SHORT)
+                        .show()
+                  /*  mloginviewModel.email = sharedpreferenceutil.getinstance(this@signinactivity).email
+                    mloginviewModel.password = sharedpreferenceutil.getinstance(this@signinactivity).password
+                    mloginviewModel.countryCode = null
+                    mloginviewModel.mobile = null
+
+                    mloginviewModel.hitLogin()*/
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    Toast.makeText(applicationContext, "Authentication failed",
+                        Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Biometric login for my app")
+            .setSubtitle("Log in using your biometric credential")
+            .setNegativeButtonText("Use account password")
+            .build()
+    }
+
     override fun onClick(p0: View) {
         when (p0.id) {
             /*R.id.edt_User_Email, R.id.emailClick -> {
@@ -291,6 +345,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     putExtra(Constants.UserType, sharedPreference.userType)
                     putExtra(Constants.CameFrom, Constants.SignIn)
                 })
+              //  enableFaceId()
             }
             R.id.btnFingerPrint -> {
                 startActivity(Intent(this, FingerPrintLockActivity::class.java).apply {

@@ -37,6 +37,23 @@ import com.fluper.seeway.onBoard.adapter.UploadImagesAdapter
 import com.fluper.seeway.utilitarianFiles.*
 import com.rilixtech.CountryCodePicker
 import kotlinx.android.synthetic.main.activity_profile_creation_driver.*
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.btnSave
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.etCardDate
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.etCardNo
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.ivCamera
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.ivProfileImage
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.ll_business
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.radioSex
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvBusinessAddress1
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvBusinessAddress2
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvBusinessCity
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvBusinessCountry
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvBusinessDropDown
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvBusinessName
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvCvv
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvGexpayAccount
+import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvVatNumber
+import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
 import java.io.IOException
 
 class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
@@ -53,8 +70,8 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
     private var driverVehicleInfoAdapter: DriverVehicleInfoAdapter? = null
     private lateinit var driverViewModel: DriverViewModel
     private var vehicleTypes = ArrayList<GetVehicleTypesResponseModel.Response?>()
-    private var gender = ""
-    private var smoker = ""
+    private var gender = "Male"
+    private var smoker = "Smoker"
     private var city = ""
     private var vehicleTypeId = ""
     private var permissionCategory = ""
@@ -67,6 +84,8 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
         driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         val type = Typeface.createFromAsset(assets, "font/avenir_black.ttf")
         (ccp_driver as CountryCodePicker).typeFace = type
+
+
         myObserver()
         driverViewModel.getVehicleType()
         vehicleTypes.clear()
@@ -76,6 +95,17 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
         cardNumber()
         expiryDateFormat()
         initClickListener()
+
+
+        when(sharedPreference.loginWith){
+            Constants.LoginWithEmail->{
+                ccp_driver.isEnabled = true
+
+            }
+            Constants.LoginWithMobile->{
+                ccp_driver.isEnabled = false
+            }
+        }
         if (sharedPreference.userEmailId.isNotEmpty()) {
             edt_driver_email.setText(sharedPreference.userEmailId)
             edt_driver_email.isEnabled = false
@@ -84,10 +114,12 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             ccp_driver.setDefaultCountryUsingNameCode(sharedPreference.userCountryCode)
             ccp_driver.resetToDefaultCountry()
         }
+
         if (sharedPreference.userMobile.isNotEmpty()) {
             edt_driver_phone_num.setText(sharedPreference.userMobile)
             edt_driver_phone_num.isEnabled = false
         }
+
         rg_type_per.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.radio_want_tobe_emp -> {
@@ -201,7 +233,24 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                 sharedPreference.userLastName = it.response?.last_name!!
             else
                 sharedPreference.userLastName = ""
-            if ((it.response?.is_mobile_verified?.trim()
+
+
+            if (it.response?.is_mobile_verified?.trim()
+                    ?.toInt() == 1) {
+                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                    this@ProfileCreationDriverActivity.finish()
+                })
+            }
+
+            if ((it.response?.is_email_verified?.trim()?.toInt() == 1)) {
+                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                    this@ProfileCreationDriverActivity.finish()
+                })
+            }
+
+          /*  if ((it.response?.is_mobile_verified?.trim()
                     ?.toInt() == 0) || (it.response?.is_email_verified?.trim()?.toInt() == 0)
             ) {
                 startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
@@ -213,7 +262,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                     putExtra(Constants.UserType, sharedPreference.userType)
                     this@ProfileCreationDriverActivity.finish()
                 })
-            }
+            }*/
         })
 
         driverViewModel.throwable.observe(this, Observer {
