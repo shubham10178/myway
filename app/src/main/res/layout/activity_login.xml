@@ -403,8 +403,6 @@
                             android:textColor="@color/black"
                             android:textSize="12sp"
                             android:translationY="5dp" />
-
-
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 

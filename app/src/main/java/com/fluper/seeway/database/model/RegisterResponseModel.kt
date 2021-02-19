@@ -30,6 +30,7 @@ data class RegisterResponseModel(
         val is_document_verified: Int? = 0, // 0
         val is_term_accept: Int? = 0, // 1
         val is_mobile_verified: String? = "", // 1
+        var is_approved: String? = "", // 1
         val is_email_verified: String? = "", //1
         val last_name: String? = "", // Kumar
         val latitude: Double? = 0.0, // 77.7440948

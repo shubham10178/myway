@@ -12,6 +12,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -71,7 +72,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
     private lateinit var driverViewModel: DriverViewModel
     private var vehicleTypes = ArrayList<GetVehicleTypesResponseModel.Response?>()
     private var gender = "Male"
-    private var smoker = "Smoker"
+    private var smoker = "1"
     private var city = ""
     private var vehicleTypeId = ""
     private var permissionCategory = ""
@@ -84,8 +85,6 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
         driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         val type = Typeface.createFromAsset(assets, "font/avenir_black.ttf")
         (ccp_driver as CountryCodePicker).typeFace = type
-
-
         myObserver()
         driverViewModel.getVehicleType()
         vehicleTypes.clear()
@@ -142,12 +141,14 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                 R.id.radioFemale -> gender = "Female"
             }
         }
+
         radioSmoking.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                R.id.radioSmoker -> smoker = "Smoker"
-                R.id.radioNonSmoker -> smoker = "Non-Smoker"
+                R.id.radioSmoker -> smoker = "1"
+                R.id.radioNonSmoker -> smoker = "2"
             }
         }
+
         etCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 city = etCity.selectedItem.toString()
@@ -165,7 +166,6 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                //
             }
         }
         uploadRecyclerview()
@@ -200,7 +200,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
 
         driverViewModel.profileCreation.observe(this, Observer {
             ProgressBarUtils.getInstance().hideProgress()
-            showToast(it.message!!)
+           // showToast(it.message!!)
             if (!it.response?._id.isNullOrEmpty())
                 sharedPreference.userId = it.response?._id!!
             else
@@ -237,17 +237,34 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
 
             if (it.response?.is_mobile_verified?.trim()
                     ?.toInt() == 1) {
-                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
-                    putExtra(Constants.UserType, sharedPreference.userType)
-                    this@ProfileCreationDriverActivity.finish()
-                })
+                        when(it.response.is_approved) {
+                            "0" -> {
+                                showApprovedDialog()
+                            }
+                            "1" -> {
+                            }
+
+                            "2" -> {
+                                showRejectedDialog()
+                            }
+                        }
             }
 
             if ((it.response?.is_email_verified?.trim()?.toInt() == 1)) {
-                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                when(it.response.is_approved) {
+                    "0" -> {
+                        showApprovedDialog()
+                    }
+                    "1" -> {
+                    }
+                    "2" -> {
+                        showRejectedDialog()
+                    }
+                }
+               /* startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
                     putExtra(Constants.UserType, sharedPreference.userType)
                     this@ProfileCreationDriverActivity.finish()
-                })
+                })*/
             }
 
           /*  if ((it.response?.is_mobile_verified?.trim()
@@ -325,7 +342,68 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.btnSave -> {
                 if (isProfileInputsValid()) {
-                    alertSubmit()
+                   // alertSubmit()
+
+                    if (NetworkUtils.isInternetAvailable(this)) {
+                        ProgressBarUtils.getInstance().showProgress(this, false)
+                        var firstName = ""
+                        var lastName = ""
+                        if (edt_driver_name.getString().contains(" ")) {
+                            val arrayList = ArrayList(edt_driver_name.getString().split(" "))
+                            firstName = arrayList[0]
+                            arrayList.removeAt(0)
+                            repeat(arrayList.size) {
+                                lastName = lastName + " " + arrayList[it]
+                            }
+                        } else
+                            firstName = edt_driver_name.getString()
+                        driverViewModel.profile(
+                            access_token = sharedPreference.accessToken!!,
+                            user_type = getRequestBody(Constants.UserValueDriver),
+                            first_name = getRequestBody(firstName),
+                            last_name = getRequestBody(lastName),
+                            city = getRequestBody(city),
+                            id_proof = null,
+                            account_holdar_name = getRequestBody(tvAccountHolderName.getString()),
+                            account_number = getRequestBody(tvAccountNumber.getString()),
+                            ifsc_code = getRequestBody(tvIfscCode.getString()),
+                            branch_name = getRequestBody(tvBranchName.getString()),
+                            business_name = getRequestBody(tvBusinessName.getString()),
+                            business_address1 = getRequestBody(tvBusinessAddress1.getString()),
+                            business_address2 = getRequestBody(tvBusinessAddress2.getString()),
+                            business_city = getRequestBody(tvBusinessCity.getString()),
+                            business_country = getRequestBody(tvBusinessCountry.getString()),
+                            vat_number = getRequestBody(tvVatNumber.getString()),
+                            card_number = getRequestBody(etCardNo.getString()),
+                            expiry_date = getRequestBody(etCardDate.getString()),
+                            cvv = getRequestBody(tvCvv.getString()),
+                            gexpay_account = getRequestBody(tvGexpayAccount.getString()),
+                            gender = getRequestBody(gender),
+                            smoking_status = getRequestBody(smoker),
+                            vehicle_type_id = getRequestBody(vehicleTypeId),
+                            driving_licence = getMultipartBody(udliArraylist[0], "driving_licence"),
+                            user_id = getRequestBody(sharedPreference.userId),
+                            user_permission = getRequestBody(permissionCategory),
+                            upload_permission = getMultipartBody(upArraylist[0], "upload_permission"),
+                            profile_image = when (imageUri) {
+                                null -> {
+                                    null
+                                }
+                                else -> {
+                                    getMultipartBody(
+                                        MediaStore.Images.Media.getBitmap(
+                                            this.contentResolver,
+                                            imageUri
+                                        ), "profile_image"
+                                    )
+                                }
+                            },
+                            email = getRequestBody(edt_driver_email.getString()),
+                            country_code = getRequestBody(ccp_driver.selectedCountryCodeWithPlus),
+                            mobile_number = getRequestBody(edt_driver_phone_num.getString())
+                        )
+                    } else
+                        showToast("Poor connection")
                 }
                 /*if (img_driver_tobeEmp.isVisible) {
                     startActivity(Intent(this, DriverInsuranceActivity::class.java))
@@ -335,6 +413,83 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             }
         }
     }
+
+    private fun showApprovedDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_for_approved)
+        val tvTitle = dialog.findViewById<View>(R.id.tvTitle) as TextView
+        val tvFirst = dialog.findViewById<View>(R.id.tvFirst) as TextView
+        val tvSecond = dialog.findViewById<View>(R.id.tvSecond) as TextView
+        val tvThird = dialog.findViewById<View>(R.id.tvThird) as TextView
+        val btnOKay = dialog.findViewById<View>(R.id.btnOKay) as Button
+
+        Handler().postDelayed({
+            tvTitle.visibility =View.VISIBLE
+            tvFirst.visibility = View.VISIBLE
+            tvSecond.visibility = View.GONE
+            tvThird.visibility = View.GONE
+            btnOKay.visibility = View.GONE
+
+            Handler().postDelayed({
+                tvTitle.visibility =View.VISIBLE
+                tvFirst.visibility = View.GONE
+                tvSecond.visibility = View.VISIBLE
+
+                tvThird.visibility = View.GONE
+                btnOKay.visibility = View.GONE
+
+                Handler().postDelayed({
+                    tvTitle.visibility =View.GONE
+                    tvFirst.visibility = View.GONE
+                    tvSecond.visibility = View.GONE
+                    tvThird.visibility = View.VISIBLE
+                    btnOKay.visibility = View.VISIBLE
+                }, 3000)
+            }, 3000)
+
+            btnOKay.setOnClickListener {
+                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
+                    this@ProfileCreationDriverActivity.finish()
+                })
+            }
+
+        }, 3000)
+
+
+
+
+        btnOKay.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+        dialog.show()
+    }
+    private fun showRejectedDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_for_approved)
+        val tvTitle = dialog.findViewById<View>(R.id.tvTitle) as TextView
+        val tvFirst = dialog.findViewById<View>(R.id.tvFirst) as TextView
+        val tvSecond = dialog.findViewById<View>(R.id.tvSecond) as TextView
+        val tvThird = dialog.findViewById<View>(R.id.tvThird) as TextView
+        val btnOKay = dialog.findViewById<View>(R.id.btnOKay) as Button
+        tvThird.text = "Your profile has been rejected by admin"
+        tvTitle.visibility =View.GONE
+        tvFirst.visibility = View.GONE
+        tvSecond.visibility = View.GONE
+        tvThird.visibility = View.VISIBLE
+        btnOKay.visibility = View.VISIBLE
+        btnOKay.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun uploadRecyclerview() {
@@ -673,66 +828,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
         val txt_msg = dialog.findViewById<View>(R.id.txt_msg) as TextView
 
         txt_msg.setOnClickListener {
-            if (NetworkUtils.isInternetAvailable(this)) {
-                ProgressBarUtils.getInstance().showProgress(this, false)
-                var firstName = ""
-                var lastName = ""
-                if (edt_driver_name.getString().contains(" ")) {
-                    val arrayList = ArrayList(edt_driver_name.getString().split(" "))
-                    firstName = arrayList[0]
-                    arrayList.removeAt(0)
-                    repeat(arrayList.size) {
-                        lastName = lastName + " " + arrayList[it]
-                    }
-                } else
-                    firstName = edt_driver_name.getString()
-                driverViewModel.profile(
-                    access_token = sharedPreference.accessToken!!,
-                    user_type = getRequestBody(Constants.UserValueDriver),
-                    first_name = getRequestBody(firstName),
-                    last_name = getRequestBody(lastName),
-                    city = getRequestBody(city),
-                    id_proof = null,
-                    account_holdar_name = getRequestBody(tvAccountHolderName.getString()),
-                    account_number = getRequestBody(tvAccountNumber.getString()),
-                    ifsc_code = getRequestBody(tvIfscCode.getString()),
-                    branch_name = getRequestBody(tvBranchName.getString()),
-                    business_name = getRequestBody(tvBusinessName.getString()),
-                    business_address1 = getRequestBody(tvBusinessAddress1.getString()),
-                    business_address2 = getRequestBody(tvBusinessAddress2.getString()),
-                    business_city = getRequestBody(tvBusinessCity.getString()),
-                    business_country = getRequestBody(tvBusinessCountry.getString()),
-                    vat_number = getRequestBody(tvVatNumber.getString()),
-                    card_number = getRequestBody(etCardNo.getString()),
-                    expiry_date = getRequestBody(etCardDate.getString()),
-                    cvv = getRequestBody(tvCvv.getString()),
-                    gexpay_account = getRequestBody(tvGexpayAccount.getString()),
-                    gender = getRequestBody(gender),
-                    smoking_status = getRequestBody(smoker),
-                    vehicle_type_id = getRequestBody(vehicleTypeId),
-                    driving_licence = getMultipartBody(udliArraylist[0], "driving_licence"),
-                    user_id = getRequestBody(sharedPreference.userId),
-                    user_permission = getRequestBody(permissionCategory),
-                    upload_permission = getMultipartBody(upArraylist[0], "upload_permission"),
-                    profile_image = when (imageUri) {
-                        null -> {
-                            null
-                        }
-                        else -> {
-                            getMultipartBody(
-                                MediaStore.Images.Media.getBitmap(
-                                    this.contentResolver,
-                                    imageUri
-                                ), "profile_image"
-                            )
-                        }
-                    },
-                    email = getRequestBody(edt_driver_email.getString()),
-                    country_code = getRequestBody(ccp_driver.selectedCountryCodeWithPlus),
-                    mobile_number = getRequestBody(edt_driver_phone_num.getString())
-                )
-            } else
-                showToast("Poor connection")
+
             dialog.dismiss()
         }
         dialog.show()
@@ -740,10 +836,10 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
 
     private fun isProfileInputsValid(): Boolean {
         return when {
-            /*imageUri == null -> {
+            imageUri == null -> {
                 showToast("Please upload profile pic")
                 false
-            }*/
+            }
             !edt_driver_name.isValidName() -> {
                 false
             }
@@ -994,12 +1090,11 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
         txt_msg.setText(R.string.alert_driver_profile2)
 
         btn_no.setOnClickListener {
-
             dialog.dismiss()
         }
 
         btn_yes.setOnClickListener {
-            showAlertSubmit()
+         //   showAlertSubmit()
 
             dialog.dismiss()
         }

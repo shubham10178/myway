@@ -3,7 +3,12 @@ package com.fluper.seeway.onBoard.activities
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Typeface
+import android.hardware.biometrics.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import android.hardware.biometrics.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import android.os.Bundle
+import android.os.Handler
+import android.provider.Settings
+import android.provider.Settings.ACTION_BIOMETRIC_ENROLL
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,6 +20,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
@@ -38,19 +44,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private var dialog: Dialog? = null
 
-    private lateinit var executor: Executor
-    private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
-
-
-
 
     private lateinit var driverViewModel: DriverViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         statusBarFullScreenWithBackground()
         driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
+
 
         initClickListener()
         myObserver()
@@ -90,10 +93,82 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
+
+    private fun showApprovedDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_for_approved)
+        val tvTitle = dialog.findViewById<View>(R.id.tvTitle) as TextView
+        val tvFirst = dialog.findViewById<View>(R.id.tvFirst) as TextView
+        val tvSecond = dialog.findViewById<View>(R.id.tvSecond) as TextView
+        val tvThird = dialog.findViewById<View>(R.id.tvThird) as TextView
+        val btnOKay = dialog.findViewById<View>(R.id.btnOKay) as Button
+
+        Handler().postDelayed({
+            tvTitle.visibility =View.VISIBLE
+            tvFirst.visibility = View.VISIBLE
+            tvSecond.visibility = View.GONE
+            tvThird.visibility = View.GONE
+            btnOKay.visibility = View.GONE
+
+            Handler().postDelayed({
+                tvTitle.visibility =View.VISIBLE
+                tvFirst.visibility = View.GONE
+                tvSecond.visibility = View.VISIBLE
+
+                tvThird.visibility = View.GONE
+                btnOKay.visibility = View.GONE
+
+                Handler().postDelayed({
+                    tvTitle.visibility =View.GONE
+                    tvFirst.visibility = View.GONE
+                    tvSecond.visibility = View.GONE
+                    tvThird.visibility = View.VISIBLE
+                    btnOKay.visibility = View.VISIBLE
+                }, 3000)
+            }, 3000)
+
+
+        }, 3000)
+
+
+
+
+        btnOKay.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+        dialog.show()
+    }
+    private fun showRejectedDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_for_approved)
+        val tvTitle = dialog.findViewById<View>(R.id.tvTitle) as TextView
+        val tvFirst = dialog.findViewById<View>(R.id.tvFirst) as TextView
+        val tvSecond = dialog.findViewById<View>(R.id.tvSecond) as TextView
+        val tvThird = dialog.findViewById<View>(R.id.tvThird) as TextView
+        val btnOKay = dialog.findViewById<View>(R.id.btnOKay) as Button
+        tvThird.text = "Your profile has been rejected by admin"
+        tvTitle.visibility =View.GONE
+        tvFirst.visibility = View.GONE
+        tvSecond.visibility = View.GONE
+        tvThird.visibility = View.VISIBLE
+        btnOKay.visibility = View.VISIBLE
+        btnOKay.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+
     private fun myObserver() {
         driverViewModel.signInSignUp.observe(this, Observer { it ->
             ProgressBarUtils.getInstance().hideProgress()
-            showToast(it.message!!)
+            //showToast(it.message!!)
             if (!it.response?._id.isNullOrEmpty())
                 sharedPreference.userId = it.response?._id!!
             else
@@ -138,7 +213,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 if (it.is_term_accept == 0 && isVerified.trim()
-                    .toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
+                        .toInt() == 0 && it.isProfileCreated?.trim()?.toInt() == 0
                 ) {
                     showDialog(it._id!!)
                 } else if (it.is_term_accept == 1 && isVerified?.trim()
@@ -150,6 +225,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 } else if (it.is_term_accept == 1 && isVerified?.trim()
                         ?.toInt() == 1 && it.isProfileCreated?.trim()?.toInt() == 0
                 ) {
+
+
                     when (sharedPreference.userType) {
                         Constants.Passenger -> {
                             startActivity(
@@ -179,14 +256,29 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                 })
                         }
                         Constants.Driver -> {
-                            startActivity(Intent(this, DriverMainActivity::class.java).apply {
-                                this@LoginActivity.finishAffinity()
-                            })
+                            when (it.is_approved) {
+                                "0" -> {
+                                    showApprovedDialog()
+                                }
+                                "1" -> {
+                                    showToast("Approved")
+                                    startActivity(
+                                        Intent(
+                                            this,
+                                            DriverMainActivity::class.java
+                                        ).apply {
+                                            this@LoginActivity.finishAffinity()
+                                        })
+                                }
+                                "2" -> {
+                                    showRejectedDialog()
+                                }
+                            }
                         }
                         else -> onBackPressed()
                     }
                 }
-                Log.e("Bharat===",sharedPreference.loginWith)
+                Log.e("Bharat===", sharedPreference.loginWith)
             }
         })
 
@@ -257,48 +349,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         btnPin.setOnClickListener(this)
     }
 
-    fun enableFaceId(){
-
-        executor = ContextCompat.getMainExecutor(this)
-        biometricPrompt = BiometricPrompt(this, executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int,
-                                                   errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    Toast.makeText(applicationContext,
-                        "Authentication error: $errString", Toast.LENGTH_SHORT)
-                        .show()
-                }
-
-                override fun onAuthenticationSucceeded(
-                    result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    Toast.makeText(applicationContext,
-                        "Authentication succeeded!", Toast.LENGTH_SHORT)
-                        .show()
-                  /*  mloginviewModel.email = sharedpreferenceutil.getinstance(this@signinactivity).email
-                    mloginviewModel.password = sharedpreferenceutil.getinstance(this@signinactivity).password
-                    mloginviewModel.countryCode = null
-                    mloginviewModel.mobile = null
-
-                    mloginviewModel.hitLogin()*/
-                }
-
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    Toast.makeText(applicationContext, "Authentication failed",
-                        Toast.LENGTH_SHORT)
-                        .show()
-                }
-            })
-
-        promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric login for my app")
-            .setSubtitle("Log in using your biometric credential")
-            .setNegativeButtonText("Use account password")
-            .build()
-    }
-
     override fun onClick(p0: View) {
         when (p0.id) {
             /*R.id.edt_User_Email, R.id.emailClick -> {
@@ -345,7 +395,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     putExtra(Constants.UserType, sharedPreference.userType)
                     putExtra(Constants.CameFrom, Constants.SignIn)
                 })
-              //  enableFaceId()
+                //  enableFaceId()
             }
             R.id.btnFingerPrint -> {
                 startActivity(Intent(this, FingerPrintLockActivity::class.java).apply {
@@ -373,11 +423,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 //showToast("Please enter only either email or mobile")
                 false
             }
-            edt_User_Email.getString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(edt_User_Email.getString()).matches() -> {
+            edt_User_Email.getString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(
+                edt_User_Email.getString()
+            ).matches() -> {
                 showToast("Please enter valid email address")
                 false
             }
-            edt_phone_number.getString().isNotEmpty() && !edt_phone_number.getString().isValidMobile -> {
+            edt_phone_number.getString()
+                .isNotEmpty() && !edt_phone_number.getString().isValidMobile -> {
                 showToast("Please enter valid mobile number")
                 false
             }

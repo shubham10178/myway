@@ -53,6 +53,10 @@ private constructor(val context: Context) {
         get() = sharedPreferences["isEmailVerified", 0]!!
         set(value) = sharedPreferences.set("isEmailVerified", value)
 
+    var isEnabled: Int?
+        get() = sharedPreferences["isEnabled", 0]!!
+        set(value) = sharedPreferences.set("isEnabled", value)
+
     var isemailVerified: String?
         get() = sharedPreferences["isemailVerified", ""]!!
         set(value) = sharedPreferences.set("isemailVerified", value)

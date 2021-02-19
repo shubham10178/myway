@@ -31,7 +31,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class AddVehicleActivity : BaseActivity(), View.OnClickListener {
-
     private var IMAGE_PICK_CODE = 100
     private var IMAGE_CAPTURE_CODE = 200
     private val PERMISSION_CODE = 300
@@ -135,6 +134,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
                     calendar[Calendar.MONTH],
                     calendar[Calendar.DAY_OF_MONTH]
                 )
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
                 datePickerDialog.show()
             }
             R.id.btn_save_addv -> {

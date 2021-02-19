@@ -296,7 +296,7 @@ class DriverMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListe
 
     override fun onDestroy() {
         super.onDestroy()
-        removeLocationUpdates()
+      //  removeLocationUpdates()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
