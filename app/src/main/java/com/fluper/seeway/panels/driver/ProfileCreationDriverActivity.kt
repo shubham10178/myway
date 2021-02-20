@@ -55,10 +55,12 @@ import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvCvv
 import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvGexpayAccount
 import kotlinx.android.synthetic.main.activity_profile_creation_driver.tvVatNumber
 import kotlinx.android.synthetic.main.activity_profile_creation_passenger.*
+import okhttp3.MultipartBody
 import java.io.IOException
 
 class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
     RadioGroup.OnCheckedChangeListener {
+    private var userPermission: MultipartBody.Part?=null
     private var imageUri1: Uri? = null
     private var IMAGE_PICK_CODE = 1000
     private val PERMISSION_CODE1 = 1000
@@ -341,9 +343,25 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                     showToast("You can add only a permission")
             }
             R.id.btnSave -> {
+
+                when(permissionCategory){
+                    "1"->{
+                        userPermission=null
+                    }
+                    "2"->{
+                        userPermission=null
+                    }
+                    "3"->{
+                        if(upArraylist.size>0){
+                            userPermission=  getMultipartBody(upArraylist[0], "upload_permission")
+                        }else{
+                            showToast("Please upload permission documents")
+                        }
+                    }
+                }
+
                 if (isProfileInputsValid()) {
                    // alertSubmit()
-
                     if (NetworkUtils.isInternetAvailable(this)) {
                         ProgressBarUtils.getInstance().showProgress(this, false)
                         var firstName = ""
@@ -384,7 +402,7 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                             driving_licence = getMultipartBody(udliArraylist[0], "driving_licence"),
                             user_id = getRequestBody(sharedPreference.userId),
                             user_permission = getRequestBody(permissionCategory),
-                            upload_permission = getMultipartBody(upArraylist[0], "upload_permission"),
+                            upload_permission = userPermission,
                             profile_image = when (imageUri) {
                                 null -> {
                                     null
@@ -888,10 +906,15 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                 showToast("Please choose permission category")
                 false
             }
-            upArraylist.isNullOrEmpty() -> {
-                showToast("Please upload permission documents")
+
+           /* permissionCategory=="3"->{
+              if(upArraylist.size<0){
+                  showToast("Please upload permission documents")
+                  false
+              }
                 false
-            }
+            }*/
+
             tvAccountNumber.getString().isEmpty() -> {
                 showToast("Please enter account number")
                 false

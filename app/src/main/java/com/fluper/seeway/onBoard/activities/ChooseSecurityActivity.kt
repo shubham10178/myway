@@ -3,12 +3,15 @@ package com.fluper.seeway.onBoard.activities
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import com.fluper.seeway.R
@@ -43,7 +46,7 @@ class ChooseSecurityActivity : BaseActivity(), View.OnClickListener {
         initClickListener()
     }
 
-    fun InitBioMetric(){
+    private fun InitBioMetric(){
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
@@ -74,21 +77,30 @@ class ChooseSecurityActivity : BaseActivity(), View.OnClickListener {
         promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Biometric login for my app")
             .setSubtitle("Log in using your biometric credential")
-            .setNegativeButtonText("Use account password")
+            .setConfirmationRequired(false)
+            .setAllowedAuthenticators(DEVICE_CREDENTIAL or BIOMETRIC_STRONG)
+
             .build()
     }
 
     private fun verfiyingBioMetricExistence() {
         val biometricManager = BiometricManager.from(this)
-        when (biometricManager.canAuthenticate()) {
-            BiometricManager.BIOMETRIC_SUCCESS ->
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_SUCCESS ->{
                 println("App can authenticate using biometrics.")
+            }
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE ->
             println("No biometric features available on this device.")
             BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE ->
             println("Biometric features are currently unavailable.")
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED ->
-            println("The user hasn't associated any biometric credentials with their account.")
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED ->{
+                println("The user hasn't associated any biometric credentials with their account.")
+                val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                    putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                        BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+                }
+                startActivityForResult(enrollIntent, 101)
+            }
         }
     }
 

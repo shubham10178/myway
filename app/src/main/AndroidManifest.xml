@@ -8,7 +8,11 @@
          location permissions for the "MyLocation" functionality.
     -->
 
+    <!-- Step 1: Add the following permission to the app  -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <!-- Step 2: This permission is depreciated in Android P  -->
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -88,7 +92,7 @@
             android:name=".onBoard.activities.ChooseSecurityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
-          <!--  <intent-filter>
+         <!--   <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
