@@ -191,7 +191,7 @@ class AddVehicleActivity : BaseActivity(), View.OnClickListener {
             }
             tvAvailSheet.getString().isEmpty() ||
                     !tvAvailSheet.getString().isDigitsOnly() -> {
-                showToast("Please enter no. of available sheets in digits")
+                showToast("Please enter number of available seats")
                 false
             }
             ucd_arrayList.isNullOrEmpty() -> {

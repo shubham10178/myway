@@ -418,11 +418,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 showToast("Please enter email or mobile")
                 false
             }
-            edt_User_Email.getString().isNotEmpty() && edt_phone_number.getString()
+           /* edt_User_Email.getString().isNotEmpty() && edt_phone_number.getString()
                 .isNotEmpty() -> {
                 //showToast("Please enter only either email or mobile")
                 false
-            }
+            }*/
             edt_User_Email.getString().isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(
                 edt_User_Email.getString()
             ).matches() -> {

@@ -30,6 +30,7 @@ import com.fluper.seeway.base.BaseActivity
 import com.fluper.seeway.database.model.AddVehicleResponseModel
 import com.fluper.seeway.database.model.GetVehicleTypesResponseModel
 import com.fluper.seeway.onBoard.activities.ChooseSecurityActivity
+import com.fluper.seeway.onBoard.activities.LoginActivity
 import com.fluper.seeway.onBoard.activities.OtpVerificationActivity
 import com.fluper.seeway.onBoard.adapter.DriverVehicleInfoAdapter
 import com.fluper.seeway.onBoard.adapter.RemovePictures
@@ -97,6 +98,10 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
         expiryDateFormat()
         initClickListener()
 
+
+       /* edt_driver_name.firstSpaceEdt()
+        edt_driver_name.firstSpaceEdt()
+        edt_driver_name.firstSpaceEdt()*/
 
         when(sharedPreference.loginWith){
             Constants.LoginWithEmail->{
@@ -468,21 +473,13 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
             }, 3000)
 
             btnOKay.setOnClickListener {
-                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
-                    putExtra(Constants.UserType, sharedPreference.userType)
+                dialog.dismiss()
+                startActivity(Intent(this, LoginActivity::class.java).apply {
+                /*    putExtra(Constants.UserType, sharedPreference.userType)*/
                     this@ProfileCreationDriverActivity.finish()
                 })
             }
-
         }, 3000)
-
-
-
-
-        btnOKay.setOnClickListener {
-            dialog.dismiss()
-        }
-
 
         dialog.show()
     }
@@ -919,7 +916,11 @@ class ProfileCreationDriverActivity : BaseActivity(), View.OnClickListener,
                 showToast("Please enter account number")
                 false
             }
-            !tvAccountNumber.getString().isDigitsOnly() -> {
+           /* !tvAccountNumber.getString().isDigitsOnly() -> {
+                showToast("Please enter valid account number")
+                false
+            }
+*/            tvAccountNumber.getString().length<=6 -> {
                 showToast("Please enter valid account number")
                 false
             }

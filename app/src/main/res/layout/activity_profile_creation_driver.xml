@@ -596,7 +596,7 @@
                         android:button="@drawable/radio_selector"
                         android:fontFamily="@font/avenir_black"
                         android:paddingLeft="10dp"
-                        android:text="I dont need any permission"
+                        android:text="I don't need any permission"
                         android:textSize="12sp" />
 
                     <RadioButton
@@ -764,6 +764,8 @@
                                 android:singleLine="true"
                                 android:textColor="@color/black"
                                 android:textSize="12sp"
+                                android:digits="0123456789"
+                                android:maxLength="16"
                                 android:translationY="5dp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -815,8 +817,9 @@
                                 android:background="@null"
                                 android:fontFamily="@font/avenir_black"
                                 android:imeOptions="actionNext"
-                                android:inputType="textCapSentences"
+                                android:inputType="textCapWords"
                                 android:paddingBottom="5dp"
+                                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
                                 android:textSize="12sp"
@@ -874,16 +877,13 @@
                                 android:inputType="textCapSentences"
                                 android:paddingBottom="5dp"
                                 android:singleLine="true"
+                                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 android:textColor="@color/black"
                                 android:textSize="12sp"
                                 android:translationY="5dp" />
-
                         </com.google.android.material.textfield.TextInputLayout>
-
                     </LinearLayout>
-
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
