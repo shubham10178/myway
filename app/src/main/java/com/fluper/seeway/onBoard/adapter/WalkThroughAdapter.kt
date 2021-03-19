@@ -29,7 +29,6 @@ class WalkThroughAdapter(var context: Context, var image: Array<Int>, var pager:
         val view: View = layoutInflater.inflate(R.layout.slider_image_item, container, false)
         imageView = view.findViewById(R.id.slider)
 
-
         imageView.setBackgroundResource(image[position])
         container.addView(view)
         return view

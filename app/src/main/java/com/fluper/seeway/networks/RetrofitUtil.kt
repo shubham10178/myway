@@ -27,7 +27,10 @@ object RetrofitUtil {
             .create(ApiInterface::class.java)
     }
 
-    private fun getRetrofitClient(okHttpClientBuilder: OkHttpClient.Builder, baseUrl: String): Retrofit = Retrofit.Builder()
+    private fun getRetrofitClient(
+        okHttpClientBuilder: OkHttpClient.Builder,
+        baseUrl: String
+    ): Retrofit = Retrofit.Builder()
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .addConverterFactory(ScalarsConverterFactory.create())

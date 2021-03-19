@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fluper.seeway">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
-
-    <!-- Step 1: Add the following permission to the app  -->
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-
-    <!-- Step 2: This permission is depreciated in Android P  -->
+    <!-- Step 1: Add the following permission to the app -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- Step 2: This permission is depreciated in Android P -->
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -36,7 +34,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".panels.passenger.ui.activity.SetOnMapActivity">
 
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+
+        </activity>
+        <activity android:name=".panels.passenger.ui.activity.SetLocationActivity" />
+        <activity android:name=".panels.passenger.ui.activity.RequestOwnPriceActivity" />
+        <activity android:name=".panels.passenger.ui.activity.DriverDetailsActivity" />
+        <activity android:name=".panels.chat.ui.activity.ChatActivity" />
+        <activity android:name=".panels.chat.ui.activity.CallingActivity" />
+        <activity android:name=".panels.passenger.ui.activity.VahicleTypeActivity" />
+        <activity android:name=".panels.passenger.ui.activity.ChooseAPlaceActivity" />
+        <activity android:name=".panels.passenger.ui.activity.SearchLocationActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -48,6 +61,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".onBoard.activities.SplashScreen"
             android:screenOrientation="portrait">
@@ -92,19 +106,24 @@
             android:name=".onBoard.activities.ChooseSecurityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
-         <!--   <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-        <activity android:name=".onBoard.activities.FaceLockActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".onBoard.activities.FingerPrintLockActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".onBoard.activities.PatternLockActivity"
+        <activity
+            android:name=".onBoard.activities.FaceLockActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".onBoard.activities.FingerPrintLockActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".onBoard.activities.PatternLockActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
-        <!-- User Panel -->
+            android:windowSoftInputMode="adjustResize" /> <!-- User Panel -->
         <activity
             android:name=".panels.passenger.dashboard.PassengerMainActivity"
             android:screenOrientation="portrait"
@@ -116,9 +135,7 @@
         <activity
             android:name=".panels.passenger.NotificationPassengerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-
-        <!-- Driver Panel -->
+            android:windowSoftInputMode="adjustResize" /> <!-- Driver Panel -->
         <activity
             android:name=".panels.driver.dashboard.DriverMainActivity"
             android:screenOrientation="portrait"
@@ -127,20 +144,26 @@
             android:name=".panels.driver.ProfileCreationDriverActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
-          <!--  <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
-        <activity android:name=".panels.driver.AddVehicleActivity"
+        <activity
+            android:name=".panels.driver.AddVehicleActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".panels.driver.DriverInsuranceActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".panels.driver.DriverInsuranceActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".panels.driver.ChooseVehicleTypeActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".panels.driver.ChooseVehicleTypeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

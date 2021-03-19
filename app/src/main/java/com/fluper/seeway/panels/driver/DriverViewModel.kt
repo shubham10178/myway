@@ -34,9 +34,9 @@ class DriverViewModel : BaseViewModel() {
     }
 
     @SuppressLint("CheckResult")
-    fun logout(access_token:String){
+    fun logout(access_token: String) {
         apiInterface.logout(
-            access_token =access_token
+            access_token = access_token
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -53,8 +53,8 @@ class DriverViewModel : BaseViewModel() {
     fun forgotPassword(
         country_code: String,
         mobile_number: String,
-        email:String,
-        user_type:String
+        email: String,
+        user_type: String
     ) {
         apiInterface.forgotPassword(
             country_code = country_code,
@@ -239,9 +239,9 @@ class DriverViewModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun deleteVehicle(
-        _id:String,
-        user_id:String
-    ){
+        _id: String,
+        user_id: String
+    ) {
         apiInterface.deleteVehicle(
             _id = _id,
             user_id = user_id
@@ -260,7 +260,7 @@ class DriverViewModel : BaseViewModel() {
     @SuppressLint("CheckResult")
     fun profile(
         access_token: String,
-        user_type:RequestBody,
+        user_type: RequestBody,
         first_name: RequestBody,
         last_name: RequestBody,
         city: RequestBody,
@@ -334,7 +334,7 @@ class DriverViewModel : BaseViewModel() {
 
             email = email,
             country_code = country_code,
-            mobile_number =mobile_number
+            mobile_number = mobile_number
         ).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

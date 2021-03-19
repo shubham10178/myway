@@ -27,7 +27,8 @@ class PatternLockActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btn_otp_con -> {
-                if (intent.hasExtra(Constants.CameFrom) && intent.getStringExtra(Constants.CameFrom)
+                if (intent.hasExtra(Constants.CameFrom)
+                    && intent.getStringExtra(Constants.CameFrom)
                         .equals(Constants.SignIn)
                 ) {
                     showToast("This service is under development")

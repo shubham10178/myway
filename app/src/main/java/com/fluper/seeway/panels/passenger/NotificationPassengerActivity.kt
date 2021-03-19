@@ -27,7 +27,7 @@ class NotificationPassengerActivity : BaseActivity() {
     private fun initView(){
         val recyclerView = findViewById<RecyclerView>(R.id.notification_recycler)
         /*val imgBack = findViewById<ImageView>(R.id.img_back)
-        imgBack.setOnClickListener {
+        imgBack.setOnClickListener{
             this.onBackPressed()
         }*/
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)

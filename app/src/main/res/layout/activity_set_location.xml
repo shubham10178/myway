@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="clickHandler"
+            type="com.fluper.seeway.panels.passenger.ui.activity.SetLocationActivity.ClickHandler" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".panels.passenger.ui.activity.SetLocationActivity">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/_2sdp"
+            app:cardMaxElevation="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:onClick="@{clickHandler::onClickBack}"
+                    android:padding="5dp"
+                    android:src="@drawable/back" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/_10sdp">
+
+
+                    <ImageView
+                        android:id="@+id/iv_dot1"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_margin="@dimen/_12sdp"
+                        android:src="@drawable/circle_gray"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_pickup_location"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_pickup_location" />
+
+                    <View
+                        android:id="@+id/iv_line_verticle1"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/grey"
+                        app:layout_constraintBottom_toTopOf="@+id/iv_dot2"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_dot1"
+                        app:layout_constraintStart_toStartOf="@+id/iv_dot1"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_dot1" />
+
+                    <ImageView
+                        android:id="@+id/iv_dot2"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:src="@drawable/circle_gray"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_whare_to_go"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_dot1"
+                        app:layout_constraintStart_toStartOf="@+id/iv_dot1"
+                        app:layout_constraintTop_toTopOf="@+id/et_whare_to_go" />
+
+
+                    <View
+                        android:id="@+id/iv_line_verticle2"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/grey"
+                        app:layout_constraintBottom_toTopOf="@+id/iv_dot3"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_dot2"
+                        app:layout_constraintStart_toStartOf="@+id/iv_dot2"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_dot2" />
+
+                    <ImageView
+                        android:id="@+id/iv_dot3"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:src="@drawable/circle_gray"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_add_stop"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_dot1"
+                        app:layout_constraintStart_toStartOf="@+id/iv_dot1"
+                        app:layout_constraintTop_toTopOf="@+id/et_add_stop" />
+
+
+                    <TextView
+                        android:id="@+id/tv_pickup_location"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginEnd="42dp"
+                        android:background="@drawable/rectangle_gray"
+                        android:gravity="center_vertical"
+                        android:hint="@string/pickup_location_auto_detect"
+                        android:minHeight="@dimen/_30sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/dark_blue"
+                        android:textColorHint="@color/dark_blue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/iv_line_verticle1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <EditText
+                        android:id="@+id/et_whare_to_go"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/rectangle_gray"
+                        android:hint="@string/where_to_go_drop_location"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_pickup_location"
+                        app:layout_constraintStart_toStartOf="@+id/tv_pickup_location"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_pickup_location" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_remove_stop"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:onClick="@{clickHandler::onClickRemove}"
+                        android:src="@drawable/close_dark"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_whare_to_go"
+                        app:layout_constraintStart_toEndOf="@+id/et_whare_to_go"
+                        app:layout_constraintTop_toTopOf="@+id/et_whare_to_go" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_add_stop"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:onClick="@{clickHandler::onClickAdd}"
+                        android:src="@drawable/set_location_plus"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/et_whare_to_go"
+                        app:layout_constraintStart_toEndOf="@+id/et_whare_to_go"
+                        app:layout_constraintTop_toTopOf="@+id/et_whare_to_go" />
+
+
+                    <EditText
+                        android:id="@+id/et_add_stop"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/rectangle_gray"
+                        android:hint="@string/add_a_stop"
+                        android:padding="@dimen/_5sdp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@+id/et_whare_to_go"
+                        app:layout_constraintStart_toStartOf="@+id/et_whare_to_go"
+                        app:layout_constraintTop_toBottomOf="@+id/et_whare_to_go" />
+
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/group1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="et_add_stop,iv_dot3,iv_line_verticle2" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/rl_add_home"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_15sdp"
+            android:background="@drawable/rec_blue_border"
+            android:onClick="@{clickHandler::onClickAddHome}"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/set_location_home" />
+
+                <TextView
+                    android:id="@+id/tv_add_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/avenir_next_heavy"
+                    android:text="@string/add_home"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_15sdp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_add_work"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:background="@drawable/rec_blue_border"
+            android:onClick="@{clickHandler::onClickAddWork}"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/rl_add_home">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/set_location_work" />
+
+                <TextView
+                    android:id="@+id/tv_add_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/avenir_next_heavy"
+                    android:text="@string/add_work"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_15sdp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_location"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/rl_add_work"
+            app:layout_constraintStart_toStartOf="@+id/rl_add_home"
+            app:layout_constraintTop_toBottomOf="@+id/rl_add_home">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_location"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/set_location_recent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_toEndOf="@+id/civ_location"
+                android:fontFamily="@font/avenir_black"
+                android:text="Vista Villa"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/civ_location"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_location_full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_location"
+                android:text="383 joriseen St, Sunnyside Pretora"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_location"
+                app:layout_constraintTop_toBottomOf="@+id/tv_location" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/grey"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/cl_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_location_full" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_saved_location"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:onClick="@{ clickHandler::onClickSavedLocation}"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/rl_add_work"
+            app:layout_constraintStart_toStartOf="@+id/cl_location"
+            app:layout_constraintTop_toBottomOf="@+id/cl_location">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_saved_location"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/saved_place"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_saved_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/civ_saved_location"
+                android:fontFamily="@font/avenir_black"
+                android:text="@string/saved_location"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/civ_saved_location"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/grey"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/cl_saved_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_saved_location" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_set_location_on_map"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_50sdp"
+            android:onClick="@{clickHandler::onClickSetlocationOnMap}"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@+id/rl_add_work"
+            app:layout_constraintStart_toStartOf="@+id/cl_saved_location"
+            app:layout_constraintTop_toBottomOf="@+id/cl_saved_location">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_set_location_by_map"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/set_location_set_map"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_set_location_by_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/civ_set_location_by_map"
+                android:fontFamily="@font/avenir_black"
+                android:text="@string/set_location_on_map"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/civ_set_location_by_map"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--        <LinearLayout-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="@dimen/_1sdp"-->
+            <!--            android:background="@color/grey"-->
+            <!--            android:orientation="horizontal"-->
+            <!--            app:layout_constraintBottom_toBottomOf="@+id/cl_set_location_on_map"-->
+            <!--            app:layout_constraintEnd_toEndOf="parent"-->
+            <!--            app:layout_constraintStart_toStartOf="@+id/tv_set_location_by_map" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_confirm_pickup_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/black_rectangle_rounded"
+            android:text="@string/done"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

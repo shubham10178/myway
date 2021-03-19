@@ -8,6 +8,8 @@
     <color name="black">#000000</color>
     <color name="ThemeColor">#004DA2</color>
     <color name="grey">#b6b5b5</color>
+    <color name="grey_text_ligth">#666666</color>
+    <color name="grey_ligth">#F4F4F4</color>
     <color name="background_color">#f5f9fc</color>
     <color name="btn_color">#163561</color>
     <color name="btn_color1">#0a3d85</color>
@@ -37,10 +39,10 @@
     <color name="rangeColor">#FF8c00</color>
     <color name="home_orange">#ffa500</color>
     <color name="red">#FF0015</color>
+    <color name="red_button">#FF3D3D</color>
     <color name="image_background">#aaaaaa</color>
     <color name="image_background1">#FFFFFF</color>
-
-
+    <color name="dark_blue">#276EF1</color>
 
 
 </resources>

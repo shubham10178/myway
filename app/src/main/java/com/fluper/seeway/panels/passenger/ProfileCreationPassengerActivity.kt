@@ -58,13 +58,13 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
         initClickListener()
 
 
-        Log.e("Bharat",sharedPreference.loginWith)
-        when(sharedPreference.loginWith){
-            Constants.LoginWithEmail->{
+        Log.e("Bharat", sharedPreference.loginWith)
+        when (sharedPreference.loginWith) {
+            Constants.LoginWithEmail -> {
                 ccpPassenger.isEnabled = true
 
             }
-            Constants.LoginWithMobile->{
+            Constants.LoginWithMobile -> {
                 ccpPassenger.isEnabled = false
             }
         }
@@ -128,21 +128,22 @@ class ProfileCreationPassengerActivity : BaseActivity(), View.OnClickListener {
                 sharedPreference.userLastName = ""
 
 
-          /*  if ((it.response?.is_mobile_verified?.trim()
-                    ?.toInt() == 0) || (it.response?.is_email_verified?.trim()?.toInt() == 0)
+            /*  if ((it.response?.is_mobile_verified?.trim()
+                      ?.toInt() == 0) || (it.response?.is_email_verified?.trim()?.toInt() == 0)
+              ) {
+                  startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
+                      putExtra(Constants.CameFrom, Constants.SignUp)
+                      this@ProfileCreationPassengerActivity.finish()
+                  })
+              } */
+
+            if (it.response?.is_mobile_verified?.trim()
+                    ?.toInt() == 1
             ) {
-                startActivity(Intent(this, OtpVerificationActivity::class.java).apply {
-                    putExtra(Constants.CameFrom, Constants.SignUp)
+                startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
+                    putExtra(Constants.UserType, sharedPreference.userType)
                     this@ProfileCreationPassengerActivity.finish()
                 })
-            } */
-
-             if (it.response?.is_mobile_verified?.trim()
-                    ?.toInt() == 1) {
-                 startActivity(Intent(this, ChooseSecurityActivity::class.java).apply {
-                     putExtra(Constants.UserType, sharedPreference.userType)
-                     this@ProfileCreationPassengerActivity.finish()
-                 })
             }
 
             if ((it.response?.is_email_verified?.trim()?.toInt() == 1)) {

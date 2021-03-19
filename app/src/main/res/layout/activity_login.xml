@@ -137,7 +137,6 @@
                         android:src="@drawable/mail_all" />
 
                 </LinearLayout>
-                `
 
                 <LinearLayout
                     android:layout_width="match_parent"

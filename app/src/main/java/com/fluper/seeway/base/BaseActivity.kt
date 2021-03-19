@@ -8,6 +8,7 @@ import com.fluper.seeway.database.model.SharedPreferenceUtils
 
 open class BaseActivity : AppCompatActivity() {
     /*lateinit var userViewModel: UserViewModel*/
+
     val apiInterface : ApiInterface by lazy {
         RetrofitUtil.createBaseApiService()
     }

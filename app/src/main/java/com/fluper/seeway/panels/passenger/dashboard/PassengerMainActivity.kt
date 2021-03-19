@@ -2,15 +2,19 @@ package com.fluper.seeway.panels.passenger.dashboard
 
 import android.Manifest
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -28,7 +32,12 @@ import com.fluper.seeway.onBoard.model.AddressModel
 import com.fluper.seeway.panels.driver.DriverViewModel
 import com.fluper.seeway.panels.passenger.NotificationPassengerActivity
 import com.fluper.seeway.panels.passenger.PassengerMainBottomSheetFragment
+import com.fluper.seeway.panels.passenger.ui.activity.SetLocationActivity
+import com.fluper.seeway.panels.passenger.ui.activity.VahicleTypeActivity
+import com.fluper.seeway.panels.passenger.ui.adapter.VehicleTypeAdapter
 import com.fluper.seeway.utilitarianFiles.*
+import com.fluper.seeway.utilitarianFiles.IntentConstant.REQ_WHERE_TO
+import com.fluper.seeway.utilitarianFiles.customdialogs.CustomDatePickerDailog
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -37,8 +46,10 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_passenger_nav.*
+import kotlinx.android.synthetic.main.bottom_sheet_shedule_ride.*
 import kotlinx.android.synthetic.main.navigation_header.*
 import kotlinx.android.synthetic.main.navigation_menu.*
 import java.io.IOException
@@ -46,8 +57,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListener {
+class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickListener,
+    HomeAddressAdapter.ClickItemListener, VehicleTypeAdapter.OnClickVehiclelistener {
+    private lateinit var bottomSheetdailog: BottomSheetDialog
     private lateinit var mMap: GoogleMap
+    private lateinit var mContext: Context
     private val bottomSheetDialogFragment by lazy { PassengerMainBottomSheetFragment() }
     private var doubleBackToExitPressedOnce = false
     private var fusedLocationFetcher: FusedLocationFetcher? = null
@@ -70,6 +84,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_passenger_nav)
+        mContext = this;
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -111,6 +126,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             ErrorUtils.handlerGeneralError(this, it)
         })
     }
+
 
     private fun bottomSheetFragment() {
         /*val bundle = Bundle()
@@ -162,6 +178,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
     private fun initDrawer() {
         btnLogout.setOnClickListener(this)
         tvInviteEarn.setOnClickListener(this)
+        ll_shedulenow.setOnClickListener(this)
     }
 
     private fun initView() {
@@ -190,8 +207,10 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
         users.add(AddressModel("Rosandra", "580 Paul grugre St. pretoria", R.drawable.star_file))
         val adapter = HomeAddressAdapter(users, this)
         home_recycler.adapter = adapter
+
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnLogout -> {
@@ -199,6 +218,21 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
             }
             R.id.tvInviteEarn -> {
                 drawerHandler()
+            }
+            R.id.ll_shedulenow -> {
+                BottomSheetDialog(this@PassengerMainActivity).apply {
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                    setContentView(R.layout.bottom_sheet_shedule_ride)
+
+                    tv_date_for_ride.setOnClickListener {
+                        CustomDatePickerDailog(
+                            this@PassengerMainActivity
+                        ).apply {
+
+
+                        }.show()
+                    }
+                }.show()
             }
         }
     }
@@ -244,6 +278,7 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
 
     override fun onMapReady(googleMap: GoogleMap?) {
         if (googleMap != null) {
+
             mMap = googleMap
             enableMyLocation()
             getLocation()
@@ -462,4 +497,106 @@ class PassengerMainActivity : BaseActivity(), OnMapReadyCallback, View.OnClickLi
 //            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
         Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
     }
+
+    fun onClickWhere(view: View) {
+        Intent(this@PassengerMainActivity, SetLocationActivity::class.java).apply {
+            startActivityForResult(this, REQ_WHERE_TO)
+        }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data?.let {
+
+            when (requestCode) {
+                REQ_WHERE_TO -> {
+
+
+                }
+            }
+
+
+        }
+
+
+    }
+
+    override fun onClickItem(position: Int) {
+        Log.d(this.localClassName, "onClickItem:$position ")
+        bottomSheetdailog = BottomSheetDialog(this);
+        bottomSheetdailog.setCanceledOnTouchOutside(false)
+        bottomSheetdailog.apply {
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            setContentView(R.layout.bottom_sheet_choose_vehicle)
+
+            findViewById<RecyclerView>(R.id.rv_choose_vehicle)?.apply {
+                adapter = VehicleTypeAdapter(mContext)
+            }
+            findViewById<ImageButton>(R.id.ib_schedule_ride)?.apply {
+                setOnClickListener {
+                    setContentView(R.layout.bottom_sheet_shedule_ride)
+                    findViewById<TextView>(R.id.tv_date_for_ride)?.apply {
+                        setOnClickListener {
+                            CustomDatePickerDailog(this@PassengerMainActivity).apply {
+                            }.show()
+                        }
+                    }
+                }
+            }
+            findViewById<Button>(R.id.btn_confirm_pickup_area)?.apply {
+                setOnClickListener {
+                    Intent(
+                        this@PassengerMainActivity,
+                        VahicleTypeActivity::class.java
+                    ).apply {
+                        startActivity(this)
+                        hide()
+                    }
+                }
+            }
+        }.show()
+
+    }
+//
+//    private fun openScheduleBottomSheet() {
+//     BottomSheetDialog(this@PassengerMainActivity).apply {
+//          setContentView(R.layout.bottom_sheet_shedule_ride)
+//            findViewById<TextView>(R.id.tv_date_for_ride)?.apply {
+//                setOnClickListener {
+//                    CustomDatePickerDailog(this@PassengerMainActivity).apply {
+//
+//                    }.show()
+//                }
+//            }
+//
+//        }.show()
+//    }
+
+    override fun onClickVehicle(position: Int) {
+
+        bottomSheetdailog.apply {
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            setContentView(R.layout.bottom_sheet_confirm_pickup_location)
+            findViewById<Button>(R.id.button_confirm_pick_area)?.setOnClickListener {
+                setContentView(R.layout.bottom_sheet_confirming_your_ride)
+                findViewById<Button>(R.id.button_confirm_pick_area)?.setOnClickListener {
+                    setContentView(R.layout.bottom_sheet_cancel_ride)
+                    findViewById<Button>(R.id.button_no)?.setOnClickListener {
+                        setContentView(R.layout.bottom_sheet_driverdetails)
+                        findViewById<Button>(R.id.button_cancel)?.setOnClickListener {
+                            setContentView(R.layout.bottom_sheet_driverdetails)
+                            findViewById<Button>(R.id.button_cancel)?.setOnClickListener {
+                                setContentView(R.layout.bottom_sheet_driverdetails)
+                            }
+                        }
+
+                    }
+                }
+            }
+        }.show()
+
+    }
+
+
 }

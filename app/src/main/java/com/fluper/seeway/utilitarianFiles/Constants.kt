@@ -12,7 +12,6 @@ interface Constants {
         const val UserValueDeliveryBoy = "5"
         const val UserValueTenant = "6"
         const val UserValueRenter = "7"
-
         const val CameFrom = "CameFrom"
         const val SignIn = "SignIn"
         const val SignUp = "SignUp"

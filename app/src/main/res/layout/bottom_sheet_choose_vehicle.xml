@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_shedule_ride"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/avenir_next_medium"
+        android:text="@string/choose_a_vehicle"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/_16ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_line" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/_20ssp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/_20ssp" />
+
+
+    <View
+        android:id="@+id/saprator1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/grey_text"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_shedule_ride" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_choose_vehicle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/adapter_vehicle_type"
+        tools:itemCount="2"
+        android:orientation="vertical"
+        app:reverseLayout="false"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/saprator1" />
+
+    <View
+        android:id="@+id/saprator2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/grey_text"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/rv_choose_vehicle" />
+
+
+    <ImageView
+        android:id="@+id/iv_bankin"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_30sdp"
+        app:srcCompat="@drawable/bankin_icon"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="363dp"
+        android:layout_marginTop="@dimen/_15sdp"
+        app:layout_constraintTop_toBottomOf="@+id/saprator2"
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        />
+
+
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bankin"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_bankin"
+        app:layout_constraintStart_toEndOf="@+id/iv_bankin"
+        app:layout_constraintTop_toTopOf="@+id/iv_bankin" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="@dimen/_20ssp"
+        android:layout_height="@dimen/_20sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_bankin"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintTop_toTopOf="@+id/iv_bankin"
+        app:srcCompat="@drawable/my_account_right_arrow" />
+
+
+<!--    <View-->
+<!--        android:id="@+id/saprator3"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="@dimen/_1sdp"-->
+<!--        android:layout_marginTop="@dimen/_10sdp"-->
+<!--        android:background="@color/grey_text"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline_end"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/guideline_start"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/iv_bankin" />-->
+
+
+
+    <Button
+        android:id="@+id/btn_confirm_pickup_area"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="@drawable/black_rectangle_rounded"
+        android:fontFamily="@font/avenir_next_heavy"
+        android:text="@string/confirm_pickup_area"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_schedule_ride"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+
+
+    <ImageButton
+        android:id="@+id/ib_schedule_ride"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:padding="@dimen/_5sdp"
+        android:src="@drawable/calendar"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        android:background="@drawable/black_rectangle_rounded"
+        app:layout_constraintTop_toTopOf="@+id/btn_confirm_pickup_area" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

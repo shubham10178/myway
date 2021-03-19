@@ -9,17 +9,17 @@ import com.fluper.seeway.panels.driver.DriverViewModel
 import com.fluper.seeway.utilitarianFiles.*
 import kotlinx.android.synthetic.main.fragment_reset_password.*
 
-class ResetPasswordActivity : BaseActivity() {
+class ResetPasswordActivity : BaseActivity(){
     private lateinit var driverViewModel: DriverViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         statusBarFullScreenWithBackground()
         setContentView(R.layout.fragment_reset_password)
         driverViewModel = ViewModelProvider(this).get(DriverViewModel::class.java)
         myObserver()
         btn_submit.setOnClickListener {
-                if (isValidPasswords()) {
-                    if (NetworkUtils.isInternetAvailable(this)) {
+                if(isValidPasswords()) {
+                    if(NetworkUtils.isInternetAvailable(this)){
                         ProgressBarUtils.getInstance().showProgress(this, false)
                         driverViewModel.resetPassword(
                             sharedPreference.userId,
@@ -72,5 +72,4 @@ class ResetPasswordActivity : BaseActivity() {
         this.finish()
         super.onBackPressed()
     }
-
 }

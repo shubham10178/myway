@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pickup_in">Pickup in</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_home">Add Home</string>
+    <string name="add_work">Add Work</string>
+    <string name="set_location_on_map">Set Location on Map</string>
+    <string name="saved_location">Saved Location</string>
+    <string name="pickup_location_auto_detect">Pickup Location (Auto Detect)</string>
+    <string name="where_to_go_drop_location">Where to go (Drop Location)</string>
+    <string name="add_a_stop">Add a stop</string>
+    <string name="done">Done</string>
+    <string name="_4">4</string>
+    <string name="choose_a_place">Choose a Place</string>
+    <string name="speaker">Speaker</string>
+    <string name="video_call">Video Call</string>
+    <string name="mute">Mute</string>
+    <string name="_10_55_am">10:55 Am</string>
+    <string name="schedule_a_trip">Schedule a trip</string>
+    <string name="confirm_pickup_area">Confirm Pickup Area</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="choose_a_vehicle">Choose a Vehicle</string>
+    <string name="bankin">Bankin</string>
+    <string name="cancel_trip">Cancel Trip</string>
+    <string name="we_are_almost_finished_finding_your_ride">We are almost finished finding your ride.</string>
+    <string name="are_you_sure_you_want_to_clear_this_chat">Are you sure you want to clear this chat?</string>
+    <string name="add_a_tip_for_driver">Add a Tip for Driver</string>
+    <string name="enter_the_place">Enter the place</string>
+    <string name="requesting">Requesting</string>
+    <string name="confirm_your_pickup_location">Confirm your Pickup Location</string>
+    <string name="home">Home</string>
+    <string name="confirming_your_ride">Confirming your Ride</string>
+    <string name="cancel_your_trip">Cancel your Trip</string>
+    <string name="you_have_to_give_some_specific_reason_for_cancellation">You have to give some specific reason for cancellation?</string>
+</resources>

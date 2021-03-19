@@ -36,12 +36,9 @@ class UserTypeActivity : BaseActivity() {
 
 
     private fun initView() {
-
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
         val layoutManager: GridLayoutManager = GridLayoutManager(this, 2)
         recyclerView.setHasFixedSize(true)
-
         recyclerView.layoutManager = layoutManager
         val smoothScroller: SmoothScroller = object : LinearSmoothScroller(this) {
             override fun getVerticalSnapPreference(): Int {
