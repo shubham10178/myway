@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/profile_image_iv"
+        android:layout_width="@dimen/_48sdp"
+        android:layout_height="@dimen/_48sdp"
+        app:riv_corner_radius="@dimen/_48sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/monument_valley_overlook"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_22sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/user_home_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_next_heavy"
+        android:text="Raul Hicks"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13ssp"
+          app:layout_constraintStart_toEndOf="@id/profile_image_iv"
+        app:layout_constraintTop_toTopOf="@+id/profile_image_iv" />
+
+    <TextView
+        android:id="@+id/pickup_location_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:fontFamily="@font/avenir_next_medium"
+        android:text="Pickup Location"
+        android:textColor="@color/grey_text_ligth"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintTop_toBottomOf="@id/user_home_tv"
+        app:layout_constraintStart_toStartOf="@id/user_home_tv"/>
+
+    <TextView
+        android:id="@+id/pickup_location_address_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:fontFamily="@font/avenir_next_medium"
+        android:text="383 joriseen St, Sunnyside Pretora"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintTop_toBottomOf="@id/pickup_location_tv"
+        app:layout_constraintStart_toStartOf="@id/pickup_location_tv"/>
+
+    <TextView
+        android:id="@+id/drop_location_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:fontFamily="@font/avenir_next_medium"
+        android:text="@string/drop_location"
+        android:textColor="@color/grey_text_ligth"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintTop_toBottomOf="@id/pickup_location_address_tv"
+        app:layout_constraintStart_toStartOf="@id/pickup_location_address_tv"/>
+
+    <TextView
+        android:id="@+id/drop_location_address_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:fontFamily="@font/avenir_next_medium"
+        android:text="383 joriseen St, Sunnyside Pretora"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintTop_toBottomOf="@id/drop_location_tv"
+        app:layout_constraintStart_toStartOf="@id/drop_location_tv"/>
+<TextView
+    android:id="@+id/distance_from_your_location_tv"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_9sdp"
+    android:fontFamily="@font/avenir_next_medium"
+    android:text="@string/distance_from_your_location"
+    android:textColor="@color/grey_text_ligth"
+    android:textSize="@dimen/_11ssp"
+    app:layout_constraintTop_toBottomOf="@id/drop_location_address_tv"
+    app:layout_constraintStart_toStartOf="@id/drop_location_address_tv"/>
+
+    <TextView
+        android:id="@+id/distance_km_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:fontFamily="@font/avenir_next_medium"
+        android:text="10km."
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11ssp"
+        app:layout_constraintTop_toBottomOf="@id/distance_from_your_location_tv"
+        app:layout_constraintStart_toStartOf="@id/distance_from_your_location_tv"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingStart="@dimen/_23sdp"
+    android:layout_marginEnd="@dimen/_23sdp"
+    android:orientation="horizontal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/distance_km_tv">
+
+    <Button
+        android:id="@+id/button_no"
+        android:layout_weight="1"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/_35sdp"
+        android:minWidth="@dimen/_90sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:background="@drawable/btn_logout"
+        android:text="@string/reject"
+        android:textColor="@color/white"
+        android:layout_marginEnd="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button_yes"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+    <Button
+        android:id="@+id/button_yes"
+        android:layout_weight="1"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/_35sdp"
+        android:minWidth="@dimen/_90sdp"
+        android:text="@string/accept"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintEnd_toStartOf="@+id/button_no"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:textColor="@color/white"
+        android:background="@drawable/agree_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_no" />
+
+
+</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

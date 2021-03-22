@@ -109,5 +109,9 @@
     <string name="confirming_your_ride">Confirming your Ride</string>
     <string name="cancel_your_trip">Cancel your Trip</string>
     <string name="you_have_to_give_some_specific_reason_for_cancellation">You have to give some specific reason for cancellation?</string>
+    <string name="drop_location">Drop Location</string>
+    <string name="distance_from_your_location">Distance from your location</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
 
 </resources>
